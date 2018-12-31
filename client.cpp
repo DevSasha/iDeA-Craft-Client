@@ -138,7 +138,7 @@ void Client::displayError(QAbstractSocket::SocketError socketError)
 {
     switch (socketError) {
     case QAbstractSocket::RemoteHostClosedError:
-        QMessageBox::critical(nullptr, "Ошибка", "Потеряно соединение");
+        QMessageBox::critical(nullptr, "Ошибка", "Потеряно соединение с сервером");
         break;
     case QAbstractSocket::HostNotFoundError:
         QMessageBox::information(nullptr, tr("Fortune Client"),
