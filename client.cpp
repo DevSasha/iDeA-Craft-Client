@@ -55,24 +55,32 @@
 
 Client::Client() : tcpSocket(new QTcpSocket(this))
 {
-    QList<QHostAddress> ipAddressesList;
+    cfg = new QSettings("DrSasha", "iDeA-Craft Launcher");
+    cfg->beginGroup("network");
+    if(!cfg->value("host").isNull()) {
+        host = QHostAddress(cfg->value("host").toString());
+        cfg->endGroup();
+    }
+    else {
+        cfg->endGroup();
+        getHostAddress();
+    }
+
+    //QHostAddress address(hostAddres);
+    //QList<QHostAddress> ipAddressesList;
     // find out name of this machine
     //QString name = QHostInfo::localHostName();
+    //qDebug() << name;
     //if (!name.isEmpty()) ipAddressesList.push_back(QHostAddress(name));
     //if (name != QLatin1String("localhost"))
     // find out IP addresses of this machine
-    //QList<QHostAddress> ipAddressesList2 = QNetworkInterface::allAddresses();
+    //ipAddressesList << QNetworkInterface::allAddresses();
+    //ipAddressesList << QHostInfo::addresses();
     // add non-localhost addresses
-    //for (int i = 0; i < ipAddressesList.size(); ++i) {
+    //for (int i = 0; i < ipAddressesList.size(); ++i)
         //if (!ipAddressesList.at(i).isLoopback())
-            //hostCombo->addItem(ipAddressesList.at(i).toString());
-   // }
-    // add localhost addresses
-    //for (int i = 0; i < ipAddressesList.size(); ++i) {
-        //if (ipAddressesList.at(i).isLoopback())
-            //hostCombo->addItem(ipAddressesList.at(i).toString());
-    //}
-//! [1]
+            //qDebug() << ipAddressesList.at(i).toString();
+
     in.setDevice(tcpSocket);
     in.setVersion(QDataStream::Qt_5_10);
 
@@ -99,7 +107,13 @@ Client::Client() : tcpSocket(new QTcpSocket(this))
         connect(networkSession, &QNetworkSession::opened, this, &Client::sessionOpened);
         networkSession->open();
     }
-    tcpSocket->connectToHost(QHostAddress::LocalHost, 22865);
+    tcpSocket->connectToHost(host, 22865);
+}
+
+Client::~Client()
+{
+    delete tcpSocket;
+    delete networkSession;
 }
 
 int Client::send(QByteArray msg)
@@ -114,24 +128,30 @@ int Client::send(QByteArray msg)
     return 0;
 }
 
+void Client::getHostAddress()
+{
+    QString tmp = QInputDialog::getText(nullptr, "Адрес сервера", "Адрес");
+    this->host = QHostAddress(tmp);
+
+    cfg->beginGroup("network");
+    cfg->setValue("host", tmp);
+    cfg->endGroup();
+}
+
 void Client::read()
 {
     QByteArray msg = tcpSocket->readAll();
     if(!msg.size()) messages.push_back(msg);
-    //QByteArray block;
     //QDataStream out(&block, QIODevice::ReadOnly);
     //out.setVersion(QDataStream::Qt_5_10);
 
     //in >> block;
-
-    qDebug() << "block";
     emit ReadyRead(msg);
-    //return "tcpSocket->readAll()";
 }
 
 void Client::Connect()
 {
-    tcpSocket->connectToHost(QHostAddress::LocalHost, 25565);
+    tcpSocket->connectToHost(host, 25565);
 }
 
 void Client::displayError(QAbstractSocket::SocketError socketError)
@@ -141,16 +161,16 @@ void Client::displayError(QAbstractSocket::SocketError socketError)
         QMessageBox::critical(nullptr, "Ошибка", "Потеряно соединение с сервером");
         break;
     case QAbstractSocket::HostNotFoundError:
-        QMessageBox::information(nullptr, tr("Fortune Client"),
+        QMessageBox::information(nullptr, "Ошибка",
                                  tr("The host was not found. Please check the "
                                     "host name and port settings."));
+        getHostAddress();
         break;
     case QAbstractSocket::ConnectionRefusedError:
-        QMessageBox::information(nullptr, tr("Fortune Client"),
-                                 tr("The connection was refused by the peer. "
-                                    "Make sure the fortune server is running, "
-                                    "and check that the host name and port "
-                                    "settings are correct."));
+        QMessageBox::information(nullptr, "Ошибка", "Соединение было отклонено узлом. Убедитесь, что сервер работает"
+                                    " и, что имя хоста и порт верны.");
+        getHostAddress();
+        Connect();
         break;
     default:
         QMessageBox::information(nullptr, tr("Fortune Client"),

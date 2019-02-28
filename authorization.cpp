@@ -1,7 +1,7 @@
 #include "authorization.h"
 
 Authorization::Authorization(Client *client, QWidget *parent) :
-    QMainWindow(parent),
+    QDialog(parent),
     ui(new Ui::Authorization)
 {
     this->client = client;
@@ -16,7 +16,7 @@ Authorization::~Authorization(){
     disconnect(client, &Client::ReadyRead, this, &Authorization::read);
 }
 
-int Authorization::logIn()
+int Authorization::auth()
 {
     if(!login.size() && password.size()) QMessageBox::warning(this, "Ошибка", "Вы не ввели логин");
     if(login.size() && !password.size()) QMessageBox::warning(this, "Ошибка", "Вы не ввели пароль");
@@ -29,9 +29,7 @@ int Authorization::logIn()
         root.insert("login", login);
         root.insert("password", password);
         QJsonDocument doc(root);
-
         client->send(doc.toBinaryData());
-
     }
     return 0;
 }
@@ -45,7 +43,7 @@ void Authorization::on_login_button_clicked()
     else {
         login = ui->login_field->text();
         password = ui->password_field->text();
-        logIn();
+        auth();
     }
 }
 
@@ -74,8 +72,6 @@ void Authorization::on_signin_button_clicked()
             root.insert("password", password);
             QJsonDocument doc(root);
             client->send(doc.toBinaryData());
-//            SignIn = false;
-//            nikname->deleteLater();
         }
     }
 }
@@ -83,4 +79,51 @@ void Authorization::on_signin_button_clicked()
 void Authorization::read(QByteArray msg)
 {
     qDebug() << msg;
+    QJsonDocument doc = QJsonDocument::fromBinaryData(msg);
+    QJsonObject root = doc.object();
+    QJsonValue method = root.value("method");
+    QString strMethod;
+    if(method.isString()) strMethod = method.toString(); else return;
+
+         if(strMethod == "registration") signIn(&root);
+    else if(strMethod == "authorization") logIn(&root);
+         else qDebug("Err");
+}
+
+int Authorization::logIn(QJsonObject *obj)
+{
+    QString response = "";
+    QJsonValue res = obj->value("response");
+    if(res.isString()) response = res.toString();
+    if(response == "sucsess"){
+        nik = obj->value("nikname").toString();
+        qDebug() << "authorized";
+        //safePass = true;
+        emit authorized();
+        //TODO: logIn sucsess
+    }
+    else {
+        return -1;
+    }
+    return 0;
+}
+
+int Authorization::signIn(QJsonObject *obj)
+{
+    QString response = "";
+    QJsonValue res = obj->value("response");
+    if(res.isString()) response = res.toString();
+    if(response == "sucsess"){
+        qDebug() << "Sucsess";
+        auth();
+    }
+    else {
+        return -1;
+    }
+    return 0;
+}
+
+void Authorization::on_isSafe_stateChanged(int arg1)
+{
+    safePass = arg1;
 }

@@ -54,6 +54,8 @@
 #include <QDataStream>
 #include <QObject>
 #include <QTcpSocket>
+#include <QHostAddress>
+#include <QSettings>
 
 QT_BEGIN_NAMESPACE
 class QTcpSocket;
@@ -66,7 +68,9 @@ class Client : public QObject
 
 public:
     explicit Client();
+    ~Client();
     int send(QByteArray msg);
+    void getHostAddress();
 
 signals:
     void ReadyRead(QByteArray msg);
@@ -78,6 +82,8 @@ private slots:
     void sessionOpened();
 
 private:
+    QSettings *cfg;
+    QHostAddress host;
     QTcpSocket *tcpSocket = nullptr;
     QDataStream in;
     QList<QByteArray> messages;

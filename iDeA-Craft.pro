@@ -28,12 +28,16 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     authorization.cpp \
-    client.cpp
+    client.cpp \
+    core.cpp \
+    instanse.cpp
 
 HEADERS += \
         mainwindow.h \
     authorization.h \
-    client.h
+    client.h \
+    core.h \
+    instanse.h
 
 FORMS += \
         mainwindow.ui \
