@@ -55,17 +55,6 @@
 
 Client::Client() : tcpSocket(new QTcpSocket(this))
 {
-    cfg = new QSettings("DrSasha", "iDeA-Craft Launcher");
-    cfg->beginGroup("network");
-    if(!cfg->value("host").isNull()) {
-        host = QHostAddress(cfg->value("host").toString());
-        cfg->endGroup();
-    }
-    else {
-        cfg->endGroup();
-        getHostAddress();
-    }
-
     //QHostAddress address(hostAddres);
     //QList<QHostAddress> ipAddressesList;
     // find out name of this machine
@@ -107,7 +96,7 @@ Client::Client() : tcpSocket(new QTcpSocket(this))
         connect(networkSession, &QNetworkSession::opened, this, &Client::sessionOpened);
         networkSession->open();
     }
-    tcpSocket->connectToHost(host, 22865);
+    Connect();
 }
 
 Client::~Client()
@@ -128,16 +117,6 @@ int Client::send(QByteArray msg)
     return 0;
 }
 
-void Client::getHostAddress()
-{
-    QString tmp = QInputDialog::getText(nullptr, "Адрес сервера", "Адрес");
-    this->host = QHostAddress(tmp);
-
-    cfg->beginGroup("network");
-    cfg->setValue("host", tmp);
-    cfg->endGroup();
-}
-
 void Client::read()
 {
     QByteArray msg = tcpSocket->readAll();
@@ -151,7 +130,7 @@ void Client::read()
 
 void Client::Connect()
 {
-    tcpSocket->connectToHost(host, 25565);
+    tcpSocket->connectToHost("drsaha.hopto.org", 22865);
 }
 
 void Client::displayError(QAbstractSocket::SocketError socketError)
@@ -164,12 +143,11 @@ void Client::displayError(QAbstractSocket::SocketError socketError)
         QMessageBox::information(nullptr, "Ошибка",
                                  tr("The host was not found. Please check the "
                                     "host name and port settings."));
-        getHostAddress();
+        Connect();
         break;
     case QAbstractSocket::ConnectionRefusedError:
         QMessageBox::information(nullptr, "Ошибка", "Соединение было отклонено узлом. Убедитесь, что сервер работает"
                                     " и, что имя хоста и порт верны.");
-        getHostAddress();
         Connect();
         break;
     default:

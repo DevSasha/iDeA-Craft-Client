@@ -70,7 +70,6 @@ public:
     explicit Client();
     ~Client();
     int send(QByteArray msg);
-    void getHostAddress();
 
 signals:
     void ReadyRead(QByteArray msg);
@@ -83,7 +82,7 @@ private slots:
 
 private:
     QSettings *cfg;
-    QHostAddress host;
+    QString host;
     QTcpSocket *tcpSocket = nullptr;
     QDataStream in;
     QList<QByteArray> messages;

@@ -2,10 +2,7 @@
 
 Instanse::Instanse(QString nameInst, QObject *parent) : QObject(parent)
 {
-    QSettings set("DrSasha", "iDeA-Craft Launcher");
-    set.beginGroup("network");
-    urlRepo = "http://" + set.value("host").toString() + "/repository/mc/";
-    set.endGroup();
+    urlRepo = "http://drsaha.hopto.org/repository/mc/";
     instName = nameInst;
     instanses = new QDir(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "\\instanses");
     instDir = new QDir(instanses->path() + "\\" + instName);
