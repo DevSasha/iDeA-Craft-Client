@@ -20,6 +20,8 @@ class Core : public QObject
 public:
     explicit Core(QObject *parent = nullptr);
     int checkUpdate();
+
+    const QString appVersion = "0.1";
 signals:
 
 public slots:
@@ -27,15 +29,18 @@ public slots:
     void startInst(QString name);
     void downloadInst(QString name);
     void downloadComplete();
+    void takeUpdeteNews(QByteArray msg);
+    void takeUpdate(QNetworkReply* reply);
 
 private:
-    QApplication *app;
+    void load();
+
     QSettings *cfgs;
     Client *client;
     Authorization *window_auth;
     MainWindow *window_main;
     QProcess *runMC;
-    QDir *Local;
+    QDir *Local, *Temp;
     Instanse *inst;
 };
 

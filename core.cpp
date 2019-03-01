@@ -2,35 +2,23 @@
 
 Core::Core(QObject *parent) : QObject(parent)
 {
-    //cfgs = new QSettings(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/configs.ini", QSettings::IniFormat);
-    cfgs = new QSettings("DrSasha", "iDeA-Craft Launcher");
-    client = new Client;
-    window_auth = new Authorization(client);
-    window_main = new MainWindow;
-        connect(window_auth, &Authorization::authorized, this, &Core::authorized);
-        connect(window_main, &MainWindow::startInst, this, &Core::startInst);
-        connect(window_main, &MainWindow::downloadInst, this, &Core::downloadInst);
-    Local = new QDir(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation));
-        if(!Local->exists())Local->mkdir(Local->path());
-
+    connect(client, &Client::ReadyRead, this, &Core::takeUpdeteNews);
     if(checkUpdate()){
         QMessageBox::critical(nullptr, "Update", "Please update this programm");
-        app->quit();
+        QApplication::quit();
         return;
     }
-
-    cfgs->beginGroup("AuthorizationData");
-    if(!cfgs->value("login").isNull() && !cfgs->value("password").isNull()){
-        window_auth->login = cfgs->value("login").toString();
-        window_auth->password = cfgs->value("password").toString();
-        window_auth->auth();
-    }else window_auth->show();
-    cfgs->endGroup();
 }
 
 int Core::checkUpdate()
 {
-    return 0;
+    QJsonObject root;
+    root.insert("method", "checkUpdate");
+    root.insert("version", "1");
+    root.insert("appVersion", appVersion);
+    QJsonDocument doc(root);
+    client->send(doc.toBinaryData());
+    return 1;
 }
 
 void Core::authorized()
@@ -157,4 +145,51 @@ void Core::downloadComplete()
 {
     window_main->installationComplete();
     qDebug() << "Installation complete";
+}
+
+void Core::takeUpdeteNews(QByteArray msg)
+{
+    QJsonDocument doc = QJsonDocument::fromBinaryData(msg);
+    QJsonObject root = doc.object();
+    QJsonValue method = root.value("method");
+    QString strMethod;
+    if(method.isString()) strMethod = method.toString(); else return;
+
+    if(strMethod == "checkUpdate"){
+        if(root.value("isActual").toBool()){
+            load();
+        }else {
+            QMessageBox::critical(nullptr, "Need update", "Please, visit "
+                                                          "http://drsaha.hopto.org/ and download new version.");
+            QApplication::quit();
+        }
+    }
+    else qDebug("Err");
+}
+
+void Core::takeUpdate(QNetworkReply* reply)
+{
+
+}
+
+void Core::load()
+{
+    //cfgs = new QSettings(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/configs.ini", QSettings::IniFormat);
+    cfgs = new QSettings("DrSasha", "iDeA-Craft Launcher");
+    client = new Client;
+    window_auth = new Authorization(client);
+    window_main = new MainWindow;
+        connect(window_auth, &Authorization::authorized, this, &Core::authorized);
+        connect(window_main, &MainWindow::startInst, this, &Core::startInst);
+        connect(window_main, &MainWindow::downloadInst, this, &Core::downloadInst);
+    Local = new QDir(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation));
+        if(!Local->exists())Local->mkdir(Local->path());
+
+    cfgs->beginGroup("AuthorizationData");
+    if(!cfgs->value("login").isNull() && !cfgs->value("password").isNull()){
+        window_auth->login = cfgs->value("login").toString();
+        window_auth->password = cfgs->value("password").toString();
+        window_auth->auth();
+    }else window_auth->show();
+    cfgs->endGroup();
 }
