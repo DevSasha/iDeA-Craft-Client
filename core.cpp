@@ -159,9 +159,11 @@ void Core::takeUpdeteNews(QByteArray msg)
         if(root.value("isActual").toBool()){
             load();
         }else {
-            QMessageBox::critical(nullptr, "Need update", "Please, visit "
-                                                          "http://drsaha.hopto.org/ and download new version.");
-            QApplication::quit();
+            QNetworkAccessManager *manager = new QNetworkAccessManager;
+                connect(manager, &QNetworkAccessManager::finished, this, &Core::takeUpdate);
+                QNetworkRequest request;    // Отправляемый запрос
+                request.setUrl(QString("http://drsaha.hopto.org/repository/idea-launcher/verions.json")); // Устанавлвиваем URL в запрос
+                manager->get(request);      // Выполняем запрос
         }
     }
     else qDebug("Err");
@@ -169,7 +171,38 @@ void Core::takeUpdeteNews(QByteArray msg)
 
 void Core::takeUpdate(QNetworkReply* reply)
 {
+    if(reply->error()){
+            qDebug() << "ERROR";
+            qDebug() << reply->errorString();
+    } else {
+        QJsonDocument doc = QJsonDocument::fromJson(reply->readAll());
+        QJsonObject root(doc.object());
+        QJsonArray arr;
+        QList<QJsonObject> listToInstall;
 
+        if(root.value("updates").isArray())
+            arr = root.value("data").toArray();
+        else {
+            qDebug() << "Value is not array";
+            QMessageBox::critical(nullptr, "Update error", "");
+            QApplication::exit();
+            return;
+        }
+
+        for(int i = arr.size() - 1;i > 0 ;--i){
+            if(arr[i].isObject()){
+                QJsonObject obj = arr[i].toObject();
+                if(obj.value("appVer").isString() != this->appVersion)
+                    listToInstall.push_front(obj);
+                else break;
+            }else {
+                qDebug() << "Value is not object";
+                QMessageBox::critical(nullptr, "Update error", "");
+                QApplication::exit();
+                return;
+            }
+        }
+    }
 }
 
 void Core::load()
