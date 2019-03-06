@@ -24,6 +24,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++11
 
+win32
+{
+    CONFIG += embed_manifest_exe
+    QMAKE_LFLAGS += /MANIFESTUAC:"level='requireAdministrator'"
+}
+
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
