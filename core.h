@@ -9,6 +9,8 @@
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QHostAddress>
+#include <QTimer>
+#include <QTextStream>
 #include "authorization.h"
 #include "client.h"
 #include "mainwindow.h"
@@ -18,22 +20,24 @@ class Core : public QObject
 {
     Q_OBJECT
 public:
-    explicit Core(QObject *parent = nullptr);
-    int checkUpdate();
+    explicit Core(QApplication *parent = nullptr);
+    //void checkUpdate();
 
     const QString appVersion = "0.1";
 signals:
 
 public slots:
+    void checkUpdate();
     void authorized();
     void startInst(QString name);
     void downloadInst(QString name);
     void downloadComplete();
-    void takeUpdeteNews(QByteArray msg);
+    void takeUpdeteNews(QNetworkReply* reply);
     void takeUpdate(QNetworkReply* reply);
 
 private:
     void load();
+    void chekedUpdate();
 
     QSettings *cfgs;
     Client *client;
@@ -42,6 +46,8 @@ private:
     QProcess *runMC;
     QDir *Local, *Temp;
     Instanse *inst;
+    QNetworkAccessManager *manager;
+    QApplication *app;
 };
 
 #endif // CORE_H

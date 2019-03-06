@@ -2,7 +2,7 @@
 
 Instanse::Instanse(QString nameInst, QObject *parent) : QObject(parent)
 {
-    urlRepo = "http://drsaha.hopto.org/repository/mc/";
+    urlRepo = "http://drsaha.hopto.org/repo/mc/";
     instName = nameInst;
     instanses = new QDir(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "\\instanses");
     instDir = new QDir(instanses->path() + "\\" + instName);

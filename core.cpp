@@ -1,24 +1,18 @@
 #include "core.h"
 
-Core::Core(QObject *parent) : QObject(parent)
+Core::Core(QApplication *parent) : QObject(parent)
 {
-    connect(client, &Client::ReadyRead, this, &Core::takeUpdeteNews);
-    if(checkUpdate()){
-        QMessageBox::critical(nullptr, "Update", "Please update this programm");
-        QApplication::quit();
-        return;
-    }
+    app = parent;
+    manager = new QNetworkAccessManager;
+    checkUpdate();
 }
 
-int Core::checkUpdate()
+void Core::checkUpdate()
 {
-    QJsonObject root;
-    root.insert("method", "checkUpdate");
-    root.insert("version", "1");
-    root.insert("appVersion", appVersion);
-    QJsonDocument doc(root);
-    client->send(doc.toBinaryData());
-    return 1;
+    connect(manager, &QNetworkAccessManager::finished, this, &Core::takeUpdeteNews);
+    QNetworkRequest request;    // Отправляемый запрос
+    request.setUrl(QString("http://drsaha.hopto.org/repo/idea-launcher/versions.json")); // Устанавлвиваем URL в запрос
+    manager->get(request);      // Выполняем запрос
 }
 
 void Core::authorized()
@@ -147,46 +141,54 @@ void Core::downloadComplete()
     qDebug() << "Installation complete";
 }
 
-void Core::takeUpdeteNews(QByteArray msg)
+void Core::takeUpdeteNews(QNetworkReply *reply)
 {
-    QJsonDocument doc = QJsonDocument::fromBinaryData(msg);
-    QJsonObject root = doc.object();
-    QJsonValue method = root.value("method");
-    QString strMethod;
-    if(method.isString()) strMethod = method.toString(); else return;
+    if(reply->error()){
+            qDebug() << "ERROR1" << reply->errorString();
+            QMessageBox::critical(nullptr, "Error update", "Can`t get list versions");
+            QApplication::exit();
+    } else {
 
-    if(strMethod == "checkUpdate"){
-        if(root.value("isActual").toBool()){
+        QJsonDocument doc = QJsonDocument::fromJson(reply->readAll());
+        QJsonObject root = doc.object();
+        QJsonValue lastVersion = root.value("lastVersion");
+        QString lastVer;
+        if(lastVersion.isString()) lastVer = lastVersion.toString(); else {
+            QMessageBox::critical(nullptr, "Error update", "Can`t read last version");
+            QApplication::exit();
+        }
+
+        if(lastVer == appVersion)
             load();
-        }else {
-            QNetworkAccessManager *manager = new QNetworkAccessManager;
+        else {
+            disconnect(manager, &QNetworkAccessManager::finished, this, &Core::takeUpdeteNews);
             connect(manager, &QNetworkAccessManager::finished, this, &Core::takeUpdate);
             QNetworkRequest request;    // Отправляемый запрос
-            request.setUrl(QString("http://drsaha.hopto.org/repository/idea-launcher/iDeA-Craft-Updater.exe")); // Устанавлвиваем URL в запрос
+            request.setUrl(QString("http://drsaha.hopto.org/repo/idea-launcher/iDeA-Craft-Updater.exe")); // Устанавлвиваем URL в запрос
             manager->get(request);      // Выполняем запрос
         }
     }
-    else qDebug("Err");
 }
 
 void Core::takeUpdate(QNetworkReply* reply)
 {
     if(reply->error()){
-            qDebug() << "ERROR";
-            qDebug() << reply->errorString();
+            qDebug() << "ERROR"  << reply->errorString();
+            QMessageBox::critical(nullptr, "Error update", "Can`t download updater");
+            QApplication::exit();
     } else {
-        QFile file("Updater.exe");
-        // Создаём файл или открываем его на перезапись ...
+        QFile file("./Updater.exe");
         if(file.open(QFile::WriteOnly)){
             file.write(reply->readAll());  // ... и записываем всю информацию со страницы в файл
             file.close();                  // закрываем файл
         }
+
         QProcess updater;
         updater.setWorkingDirectory(".");
-        qDebug() << updater.workingDirectory();
         QList<QString> args;
         args << "-Ver" << appVersion;
         updater.startDetached("Updater", args);
+        QApplication::exit();
     }
 }
 
