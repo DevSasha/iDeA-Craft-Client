@@ -78,7 +78,6 @@ void Authorization::on_signin_button_clicked()
 
 void Authorization::read(QByteArray msg)
 {
-    qDebug() << msg;
     QJsonDocument doc = QJsonDocument::fromBinaryData(msg);
     QJsonObject root = doc.object();
     QJsonValue method = root.value("method");
