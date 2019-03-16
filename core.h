@@ -8,9 +8,6 @@
 #include <QStandardPaths>
 #include <QMessageBox>
 #include <QInputDialog>
-#include <QHostAddress>
-#include <QTimer>
-#include <QTextStream>
 #include "authorization.h"
 #include "client.h"
 #include "mainwindow.h"
@@ -21,9 +18,7 @@ class Core : public QObject
     Q_OBJECT
 public:
     explicit Core(QApplication *parent = nullptr);
-    //void checkUpdate();
-
-    const QString appVersion = "0.1";
+    const QString appVersion = "0.0.2.6";
 signals:
 
 public slots:

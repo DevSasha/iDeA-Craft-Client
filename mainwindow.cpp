@@ -18,7 +18,7 @@ MainWindow::~MainWindow()
 void MainWindow::setNik(QString nik)
 {
     this->nik = nik;
-    ui->statusBar->showMessage("Authorized as " + nik);
+    ui->statusBar->showMessage("v0.0.2.6    Authorized as " + nik);
 }
 
 void MainWindow::processUpdate(int status)
@@ -35,8 +35,8 @@ void MainWindow::installationComplete()
 void MainWindow::on_run_clicked()
 {
     if(installedMC){
-        emit startInst("first");
+        emit startInst("lite");
     }else {
-        emit downloadInst("first");
+        emit downloadInst("lite");
     }
 }
