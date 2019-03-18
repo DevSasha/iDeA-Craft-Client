@@ -6,7 +6,7 @@ Core::Core(QApplication *parent) : QObject(parent)
     manager = new QNetworkAccessManager;
     //load();
     checkUpdate();
-    inst = new Instanse("lite");
+    inst = new Instanse("lite12");
 }
 
 void Core::checkUpdate()
@@ -30,14 +30,14 @@ void Core::authorized()
 
 void Core::startInst(QString name)
 {
+
+    //inst->download();
     inst->run(window_auth->nik);
 }
 
 void Core::downloadInst(QString name)
 {
-    inst->download();
-    connect(inst, &Instanse::processUpdate, window_main, &MainWindow::processUpdate);
-    connect(inst, &Instanse::downloadComplete, this, &Core::downloadComplete);
+
 }
 
 void Core::downloadComplete()
@@ -107,7 +107,6 @@ void Core::load()
     window_main = new MainWindow;
         connect(window_auth, &Authorization::authorized, this, &Core::authorized);
         connect(window_main, &MainWindow::startInst, this, &Core::startInst);
-        connect(window_main, &MainWindow::downloadInst, this, &Core::downloadInst);
     Local = new QDir(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation));
         if(!Local->exists())Local->mkdir(Local->path());
 
@@ -118,4 +117,7 @@ void Core::load()
         window_auth->auth();
     }else window_auth->show();
     cfgs->endGroup();
+
+    connect(inst, &Instanse::processUpdate, window_main, &MainWindow::processUpdate);
+    connect(inst, &Instanse::downloadComplete, this, &Core::downloadComplete);
 }

@@ -19,8 +19,6 @@ public:
 
 
 signals:
-    void startMC(QString);
-    void downloadInst(QString name);
     void startInst(QString name);
 
 public slots:
@@ -33,7 +31,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QString nik;
-    bool installedMC = false;
 };
 
 #endif // MAINWINDOW_H
