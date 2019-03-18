@@ -2,7 +2,9 @@
 #define INSTANSE_H
 
 #include <QObject>
+#include <QProcess>
 #include <QSettings>
+#include <QMessageBox>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QJsonDocument>
@@ -19,22 +21,31 @@ class Instanse : public QObject
 public:
     explicit Instanse(QString nameInst, QObject *parent = nullptr);
     ~Instanse();
+    void download();
+    void run(QString nik);
 
 signals:
+    void infoUpdated();
+
     void processUpdate(int status);
     void downloadComplete();
 
-public slots:
-    void takeFile(QNetworkReply *reply);
-    void getFile();
+private slots:
     void takeMetadata(QNetworkReply *reply);
+    void takeSHA256(QNetworkReply *reply);
+    void startDownload();
+    void startRun();
+    void takeFile(QNetworkReply *reply);
 
 private:
     bool checkInstallation(QString mode);
+    void wget(QUrl url, const QMetaMethod &method);
+    void getFile();
 
-    bool installed = false;
+    bool installed = false, infoUpdate = false;
+    QString instanseName, instanseVersion, instanseMC, instanseForge, nikname;
     QDir *instanses, *instDir;
-    QString instName, urlRepo; // = "http://idea-craft.net/repository/mc/";
+    QString urlRepo; // = "http://idea-craft.net/repository/mc/";
     QNetworkAccessManager *manager;
     QList<QString> filenames, cheksums, filetypes;
     QList<int> filesizes;

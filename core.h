@@ -8,7 +8,6 @@
 #include <QStandardPaths>
 #include <QMessageBox>
 #include <QInputDialog>
-#include <QHostAddress>
 #include "authorization.h"
 #include "client.h"
 #include "mainwindow.h"
@@ -18,25 +17,32 @@ class Core : public QObject
 {
     Q_OBJECT
 public:
-    explicit Core(QObject *parent = nullptr);
-    int checkUpdate();
+    explicit Core(QApplication *parent = nullptr);
+    const QString appVersion = "0.0.2.9";
 signals:
 
 public slots:
+    void checkUpdate();
     void authorized();
     void startInst(QString name);
     void downloadInst(QString name);
     void downloadComplete();
+    void takeUpdeteNews(QNetworkReply* reply);
+    void takeUpdate(QNetworkReply* reply);
 
 private:
-    QApplication *app;
+    void load();
+    void chekedUpdate();
+
     QSettings *cfgs;
     Client *client;
     Authorization *window_auth;
     MainWindow *window_main;
     QProcess *runMC;
-    QDir *Local;
+    QDir *Local, *Temp;
     Instanse *inst;
+    QNetworkAccessManager *manager;
+    QApplication *app;
 };
 
 #endif // CORE_H

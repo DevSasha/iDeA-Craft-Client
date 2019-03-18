@@ -121,10 +121,6 @@ void Client::read()
 {
     QByteArray msg = tcpSocket->readAll();
     if(!msg.size()) messages.push_back(msg);
-    //QDataStream out(&block, QIODevice::ReadOnly);
-    //out.setVersion(QDataStream::Qt_5_10);
-
-    //in >> block;
     emit ReadyRead(msg);
 }
 
