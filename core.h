@@ -25,7 +25,6 @@ public slots:
     void checkUpdate();
     void authorized();
     void startInst(QString name);
-    void downloadInst(QString name);
     void downloadComplete();
     void takeUpdeteNews(QNetworkReply* reply);
     void takeUpdate(QNetworkReply* reply);
