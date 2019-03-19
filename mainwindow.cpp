@@ -34,4 +34,5 @@ void MainWindow::installationComplete()
 void MainWindow::on_run_clicked()
 {
     emit startInst("lite7");
+    qDebug() << "On run clicked";
 }

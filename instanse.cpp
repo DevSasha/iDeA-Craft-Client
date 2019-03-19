@@ -202,6 +202,7 @@ void Instanse::startDownload()
 
 void Instanse::startRun()
 {
+    qInfo() << "Start MC";
     QString CD = this->instDir->path();
     QList<QString> args = {
         "-Xmx768M",
