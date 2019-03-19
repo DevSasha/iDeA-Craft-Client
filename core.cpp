@@ -30,14 +30,8 @@ void Core::authorized()
 
 void Core::startInst(QString name)
 {
-
     //inst->download();
     inst->run(window_auth->nik);
-}
-
-void Core::downloadInst(QString name)
-{
-
 }
 
 void Core::downloadComplete()
