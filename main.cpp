@@ -7,6 +7,8 @@
 #include <QLoggingCategory>
 #include "core.h"
 
+//#define BIN_DIR = "C:/Program Files (x86)/iDeA-Craft/"
+
 // Умный указатель на файл логирования
 QScopedPointer<QFile>   m_logFile;
 
@@ -18,11 +20,25 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
     // По типу определяем, к какому уровню относится сообщение
     switch (type)
     {
-    case QtInfoMsg:     out << "INF "; break;
     case QtDebugMsg:    out << "DBG "; break;
-    case QtWarningMsg:  out << "WRN "; break;
-    case QtCriticalMsg: out << "CRT "; break;
-    case QtFatalMsg:    out << "FTL "; break;
+    case QtInfoMsg:
+        out << "INF ";
+        QMessageBox::information(nullptr, "Info", msg);
+        break;
+    case QtWarningMsg:
+        out << "WRN ";
+        QMessageBox::warning(nullptr, "Waring", msg);
+        break;
+    case QtCriticalMsg:
+        out << "CRT ";
+        QMessageBox::critical(nullptr, "Critical error", msg);
+        QApplication::exit(-1);
+        break;
+    case QtFatalMsg:
+        out << "FTL ";
+        QMessageBox::critical(nullptr, "Fatal error", msg);
+        QApplication::exit(-1);
+        break;
     }
     // Записываем в вывод категорию сообщения и само сообщение
     out << context.category << ": "
