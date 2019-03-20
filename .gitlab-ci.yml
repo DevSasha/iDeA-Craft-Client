@@ -17,8 +17,8 @@ build:
     
     # указываем команды для сборки
     script:
-    - qmake -makefile
-    - make
+    - qmake ./iDeA-Craft.pro
+    - jom
     
     # загружаем собранные файлы в gitlab
     artifacts:
