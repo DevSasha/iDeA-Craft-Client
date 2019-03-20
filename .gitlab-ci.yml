@@ -6,8 +6,6 @@ build:
     stage: build
     script:  
         - echo "Building..."
-        - 'setlocal'  
-        - 'chcp 65001'  
         - 'call "%VS120COMNTOOLS%..\..\vc\vcvarsall.bat" x86_amd64'  
         - 'cd make\qt5'  
         - 'call "%QT_ROOT_x86_64%\bin\qmake.exe" Qt_project.pro -r -spec win32-msvc2013'  
