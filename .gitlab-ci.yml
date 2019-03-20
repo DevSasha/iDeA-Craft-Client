@@ -8,19 +8,22 @@ variables:
     DOCKER_LATEST_IMAGE: ${CI_REGISTRY_IMAGE}:latest
 
 #
-# Make sure we are logged into the GitLab container registry for each script.
-#
-before_script:
-    - docker login -u gitlab-ci-token -p ${CI_BUILD_TOKEN} registry.gitlab.com
-
-#
 # Build a docker image using the files in the 'docker/' subdirectory.
 #
 build:
     stage: build
+    # указываем образ в котором будет происходить сборка
+    image: garthk/qt-build:bionic-5.12.0
+    
+    # указываем команды для сборки
     script:
-        - docker build -t ${DOCKER_IMAGE} .
-        - docker push ${DOCKER_IMAGE}
+    - qmake -makefile
+    - make
+    
+    # загружаем собранные файлы в gitlab
+    artifacts:
+    paths:
+     - ./build
 
 #
 # Tag the master image as 'latest'.
