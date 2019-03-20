@@ -1,26 +1,34 @@
 stages:
     - build
-    - test
-    
+    - push-latest
+
+variables:
+    DOCKER_IMAGE:        ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF_NAME}
+    DOCKER_LATEST_IMAGE: ${CI_REGISTRY_IMAGE}:latest
+
+#
+# Make sure we are logged into the GitLab container registry for each script.
+#
+before_script:
+    - docker login -u gitlab-ci-token -p ${CI_BUILD_TOKEN} registry.gitlab.com
+
+#
+# Build a docker image using the files in the 'docker/' subdirectory.
+#
 build:
     stage: build
-    script:  
-        - echo "Building..."
-        - 'call "%VS120COMNTOOLS%..\..\vc\vcvarsall.bat" x86_amd64'  
-        - 'cd make\qt5'  
-        - 'call "%QT_ROOT_x86_64%\bin\qmake.exe" Qt_project.pro -r -spec win32-msvc2013'  
-        - 'call "%QT_CREATOR%\bin\jom.exe" -f Makefile.Release'   
-        - 'rd /s/q deploy'  
-        - 'mkdir deploy'  
-        - 'copy release\Qt_project.exe deploy'  
-        - 'set curr_dir=%cd%'  
-        - 'cd /d "%QT_ROOT_x86_64%\bin"'  
-        - 'windeployqt.exe "%curr_dir%\deploy\Qt_project.exe" -no-translations'  
-        - 'cd /d %curr_dir%'  
-        - 'if not exist "%BUILDS%\Qt_project" (mkdir "%BUILDS%\Qt_project")'  
-        - 'xcopy /s /y deploy "%BUILDS%\Qt_project"'  
-test:
-    stage: test
     script:
-        - echo "Testing..."
-    
+        - docker build -t ${DOCKER_IMAGE} .
+        - docker push ${DOCKER_IMAGE}
+
+#
+# Tag the master image as 'latest'.
+#
+#push-latest:
+    #stage: push-latest
+    #script:
+#        - docker pull ${DOCKER_IMAGE}
+#        - docker tag ${DOCKER_IMAGE} ${DOCKER_LATEST_IMAGE}
+#        - docker push ${DOCKER_LATEST_IMAGE}
+#    only:
+#        - master
