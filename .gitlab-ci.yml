@@ -22,8 +22,8 @@ build:
     
     # загружаем собранные файлы в gitlab
     artifacts:
-    paths:
-     - ./build
+        paths:
+            - ./build
 
 #
 # Tag the master image as 'latest'.
