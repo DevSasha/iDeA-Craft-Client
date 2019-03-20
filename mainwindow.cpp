@@ -18,7 +18,7 @@ MainWindow::~MainWindow()
 void MainWindow::setNik(QString nik)
 {
     this->nik = nik;
-    ui->statusBar->showMessage("v0.0.2.9    Authorized as " + nik);
+    ui->statusBar->showMessage("v0.0.2.10    Authorized as " + nik);
 }
 
 void MainWindow::processUpdate(int status)

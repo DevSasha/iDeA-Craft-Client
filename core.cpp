@@ -5,8 +5,8 @@ Core::Core(QApplication *parent) : QObject(parent)
     app = parent;
     manager = new QNetworkAccessManager;
     //load();
+    qDebug() << "Checking update...";
     checkUpdate();
-    inst = new Instanse("lite12");
 }
 
 void Core::checkUpdate()
@@ -73,9 +73,7 @@ void Core::takeUpdeteNews(QNetworkReply *reply)
 void Core::takeUpdate(QNetworkReply* reply)
 {
     if(reply->error()){
-            qDebug() << "ERROR"  << reply->errorString();
-            QMessageBox::critical(nullptr, "Error update", "Can`t download updater");
-            QApplication::exit();
+        qCritical() << "Can`t download updater" << reply->errorString();
     } else {
         QFile file("./Updater.exe");
         if(file.open(QFile::WriteOnly)){
@@ -94,9 +92,11 @@ void Core::takeUpdate(QNetworkReply* reply)
 
 void Core::load()
 {
+    qDebug() << "loading...";
     //cfgs = new QSettings(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/configs.ini", QSettings::IniFormat);
     cfgs = new QSettings("DrSasha", "iDeA-Craft Launcher");
     client = new Client;
+    inst = new Instanse("lite12");
     window_auth = new Authorization(client);
     window_main = new MainWindow;
         connect(window_auth, &Authorization::authorized, this, &Core::authorized);

@@ -18,7 +18,7 @@ class Core : public QObject
     Q_OBJECT
 public:
     explicit Core(QApplication *parent = nullptr);
-    const QString appVersion = "0.0.2.9";
+    const QString appVersion = "0.0.2.10";
 signals:
 
 public slots:
