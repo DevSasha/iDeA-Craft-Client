@@ -1,0 +1,28 @@
+stages:
+    - build
+    - test
+    
+build:
+    stage: build
+    script:  
+        - echo "Building..."
+        - 'setlocal'  
+        - 'chcp 65001'  
+        - 'call "%VS120COMNTOOLS%..\..\vc\vcvarsall.bat" x86_amd64'  
+        - 'cd make\qt5'  
+        - 'call "%QT_ROOT_x86_64%\bin\qmake.exe" Qt_project.pro -r -spec win32-msvc2013'  
+        - 'call "%QT_CREATOR%\bin\jom.exe" -f Makefile.Release'   
+        - 'rd /s/q deploy'  
+        - 'mkdir deploy'  
+        - 'copy release\Qt_project.exe deploy'  
+        - 'set curr_dir=%cd%'  
+        - 'cd /d "%QT_ROOT_x86_64%\bin"'  
+        - 'windeployqt.exe "%curr_dir%\deploy\Qt_project.exe" -no-translations'  
+        - 'cd /d %curr_dir%'  
+        - 'if not exist "%BUILDS%\Qt_project" (mkdir "%BUILDS%\Qt_project")'  
+        - 'xcopy /s /y deploy "%BUILDS%\Qt_project"'  
+test:
+    stage: test
+    script:
+        - echo "Testing..."
+    
