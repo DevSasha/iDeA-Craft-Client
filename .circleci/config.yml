@@ -9,7 +9,7 @@ jobs:
 
       - run:
           name: Building
-          command: qmake -makefile && make --help
+          command: qmake -makefile && make
 
       - run:
           name: Print the Current Time
