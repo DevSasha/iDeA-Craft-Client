@@ -1,15 +1,7 @@
-image: garthk/qt-build:bionic-5.12.0
 stages:
     - build
     - push-latest
 
-variables:
-    DOCKER_IMAGE:        ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF_NAME}
-    DOCKER_LATEST_IMAGE: ${CI_REGISTRY_IMAGE}:latest
-
-#
-# Build a docker image using the files in the 'docker/' subdirectory.
-#
 build:
     stage: build
     # указываем образ в котором будет происходить сборка
