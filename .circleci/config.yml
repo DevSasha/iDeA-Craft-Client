@@ -1,15 +1,15 @@
 version: 2
 jobs:
   build:
-    docker:
-      - image: garthk/qt-build:bionic-5.12.0
+    docker: 
+      - image: therecipe/qt
 
     steps:
       - checkout
 
       - run:
           name: Building
-          command: qmake -makefile && make -B /root/project/Makefile
+          command: qtdeploy
 
       - run:
           name: Print the Current Time
