@@ -10,7 +10,7 @@ build:
     # указываем команды для сборки
     script:
     - qmake -makefile
-    - make
+    - make /builds/DrSasha/idea-craft/Makefile
     
     # загружаем собранные файлы в gitlab
     artifacts:
