@@ -8,8 +8,10 @@ jobs:
       - checkout
 
       - run:
-          name: Greeting
-          command: echo Hello, world.
+          name: Building
+          command: 
+          - qmake -makefile
+          - make
 
       - run:
           name: Print the Current Time
