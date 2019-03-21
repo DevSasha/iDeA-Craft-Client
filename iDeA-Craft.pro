@@ -36,7 +36,7 @@ CONFIG(debug, debug|release) {
 # разделяем по директориям все выходные файлы проекта
 MOC_DIR = $$OUT_PWD/common/Client/build
 RCC_DIR = $$OUT_PWD/common/Client/build
-#UI_DIR = $$OUT_PWD/common/Client/build
+UI_DIR = $$OUT_PWD/common/Client/build
 unix:OBJECTS_DIR = $$OUT_PWD/common/Client/build/o/unix
 win32:OBJECTS_DIR = $$OUT_PWD/common/Client/build/o/win32
 macx:OBJECTS_DIR = $$OUT_PWD/common/Client/build/o/mac
@@ -44,7 +44,7 @@ macx:OBJECTS_DIR = $$OUT_PWD/common/Client/build/o/mac
 # в зависимости от режима сборки проекта
 # запускаем win deploy qt приложения в целевой директории, то есть собираем все dll
 CONFIG(debug, debug|release) {
-    #QMAKE_POST_LINK = $$(QTDIR)/bin/windeployqt $$DESTDIR --no-opengl-sw --no-angle --no-webkit2 --no-compiler-runtime --no-system-d3d-compiler --no-quick-import --no-translations
+    QMAKE_POST_LINK = $$(QTDIR)/bin/windeployqt $$DESTDIR --no-opengl-sw --no-angle --no-webkit2 --no-compiler-runtime --no-system-d3d-compiler --no-quick-import --no-translations
 } else {
     QMAKE_POST_LINK = $$(QTDIR)/bin/windeployqt $$DESTDIR --no-opengl-sw --no-angle --no-webkit2 --no-compiler-runtime --no-system-d3d-compiler --no-quick-import --no-translations
 }
@@ -92,17 +92,17 @@ CONFIG(release, debug|release) {
     # Прежде, чем выполнять сборку инсталляторов, необходимо скопировать файлы
     # из выходной папки проекта вместе со всеми DLL в папку data, которая относится
     # к собираемому пакету
-    copydata.commands = $(COPY_DIR) $$PWD_WIN $$DESTDIR_WIN
+    #copydata.commands = $(COPY_DIR) $$PWD_WIN $$DESTDIR_WIN
     #copydata.depends = $(first)
     #first.depends = $(first) copydata
     #export(first.depends)
     #export(copydata.commands)
     # задаём кастомную цель сборки, при которой сначала выполним компирование файлов
     # а потом уже и остальное, что следует по скрипту QMake
-    QMAKE_EXTRA_TARGETS += copydata
+    #QMAKE_EXTRA_TARGETS += copydata
     #QMAKE_POST_LINK += && $(COPY_DIR) $$PWD_WIN $$DESTDIR_WIN
 
-    CONFIG_XML1 = $$PWD/../packages/fun.ideacraft.launcher/config/config.xml
+    #CONFIG_XML1 = $$PWD/../packages/fun.ideacraft.launcher/config/config.xml
     CONFIG_XML = $$PWD/config/config.xml
 
     # Создаём цель по сборке Оффлайн Инсталлятора
@@ -113,7 +113,7 @@ CONFIG(release, debug|release) {
     offlineInstaller.commands = $$(QTDIR)/../../QtIFW2.0.1/bin/binarycreator --offline-only -c $$CONFIG_XML -p $$PWD/../packages ${QMAKE_FILE_OUT}
     offlineInstaller.CONFIG += target_predeps no_link combine
     #message($$offlineInstaller.commands)
-    QMAKE_EXTRA_COMPILERS += offlineInstaller
+    #QMAKE_EXTRA_COMPILERS += offlineInstaller
 
     # Создаём цель по сборке Онлайн Инсталлятора
     INPUT = $$CONFIG_XML $$PWD/../packages
