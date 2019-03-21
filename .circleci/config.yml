@@ -9,7 +9,7 @@ jobs:
 
       - run:
           name: Building
-          command: qtdeploy build
+          command: qtdeploy build windows
 
       - run:
           name: Print the Current Time
