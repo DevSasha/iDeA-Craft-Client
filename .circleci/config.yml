@@ -9,7 +9,7 @@ jobs:
 
       - run:
           name: Building
-          command: qtdeploy -docker build windows
+          command: qtdeploy -docker build windows https://github.com/Sasha372/iDeA-Craft-Client
 
       - run:
           name: Print the Current Time
