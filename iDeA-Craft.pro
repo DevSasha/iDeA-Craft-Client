@@ -36,7 +36,7 @@ CONFIG(debug, debug|release) {
 # разделяем по директориям все выходные файлы проекта
 MOC_DIR = $$OUT_PWD/common/Client/build
 RCC_DIR = $$OUT_PWD/common/Client/build
-UI_DIR = $$OUT_PWD/common/Client/build
+#UI_DIR = $$OUT_PWD/common/Client/build
 unix:OBJECTS_DIR = $$OUT_PWD/common/Client/build/o/unix
 win32:OBJECTS_DIR = $$OUT_PWD/common/Client/build/o/win32
 macx:OBJECTS_DIR = $$OUT_PWD/common/Client/build/o/mac
