@@ -34,9 +34,9 @@ CONFIG(debug, debug|release) {
 }
 
 # разделяем по директориям все выходные файлы проекта
-MOC_DIR = $$OUT_PWD/common/Client/build/moc
-RCC_DIR = $$OUT_PWD/common/Client/build/rcc
-UI_DIR = $$OUT_PWD/common/Client/build/ui
+MOC_DIR = $$OUT_PWD/common/Client/build
+RCC_DIR = $$OUT_PWD/common/Client/build
+UI_DIR = $$OUT_PWD/common/Client/build
 unix:OBJECTS_DIR = $$OUT_PWD/common/Client/build/o/unix
 win32:OBJECTS_DIR = $$OUT_PWD/common/Client/build/o/win32
 macx:OBJECTS_DIR = $$OUT_PWD/common/Client/build/o/mac
@@ -44,7 +44,7 @@ macx:OBJECTS_DIR = $$OUT_PWD/common/Client/build/o/mac
 # в зависимости от режима сборки проекта
 # запускаем win deploy qt приложения в целевой директории, то есть собираем все dll
 CONFIG(debug, debug|release) {
-    QMAKE_POST_LINK = $$(QTDIR)/bin/windeployqt $$DESTDIR --no-opengl-sw --no-angle --no-webkit2 --no-compiler-runtime --no-system-d3d-compiler --no-quick-import --no-translations
+    #QMAKE_POST_LINK = $$(QTDIR)/bin/windeployqt $$DESTDIR --no-opengl-sw --no-angle --no-webkit2 --no-compiler-runtime --no-system-d3d-compiler --no-quick-import --no-translations
 } else {
     QMAKE_POST_LINK = $$(QTDIR)/bin/windeployqt $$DESTDIR --no-opengl-sw --no-angle --no-webkit2 --no-compiler-runtime --no-system-d3d-compiler --no-quick-import --no-translations
 }
