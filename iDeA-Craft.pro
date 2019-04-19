@@ -28,9 +28,9 @@ CONFIG -= debug_and_release debug_and_release_target
 # Выбираем директорию сборки исполняемого файла
 # в зависимости от режима сборки проекта
 CONFIG(debug, debug|release) {
-    DESTDIR = $$PWD/../iDeA-Craft-Client-Debug
+    #DESTDIR = $$PWD/../iDeA-Craft-Client-Debug
 } else {
-    DESTDIR = $$PWD/../iDeA-Craft-Client-Release
+    #DESTDIR = $$PWD/../iDeA-Craft-Client-Release
 }
 
 # разделяем по директориям все выходные файлы проекта
@@ -44,9 +44,9 @@ macx:OBJECTS_DIR = $$OUT_PWD/common/Client/build/o/mac
 # в зависимости от режима сборки проекта
 # запускаем win deploy qt приложения в целевой директории, то есть собираем все dll
 CONFIG(debug, debug|release) {
-    QMAKE_POST_LINK = $$(QTDIR)/bin/windeployqt $$DESTDIR --no-opengl-sw --no-angle --no-webkit2 --no-compiler-runtime --no-system-d3d-compiler --no-quick-import --no-translations
+    #QMAKE_POST_LINK = $$(QTDIR)/bin/windeployqt $$DESTDIR --no-opengl-sw --no-angle --no-webkit2 --no-compiler-runtime --no-system-d3d-compiler --no-quick-import --no-translations
 } else {
-    QMAKE_POST_LINK = $$(QTDIR)/bin/windeployqt $$DESTDIR --no-opengl-sw --no-angle --no-webkit2 --no-compiler-runtime --no-system-d3d-compiler --no-quick-import --no-translations
+    #QMAKE_POST_LINK = $$(QTDIR)/bin/windeployqt $$DESTDIR --no-opengl-sw --no-angle --no-webkit2 --no-compiler-runtime --no-system-d3d-compiler --no-quick-import --no-translations
 }
 
 win32
