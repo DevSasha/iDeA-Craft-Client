@@ -6,7 +6,7 @@ Instanse::Instanse(QString nameInst, QObject *parent) : QObject(parent)
     instanses = new QDir(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "\\instanses");
     instDir = new QDir(instanses->path() + "\\" + nameInst);
     if(!instanses->exists()) instanses->mkdir(instanses->path());
-    checkInstallation();
+    checkInstallation("fast");
     manager = new QNetworkAccessManager;
     connect(manager, &QNetworkAccessManager::finished, this, &Instanse::takeMetadata);
     QNetworkRequest request;    // Отправляемый запрос
