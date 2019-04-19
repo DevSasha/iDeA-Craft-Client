@@ -51,8 +51,8 @@ CONFIG(debug, debug|release) {
 
 win32
 {
-    CONFIG += embed_manifest_exe
-    QMAKE_LFLAGS += /MANIFESTUAC:"level='requireAdministrator'"
+    #CONFIG += embed_manifest_exe
+    #QMAKE_LFLAGS += /MANIFESTUAC:"level='requireAdministrator'"
 }
 
 SOURCES += \
