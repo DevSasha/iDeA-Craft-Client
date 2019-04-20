@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2017 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -126,7 +126,7 @@ void Client::read()
 
 void Client::Connect()
 {
-    tcpSocket->connectToHost("drsaha.hopto.org", 22865);
+    tcpSocket->connectToHost("drsasha.hopto.org", 22865);
 }
 
 void Client::displayError(QAbstractSocket::SocketError socketError)
