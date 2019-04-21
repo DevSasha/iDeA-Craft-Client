@@ -1,20 +1,19 @@
-image: burningdaylight/docker-mingw-qt5
 stages:
-    - build
+    - build-win-x86_64
     - push-latest
 
-build:
-    stage: build
-    # указываем образ в котором будет происходить сборка
+build-win-x86_64:
+    stage: build-win-x86_64
     # image: garthk/qt-build:bionic-5.12.0
-    
+    image: burningdaylight/docker-mingw-qt5 # указываем образ в котором будет происходить сборка
+
     # указываем команды для сборки
     script:
     - cd /builds/DrSasha/idea-craft
     - x86_64-w64-mingw32-qmake-qt5
     - make
-    - mkdir build
-    - cp iDeA-Craft.exe build/iDeA-Craft.exe
+    - mkdir -p build/win64
+    - cp iDeA-Craft.exe build/win64/iDeA-Craft-x64.exe
     # x86_64-w64-mingw32-windeployqt-qt5 -release
     # qmake -makefile
     # make -B /builds/DrSasha/idea-craft/Makefile
@@ -31,8 +30,6 @@ build:
 #push-latest:
     #stage: push-latest
     #script:
-#        - docker pull ${DOCKER_IMAGE}
-#        - docker tag ${DOCKER_IMAGE} ${DOCKER_LATEST_IMAGE}
-#        - docker push ${DOCKER_LATEST_IMAGE}
-#    only:
-#        - master
+    #- sudo pacman -S --noconfirm curl
+    #- cd /builds/DrSasha/idea-craft/build/win64
+    #- curl 
