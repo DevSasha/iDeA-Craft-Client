@@ -2,14 +2,15 @@ version: 2
 jobs:
   build:
     docker: 
-      - image: therecipe/qt:windows_64_shared
+      - image: burningdaylight/docker-mingw-qt5 # указываем образ в котором будет происходить сборка
+      #- image: therecipe/qt:windows_64_shared
 
     steps:
       - checkout
 
       - run:
           name: Building
-          command: qtdeploy -docker build windows https://github.com/Sasha372/iDeA-Craft-Client
+          command: 
 
       - run:
           name: Print the Current Time
