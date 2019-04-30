@@ -1,17 +1,17 @@
 version: 2
 jobs:
-  build:
-    docker: 
-      - image: burningdaylight/docker-mingw-qt5 # указываем образ в котором будет происходить сборка
-      #- image: therecipe/qt:windows_64_shared
-
-    steps:
-      - checkout
-
-      - run:
-          name: Building
-          command: 
-
-      - run:
-          name: Print the Current Time
-          command: date
+	build:
+		docker: 
+			- image: burningdaylight/docker-mingw-qt5 # указываем образ в котором будет происходить сборка
+			#- image: therecipe/qt:windows_64_shared
+		steps:
+			- checkout
+			- run: x86_64-w64-mingw32-qmake-qt5 
+			- run: make
+			- run: mkdir -p build/win64
+			- run: cp iDeA-Craft.exe build/win64/iDeA-Craft-x64.exe
+			- run:
+				name: Print the Current Time
+				command: date
+			- store_artifacts:
+				path: build/win64
