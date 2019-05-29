@@ -13,31 +13,17 @@ void Core::checkUpdate()
 {
     connect(manager, &QNetworkAccessManager::finished, this, &Core::takeUpdeteNews);
     QNetworkRequest request;    // Отправляемый запрос
-    request.setUrl(QString("http://drsaha.hopto.org/repo/idea-launcher/versions.json")); // Устанавлвиваем URL в запрос
+    request.setUrl(QString("http://idea-craft.space/repo/idea-launcher/versions.json")); // Устанавлвиваем URL в запрос
     manager->get(request);      // Выполняем запрос
 }
 
 void Core::authorized()
 {
-    cfgs->beginGroup("AuthorizationData");
-    cfgs->setValue("login", window_auth->login);
-    cfgs->setValue("password", window_auth->password);
-    cfgs->endGroup();
     window_auth->close();
     window_main->setNik(window_auth->nik);
+    window_main = new MainWindow;
+    connect(inst, &Instanse::processUpdate, window_main, &MainWindow::processUpdate);
     window_main->show();
-}
-
-void Core::startInst(QString name)
-{
-    //inst->download();
-    inst->run(window_auth->nik);
-}
-
-void Core::downloadComplete()
-{
-    window_main->installationComplete();
-    qDebug() << "Installation complete";
 }
 
 void Core::takeUpdeteNews(QNetworkReply *reply)
@@ -62,15 +48,15 @@ void Core::takeUpdeteNews(QNetworkReply *reply)
             load();
         }else {
             disconnect(manager, &QNetworkAccessManager::finished, this, &Core::takeUpdeteNews);
-            connect(manager, &QNetworkAccessManager::finished, this, &Core::takeUpdate);
-            QNetworkRequest request;    // Отправляемый запрос
-            request.setUrl(QString("http://drsaha.hopto.org/repo/idea-launcher/iDeA-Craft-Updater.exe")); // Устанавлвиваем URL в запрос
-            manager->get(request);      // Выполняем запрос
+            //connect(manager, &QNetworkAccessManager::finished, this, &Core::takeUpdate);
+            //QNetworkRequest request;    // Отправляемый запрос
+            //request.setUrl(QString("http://idea-craft.space/repo/idea-launcher/iDeA-Craft-Updater.exe")); // Устанавлвиваем URL в запрос
+            //manager->get(request);      // Выполняем запрос
         }
     }
 }
 
-void Core::takeUpdate(QNetworkReply* reply)
+void Core::takeUpdate(QNetworkReply* reply) // Only for Windows
 {
     if(reply->error()){
         qCritical() << "Can`t download updater" << reply->errorString();
@@ -98,9 +84,8 @@ void Core::load()
     client = new Client;
     inst = new Instanse("lite12");
     window_auth = new Authorization(client);
-    window_main = new MainWindow;
         connect(window_auth, &Authorization::authorized, this, &Core::authorized);
-        connect(window_main, &MainWindow::startInst, this, &Core::startInst);
+        //connect(window_main, &MainWindow::startInst, this, &Core::startInst);
     Local = new QDir(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation));
         if(!Local->exists())Local->mkdir(Local->path());
 
@@ -111,7 +96,5 @@ void Core::load()
         window_auth->auth();
     }else window_auth->show();
     cfgs->endGroup();
-
-    connect(inst, &Instanse::processUpdate, window_main, &MainWindow::processUpdate);
-    connect(inst, &Instanse::downloadComplete, this, &Core::downloadComplete);
+    //connect(inst, &Instanse::downloadComplete, this, &Core::downloadComplete);
 }

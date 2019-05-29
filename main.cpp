@@ -7,14 +7,11 @@
 #include <QLoggingCategory>
 #include "core.h"
 
-//#define BIN_DIR = "C:/Program Files (x86)/iDeA-Craft/"
-
 // Умный указатель на файл логирования
-QScopedPointer<QFile>   m_logFile;
+QScopedPointer<QFile> m_logFile;
 
 void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
-
     QTextStream out(m_logFile.data()); // Открываем поток записи в файл
     out << QDateTime::currentDateTime().toString("[yyyy-MM-dd hh:mm:ss.zzz] "); // Записываем дату записи
     // По типу определяем, к какому уровню относится сообщение

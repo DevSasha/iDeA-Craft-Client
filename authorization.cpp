@@ -100,6 +100,14 @@ int Authorization::logIn(QJsonObject *obj)
         //safePass = true;
         emit authorized();
         //TODO: logIn sucsess
+        QSettings cfgs("DrSasha", "iDeA-Craft Launcher");
+        //qApp;
+        if(safePass){
+            cfgs.beginGroup("AuthorizationData");
+            cfgs.setValue("login", this->login);
+            cfgs.setValue("password", this->password);
+            cfgs.endGroup();
+        }
     }
     else {
         return -1;

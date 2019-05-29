@@ -71,7 +71,7 @@ Client::Client() : tcpSocket(new QTcpSocket(this))
             //qDebug() << ipAddressesList.at(i).toString();
 
     in.setDevice(tcpSocket);
-    in.setVersion(QDataStream::Qt_5_10);
+    //in.setVersion(QDataStream::Qt_5_10);
 
     connect(tcpSocket, &QIODevice::readyRead, this, &Client::read);
     //connect(tcpSocket, &QTcpSocket::disconnected, this, &Client::Disconnect);
@@ -109,7 +109,7 @@ int Client::send(QByteArray msg)
 {
     QByteArray block;
     QDataStream out(&block, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_5_10);
+    //out.setVersion(QDataStream::Qt_5_10);
 
     out << msg;
 
