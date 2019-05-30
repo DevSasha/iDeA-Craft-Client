@@ -17,14 +17,16 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
     // По типу определяем, к какому уровню относится сообщение
     switch (type)
     {
-    case QtDebugMsg:    out << "DBG "; break;
+    case QtDebugMsg:
+        out << "DBG ";
+        break;
     case QtInfoMsg:
         out << "INF ";
         QMessageBox::information(nullptr, "Info", msg);
         break;
     case QtWarningMsg:
         out << "WRN ";
-        QMessageBox::warning(nullptr, "Waring", msg);
+        //QMessageBox::warning(nullptr, "Waring", msg);
         break;
     case QtCriticalMsg:
         out << "CRT ";
