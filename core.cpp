@@ -13,16 +13,16 @@ void Core::checkUpdate()
 {
     connect(manager, &QNetworkAccessManager::finished, this, &Core::takeUpdeteNews);
     QNetworkRequest request;    // Отправляемый запрос
-    request.setUrl(QString("http://idea-craft.space/repo/idea-launcher/versions.json")); // Устанавлвиваем URL в запрос
+    request.setUrl(QString("http://launcher.idea-craft.space/versions.json")); // Устанавлвиваем URL в запрос
     manager->get(request);      // Выполняем запрос
 }
 
 void Core::authorized()
 {
-    window_auth->close();
+    window_auth->hide();
     window_main->setNik(window_auth->nik);
     window_main = new MainWindow;
-    connect(inst, &Instanse::processUpdate, window_main, &MainWindow::processUpdate);
+    //connect(inst, &Instanse::processUpdate, window_main, &MainWindow::processUpdate);
     window_main->show();
 }
 

@@ -126,7 +126,7 @@ void Client::read()
 
 void Client::Connect()
 {
-    tcpSocket->connectToHost("drsasha.hopto.org", 22865);
+    tcpSocket->connectToHost("idea-craft.space", 22865);
 }
 
 void Client::displayError(QAbstractSocket::SocketError socketError)

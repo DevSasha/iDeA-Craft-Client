@@ -2,7 +2,7 @@
 
 Instanse::Instanse(QString nameInst, QObject *parent) : QObject(parent)
 {
-    urlRepo = "http://drsasha.hopto.org/repo/mc/" + nameInst + "/";
+    urlRepo = "http://mc.idea-craft.space/" + nameInst + "/";
     instanses = new QDir(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "\\instanses");
     instDir = new QDir(instanses->path() + "\\" + nameInst);
     if(!instanses->exists()) instanses->mkdir(instanses->path());
@@ -92,7 +92,7 @@ void Instanse::getFile()
         filetypes.pop_front();
         cheksums.pop_front();
         QNetworkRequest request;                        // Отправляемый запрос
-        QUrl url("http://drsaha.hopto.org/repo/mc/" + curDownloadingName);
+        QUrl url("http://mc.idea-craft.space/" + curDownloadingName);
         QString url2 = QString(url.toEncoded(QUrl::EncodeUnicode));
         request.setUrl(url2);   // Устанавлвиваем URL в запрос
         manager->get(request);  // Выполняем запрос
