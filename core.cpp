@@ -19,10 +19,11 @@ void Core::checkUpdate()
 
 void Core::authorized()
 {
-    window_auth->hide();
-    window_main->setNik(window_auth->nik);
+    qDebug() << "Creating main window";
     window_main = new MainWindow;
+    window_main->setNik(window_auth->nik);
     //connect(inst, &Instanse::processUpdate, window_main, &MainWindow::processUpdate);
+    window_auth->hide();
     window_main->show();
 }
 
