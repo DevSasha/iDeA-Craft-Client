@@ -1,6 +1,6 @@
 version: 2
 jobs:
-    - build-win64:
+    build-win64:
         docker: 
             - image: burningdaylight/docker-mingw-qt5 # указываем образ в котором будет происходить сборка
             #- image: therecipe/qt:windows_64_shared
@@ -15,7 +15,7 @@ jobs:
                 command: date
             - store_artifacts:
                 path: build/win64
-    - build-linux64:
+    build-linux64:
         docker: 
             - image: fffaraz/qt:latest
         steps:
