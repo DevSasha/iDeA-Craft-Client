@@ -1,31 +1,31 @@
 version: 2
 workflows:
     version: 2.1
-        jobs:
-            - build-win64:
-                docker: 
-                    - image: burningdaylight/docker-mingw-qt5 # указываем образ в котором будет происходить сборка
-                    #- image: therecipe/qt:windows_64_shared
-                steps:
-                    - checkout
-                    - run: x86_64-w64-mingw32-qmake-qt5
-                    - run: make
-                    - run: mkdir -p build/win64
-                    - run: cp iDeA-Craft.exe build/win64/iDeA-Craft-x64.exe
-                    - run:
-                        name: Print the Current Time
-                        command: date
-                    - store_artifacts:
-                        path: build/win64
-            - build-linux64:
-                docker: 
-                    - image: fffaraz/qt:latest
-                steps:
-                    - checkout
-                    - run: 
-                        name: Linux build
-                        command: qmake && make -j$((`nproc`+1)) 
-                    - run: mkdir -p build/linux64
-                    - run: cp iDeA-Craft build/linux64/idea-craft
-                    - store_artifacts:
-                        path: build/linux64
+    jobs:
+        - build-win64:
+            docker: 
+                - image: burningdaylight/docker-mingw-qt5 # указываем образ в котором будет происходить сборка
+                #- image: therecipe/qt:windows_64_shared
+            steps:
+                - checkout
+                - run: x86_64-w64-mingw32-qmake-qt5
+                - run: make
+                - run: mkdir -p build/win64
+                - run: cp iDeA-Craft.exe build/win64/iDeA-Craft-x64.exe
+                - run:
+                    name: Print the Current Time
+                    command: date
+                - store_artifacts:
+                    path: build/win64
+        - build-linux64:
+            docker: 
+                - image: fffaraz/qt:latest
+            steps:
+                - checkout
+                - run: 
+                    name: Linux build
+                    command: qmake && make -j$((`nproc`+1)) 
+                - run: mkdir -p build/linux64
+                - run: cp iDeA-Craft build/linux64/idea-craft
+                - store_artifacts:
+                    path: build/linux64
