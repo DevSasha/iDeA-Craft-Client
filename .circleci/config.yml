@@ -29,7 +29,8 @@ jobs:
                 path: build/linux64
 workflows:
     version: 2
-    jobs:
-        - build-linux64
-        - build-win64
+    build-deploy:
+        jobs:
+            - build-linux64
+            - build-win64
     
