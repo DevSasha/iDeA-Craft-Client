@@ -1,2 +1,7 @@
 
 *.user
+Makefile
+.qmake*
+common/
+.vscode*
+.idea*
