@@ -1,0 +1,5 @@
+#!/bin/bash
+mkdir -p ../idea-craft/{DEBIAN,usr/{bin,share/{applications,icons/hicolor}},opt/idea-craft}
+cp ../iDeA-Craft ../idea-craft/opt/idea-craft/idea-craft
+cp ./DEBIAN/* ../idea-craft/DEBIAN/
+cp ./idea-craft.desktop ../idea-craft/usr/share/applications/
