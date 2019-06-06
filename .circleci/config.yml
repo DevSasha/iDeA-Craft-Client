@@ -7,7 +7,7 @@ jobs:
         steps:
             - checkout
             - run: x86_64-w64-mingw32-qmake-qt5
-            - run: make
+            - run: make -j$((`nproc`+1)) 
             - run: mkdir -p build/win64
             - run: cp iDeA-Craft.exe build/win64/iDeA-Craft-x64.exe
             - run:
@@ -17,7 +17,7 @@ jobs:
                 path: build/win64
     build-linux64:
         docker: 
-            - image: fffaraz/qt:latest
+            - image: fffaraz/qt:latest # vookimedlo/ubuntu-qt
         steps:
             - checkout
             - run: 
