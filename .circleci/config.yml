@@ -25,7 +25,7 @@ jobs:
                 command: qmake && make -j$((`nproc`+1)) 
             - run:
                 name: Setup enviroment for Linux deploy
-                command: sudo apt-get install -y dpkg
+                command: apt-get install -y dpkg
             - run: 
                 name: Deploy for Linux
                 command: deploy/mkdeb && cp -R idea-craft build/linux64/ && mv idea-craft.deb build/linux64/idea-craft_0.0.2-10_amd64.deb
