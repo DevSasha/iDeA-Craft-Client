@@ -75,7 +75,7 @@ Client::Client() : tcpSocket(new QTcpSocket(this))
 
     connect(tcpSocket, &QIODevice::readyRead, this, &Client::read);
     //connect(tcpSocket, &QTcpSocket::disconnected, this, &Client::Disconnect);
-    connect(tcpSocket, static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error), this, &Client::displayError);
+    //connect(tcpSocket, static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error), this, &Client::displayError);
 
     QNetworkConfigurationManager manager;
     if (manager.capabilities() & QNetworkConfigurationManager::NetworkSessionRequired) {
