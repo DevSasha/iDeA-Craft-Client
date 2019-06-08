@@ -1,7 +1,8 @@
 #!/bin/bash
-mkdir -p idea-craft/{DEBIAN,usr/{bin,share/{applications,icons/hicolor}},opt/idea-craft}
+mkdir -p idea-craft/{DEBIAN,usr/{bin,share/{applications,pixmaps}},opt/idea-craft}
 chmod -c 0775 deploy/DEBIAN/*
 cp iDeA-Craft idea-craft/opt/idea-craft/idea-craft
 cp deploy/DEBIAN/* idea-craft/DEBIAN/
 cp deploy/idea-craft.desktop idea-craft/usr/share/applications/
+wget http://idea-craft.space/idea-craft.xpm -o idea-craft/usr/share/pixmaps/
 fakeroot dpkg-deb --build idea-craft
