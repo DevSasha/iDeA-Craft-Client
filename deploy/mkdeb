@@ -4,5 +4,5 @@ chmod -c 0775 deploy/DEBIAN/*
 cp iDeA-Craft idea-craft/opt/idea-craft/idea-craft
 cp deploy/DEBIAN/* idea-craft/DEBIAN/
 cp deploy/idea-craft.desktop idea-craft/usr/share/applications/
-wget http://idea-craft.space/idea-craft.xpm -o idea-craft/usr/share/pixmaps/
+wget http://idea-craft.space/idea-craft.xpm -o idea-craft/usr/share/pixmaps/idea-craft.xpm
 fakeroot dpkg-deb --build idea-craft
