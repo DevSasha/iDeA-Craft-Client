@@ -5,5 +5,5 @@ cp iDeA-Craft idea-craft/opt/idea-craft/idea-craft
 echo "deb" > idea-craft/opt/installed
 cp deploy/DEBIAN/* idea-craft/DEBIAN/
 cp deploy/idea-craft.desktop idea-craft/usr/share/applications/
-wget http://launcher.idea-craft.space/idea-craft.xpm -o idea-craft/usr/share/pixmaps/idea-craft.xpm
+wget http://launcher.idea-craft.space/idea-craft.xpm -O idea-craft/usr/share/pixmaps/idea-craft.xpm
 fakeroot dpkg-deb --build idea-craft
