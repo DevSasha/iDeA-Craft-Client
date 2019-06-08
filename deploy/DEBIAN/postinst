@@ -16,9 +16,9 @@ logger -s -p "syslog.err" -t "idea-craft_*.deb" "idea-craft*.deb script '$0' err
 
 #Код установочного скрипта ...
 
-if [ "$1" = "configure" ] && [ -x "`which update-menus 2>/dev/null`" ] ; then
+#if [ "$1" = "configure" ] && [ -x "`which update-menus 2>/dev/null`" ] ; then
 # update-menus # Without this also working! What?
-fi
+#fi
 
 if [ "$1" == "purge" ] && [ -e /usr/share/debconf/confmodule ] ; then
 . /usr/share/debconf/confmodule
