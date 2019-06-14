@@ -1,9 +1,13 @@
 #!/bin/bash
-mkdir -p idea-craft/{DEBIAN,usr/{bin,share/{applications,pixmaps}},opt/idea-craft}
-chmod -c 0775 deploy/DEBIAN/*
-cp iDeA-Craft idea-craft/opt/idea-craft/idea-craft
-echo "deb" > idea-craft/opt/installed
+mkdir -p idea-craft/{DEBIAN,usr/{games,share/{applications,pixmaps}}}
+
+cp iDeA-Craft idea-craft/usr/games/idea-craft
+#echo "deb" > idea-craft/usr/games/installed
+
 cp deploy/DEBIAN/* idea-craft/DEBIAN/
+chmod -c 0775 idea-craft/*
+
 cp deploy/idea-craft.desktop idea-craft/usr/share/applications/
 wget http://launcher.idea-craft.space/idea-craft.xpm -O idea-craft/usr/share/pixmaps/idea-craft.xpm
+
 fakeroot dpkg-deb --build idea-craft
