@@ -26,7 +26,7 @@ jobs:
                 command: qmake && make -j$((`nproc`+1)) 
             - run:
                 name: Setup enviroment for Linux deploy
-                command: sudo -n apt update && sudo -n apt install -y dpkg binutils lintian && mkdir -p build/linux64
+                command: sudo -nu root apt update && sudo -nu root apt install -y dpkg binutils lintian && mkdir -p build/linux64
             - run: 
                 name: Makedeb
                 command: chmod +x deploy/mkdeb && deploy/mkdeb
