@@ -28,22 +28,10 @@ jobs:
                 command: mkdir -p build/linux64
             - run: 
                 name: Makedeb
-                command: chmod +x deploy/mkdeb && deploy/mkdeb
-            - save_cache:
-                paths:
-                    - idea-craft/
-                    - idea-craft.deb
-                key: linux64-deb
-    check-linux64:
-        docker: 
-            - image: devsasha/qt-xbuild:linux
-              user: nonroot
-        steps:
-            - restore_cache:
-                key: linux64-deb
+                command: chmod +x deploy/mkdeb && deploy/mkdeb && chown -c nonroot:nonroot idea-craft.deb
             - run:
                 name: Check deb
-                command: lintian idea-craft.deb > build/linux64/lintian.list 
+                command: sudo -u nonroot lintian idea-craft.deb > build/linux64/lintian.list 
             - run:
                 name: Copy in afrtifacts
                 command: cp -R idea-craft build/linux64/ && cp idea-craft.deb build/linux64/idea-craft_0.0.2-10_amd64.deb
@@ -55,8 +43,5 @@ workflows:
     build-deploy:
         jobs:
             - build-linux64
-            - check-linux64:
-                requires:
-                    - build-linux64
             - build-win64
     
