@@ -37,7 +37,7 @@ jobs:
     check-linux64:
         docker: 
             - image: devsasha/qt-xbuild:linux
-                user: nonroot
+              user: nonroot
         steps:
             - restore_cache:
                 key: linux64-deb
