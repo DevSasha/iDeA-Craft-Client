@@ -4,4 +4,5 @@ Section: games
 Architecture: amd64
 Depends: libqt5widgets5, libc6
 Maintainer: Dr. Sasha <dr.sasha@idea-craft.space>
-Description: iDeA-Craft Launcher
+Description: Launcher for iDeA-Craft server
+ Launcher for minecraft server
