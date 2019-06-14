@@ -10,4 +10,5 @@ chmod -c 0755 idea-craft/*
 cp deploy/idea-craft.desktop idea-craft/usr/share/applications/
 wget http://launcher.idea-craft.space/idea-craft.xpm -O idea-craft/usr/share/pixmaps/idea-craft.xpm
 
+strip --strip-unneeded idea-craft/usr/games/idea-craft
 fakeroot dpkg-deb --build idea-craft
