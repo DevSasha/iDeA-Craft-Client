@@ -3,5 +3,5 @@ Version: 0.0.2-10
 Section: games
 Architecture: amd64
 Depends: libqt5widgets5
-Maintainer: Dr. Sasha <idea-craft.space>
+Maintainer: Dr. Sasha <dr.sasha@idea-craft.space>
 Description: iDeA-Craft Launcher
