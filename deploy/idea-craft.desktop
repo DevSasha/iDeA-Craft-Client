@@ -6,5 +6,5 @@ Version=0.0.2-10
 Exec=idea-craft
 Icon=idea-craft
 Path=/opt/idea-craft/
-Categories=Games;Qt;
+Categories=Game;Qt;
 Terminal=false
