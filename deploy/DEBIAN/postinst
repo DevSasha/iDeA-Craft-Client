@@ -9,20 +9,20 @@ set -E # let shell functions inherit ERR trap
 # 1/HUP, 2/INT, 3/QUIT, 15/TERM, ERR
 trap err_handler 1 2 3 15 ERR
 function err_handler {
-local exit_status=${1:-$?}
-logger -s -p "syslog.err" -t "idea-craft_*.deb" "idea-craft*.deb script '$0' error code $exit_status (line $BASH_LINENO: '$BASH_COMMAND')"
-# exit $exit_status
+    local exit_status=${1:-$?}
+    logger -s -p "syslog.err" -t "dr.sasha.deb" "idea-craft.deb script '$0' error code $exit_status (line $BASH_LINENO: '$BASH_COMMAND')"
+    exit $exit_status
 }
 
 #Код установочного скрипта ...
 
-#if [ "$1" = "configure" ] && [ -x "`which update-menus 2>/dev/null`" ] ; then
-# update-menus # Without this also working! What?
-#fi
+if [ "$1" == "configure" ] && [ -x "`which update-menus 2>/dev/null`" ] ; then
+    update-menus # Without this also working! What?
+fi
 
 if [ "$1" == "purge" ] && [ -e /usr/share/debconf/confmodule ] ; then
-. /usr/share/debconf/confmodule
-db_purge
+    . /usr/share/debconf/confmodule
+    db_purge
 fi
 
 exit 0
