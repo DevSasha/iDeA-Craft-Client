@@ -17,7 +17,8 @@ jobs:
                 path: build/win64
     build-linux64:
         docker: 
-            - image: fffaraz/qt:latest # vookimedlo/ubuntu-qt
+            - image: devsasha/qt-xbuild:linux #fffaraz/qt:latest # vookimedlo/ubuntu-qt
+              user: nonroot
         steps:
             - checkout
             - run: 
@@ -25,13 +26,13 @@ jobs:
                 command: qmake && make -j$((`nproc`+1)) 
             - run:
                 name: Setup enviroment for Linux deploy
-                command: apt-get update && apt-get install -y sudo dpkg binutils lintian && mkdir -p build/linux64 && adduser --disabled-password --gecos "","","","" nonroot 
+                command: apt-get update && apt-get install -y sudo dpkg binutils lintian && mkdir -p build/linux64
             - run: 
                 name: Makedeb
-                command: chmod +x deploy/mkdeb && deploy/mkdeb 
+                command: chmod +x deploy/mkdeb && deploy/mkdeb
             - run:
                 name: Check deb
-                command: sudo -u nonroot lintian idea-craft.deb > build/linux64/lintian.list 
+                command: lintian idea-craft.deb > build/linux64/lintian.list 
             - run:
                 name: Copy in afrtifacts
                 command: cp -R idea-craft build/linux64/ && cp idea-craft.deb build/linux64/idea-craft_0.0.2-10_amd64.deb
