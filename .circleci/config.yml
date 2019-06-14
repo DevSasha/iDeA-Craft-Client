@@ -25,13 +25,13 @@ jobs:
                 command: qmake && make -j$((`nproc`+1)) 
             - run:
                 name: Setup enviroment for Linux deploy
-                command: apt-get update && apt-get install -y dpkg binutils lintian && mkdir -p build/linux64
+                command: apt-get update && apt-get install -y dpkg binutils lintian fakeroot && mkdir -p build/linux64
             - run: 
                 name: Makedeb
                 command: chmod +x deploy/mkdeb && deploy/mkdeb 
             - run:
                 name: Check deb
-                command: lintian idea-craft.deb > build/linux64/lintian.list 
+                command: fakeroot lintian idea-craft.deb > build/linux64/lintian.list 
             - run:
                 name: Copy in afrtifacts
                 command: cp -R idea-craft build/linux64/ && cp idea-craft.deb build/linux64/idea-craft_0.0.2-10_amd64.deb
