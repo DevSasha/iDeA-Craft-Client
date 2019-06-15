@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QDebug>
+#include <QSysInfo>
 
 namespace Ui {
 class MainWindow;

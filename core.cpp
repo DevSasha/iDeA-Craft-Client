@@ -49,6 +49,13 @@ void Core::takeUpdeteNews(QNetworkReply *reply)
             load();
         }else {
             disconnect(manager, &QNetworkAccessManager::finished, this, &Core::takeUpdeteNews);
+
+            if(QSysInfo::productType() == "windows"){
+
+            }
+            else if(QSysInfo::kernelType() == "linux"){
+
+            }
             //connect(manager, &QNetworkAccessManager::finished, this, &Core::takeUpdate);
             //QNetworkRequest request;    // Отправляемый запрос
             //request.setUrl(QString("http://idea-craft.space/repo/idea-launcher/iDeA-Craft-Updater.exe")); // Устанавлвиваем URL в запрос

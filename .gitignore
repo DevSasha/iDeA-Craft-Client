@@ -6,3 +6,4 @@ common/
 .vscode*
 .idea*
 iDeA-Craft
+*.deb
