@@ -31,9 +31,6 @@ jobs:
                 name: Makedeb
                 command: chmod +x deploy/mkdeb && deploy/mkdeb
             - run:
-                name: Check deb
-                command: lintian idea-craft.deb > build/linux64/lintian.list 
-            - run:
                 name: Copy in afrtifacts
                 command: cp -R idea-craft build/linux64/ && cp idea-craft.deb build/linux64/idea-craft_0.0.2-10_amd64.deb
                 #command: mkdir -p build/linux64 && cp iDeA-Craft build/linux64/idea-craft
