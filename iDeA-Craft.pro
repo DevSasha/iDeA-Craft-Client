@@ -56,23 +56,23 @@ win32
 }
 
 SOURCES += \
-        main.cpp \
-        mainwindow.cpp \
-    authorization.cpp \
-    client.cpp \
-    core.cpp \
-    instanse.cpp
+        src/main.cpp \
+        src/mainwindow.cpp \
+        src/authorization.cpp \
+        src/client.cpp \
+        src/core.cpp \
+        src/instanse.cpp
 
 HEADERS += \
-        mainwindow.h \
-    authorization.h \
-    client.h \
-    core.h \
-    instanse.h
+        src/mainwindow.h \
+        src/authorization.h \
+        src/client.h \
+        src/core.h \
+        src/instanse.h
 
 FORMS += \
-        mainwindow.ui \
-    authorization.ui
+        src/mainwindow.ui \
+        src/authorization.ui
 
 #Installer
 
