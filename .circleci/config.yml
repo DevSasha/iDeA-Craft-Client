@@ -38,6 +38,9 @@ jobs:
             - image: 0xef53/deb-builder:stretch
         steps:
             - checkout
+            - run:
+                name: Add HTTPS support in wget? TODO=move to Dockerfile
+                command: apk add --no-cache openssl ca-certificates
             - restore_cache:
                 key: linux64-build
             - run:
@@ -53,6 +56,9 @@ jobs:
             - image: 0xef53/deb-builder:stretch
         steps:
             - checkout
+            - run:
+                name: Add HTTPS support in wget? TODO=move to Dockerfile
+                command: apk add --no-cache openssl ca-certificates
             - restore_cache:
                 key: linux64-build
             - run:
@@ -71,6 +77,9 @@ jobs:
             - image: 0xef53/deb-builder:stretch
         steps:
             - checkout
+            - run:
+                name: Add HTTPS support in wget? TODO=move to Dockerfile
+                command: apk add --no-cache openssl ca-certificates
             - restore_cache:
                 key: linux64-build
             - run:
