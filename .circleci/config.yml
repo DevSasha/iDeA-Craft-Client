@@ -1,12 +1,12 @@
 version: 2
 jobs:
     build-win64:
-        docker: 
+        docker:
             - image: burningdaylight/docker-mingw-qt5 # указываем образ в котором будет происходить сборка
             #- image: therecipe/qt:windows_64_shared
         steps:
             - checkout
-            - run: 
+            - run:
                 name: Windows build
                 command: x86_64-w64-mingw32-qmake-qt5 && make -j$((`nproc`+1))
             - run:
@@ -17,12 +17,12 @@ jobs:
                     - iDeA-Craft.exe
                 key: win64-build
     build-linux64:
-        docker: 
+        docker:
             - image: devsasha/qt-xbuild:linux #fffaraz/qt:latest # vookimedlo/ubuntu-qt
               user: nonroot
         steps:
             - checkout
-            - run: 
+            - run:
                 name: Linux build
                 command: qmake && make -j$((`nproc`+1))
             - run:
@@ -40,7 +40,7 @@ jobs:
             - checkout
             - restore_cache:
                 key: linux64-build
-            - run: 
+            - run:
                 name: Makedeb
                 command: chmod +x deploy/mkdeb && deploy/mkdeb
             - run:
@@ -56,7 +56,7 @@ jobs:
                 key: linux64-build
             - run:
                 name: Change deb package version
-                command: "sed -i 2d control && sed -i ''2i Version: 0.0.2-10'' control"
+                command: 'sed -i 2d control && sed -i "2i Version: 0.0.2-10" control'
             - run: 
                 name: Makedeb
                 command: chmod +x deploy/mkdeb && deploy/mkdeb
@@ -90,19 +90,19 @@ workflows:
             - build-win64
             - deploy-deb-stable:
                 filters:
-                    branches: 
+                    branches:
                         only: master
                 requires:
                     - build-linux64
             - deploy-deb-tested:
                 filters:
-                    branches: 
+                    branches:
                         only: tested
                 requires:
                     - build-linux64
             - deploy-deb-dev:
                 filters:
-                    branches: 
+                    branches:
                         only: dev
                 requires:
                     - build-linux64
