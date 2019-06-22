@@ -52,11 +52,12 @@ jobs:
         docker:
             - image: 0xef53/deb-builder:stretch
         steps:
+            - checkout
             - restore_cache:
                 key: linux64-build
             - run:
                 name: Change deb package version
-                command: 'sed -i 2d control && sed -i 2iVersion:0.0.2-10 control'
+                command: 'sed -i 2d control && sed -i 2iVersion:0.0.2-10 deploy/DEBIAN/control'
             - run: 
                 name: Makedeb
                 command: chmod +x deploy/mkdeb && deploy/mkdeb
@@ -69,11 +70,12 @@ jobs:
         docker:
             - image: 0xef53/deb-builder:stretch
         steps:
+            - checkout
             - restore_cache:
                 key: linux64-build
             - run:
                 name: Change deb package version
-                command: 'sed -i 2d control && sed -i 2iVersion:0.0.2-10 control'
+                command: 'sed -i 2d control && sed -i 2iVersion:0.0.2-10 deploy/DEBIAN/control'
             - run: 
                 name: Makedeb
                 command: chmod +x deploy/mkdeb && deploy/mkdeb
