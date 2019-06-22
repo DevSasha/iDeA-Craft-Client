@@ -35,7 +35,7 @@ jobs:
                 key: linux64-build
     deploy-deb-stable:
         docker:
-            - image: 0xef53/deb-builder
+            - image: 0xef53/deb-builder:stretch
         steps:
             - checkout
             - restore_cache:
@@ -50,7 +50,7 @@ jobs:
                 path: build/linux64
     deploy-deb-tested:
         docker:
-            - image: 0xef53/deb-builder
+            - image: 0xef53/deb-builder:stretch
         steps:
             - restore_cache:
                 key: linux64-build
@@ -60,7 +60,7 @@ jobs:
                 path: build/linux64
     deploy-deb-dev:
         docker:
-            - image: 0xef53/deb-builder
+            - image: 0xef53/deb-builder:stretch
         steps:
             - restore_cache:
                 key: linux64-build
