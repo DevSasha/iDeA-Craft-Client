@@ -15,7 +15,7 @@ jobs:
             - save_cache:
                 paths:
                     - iDeA-Craft.exe
-                key: win64-build
+                key: win64-build-${CIRCLE_SHA1}
     build-linux64:
         docker:
             - image: devsasha/qt-xbuild:linux #fffaraz/qt:latest # vookimedlo/ubuntu-qt
@@ -30,9 +30,10 @@ jobs:
                 command: date && date > linux64.time
             - save_cache:
                 paths:
+                    - deploy/
                     - iDeA-Craft
                     - linux64.time
-                key: linux64-build
+                key: linux64-build-${CIRCLE_SHA1}
     deploy-deb-stable:
         docker:
             - image: 0xef53/deb-builder:stretch
@@ -42,7 +43,7 @@ jobs:
                 name: Add HTTPS support in wget? TODO=move to Dockerfile
                 command: apt install -y openssl ca-certificates
             - restore_cache:
-                key: linux64-build
+                key: linux64-build-${CIRCLE_SHA1}
             - run:
                 name: Makedeb
                 command: chmod +x deploy/mkdeb && deploy/mkdeb
@@ -60,7 +61,7 @@ jobs:
                 name: Add HTTPS support in wget? TODO=move to Dockerfile
                 command: apt install -y openssl ca-certificates
             - restore_cache:
-                key: linux64-build
+                key: linux64-build-${CIRCLE_SHA1}
             - run:
                 name: Change deb package version
                 command: 'sed -i 2d control && sed -i 2iVersion:0.0.2-10 deploy/DEBIAN/control'
@@ -81,7 +82,7 @@ jobs:
                 name: Add HTTPS support in wget? TODO=move to Dockerfile
                 command: apt install -y openssl ca-certificates
             - restore_cache:
-                key: linux64-build
+                key: linux64-build-${CIRCLE_SHA1}
             - run:
                 name: Change deb package version
                 command: 'sed -i 2d control && sed -i 2iVersion:0.0.2-10 deploy/DEBIAN/control'
