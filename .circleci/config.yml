@@ -40,7 +40,7 @@ jobs:
             - checkout
             - run:
                 name: Add HTTPS support in wget? TODO=move to Dockerfile
-                command: apk add --no-cache openssl ca-certificates
+                command: apt install -y openssl ca-certificates
             - restore_cache:
                 key: linux64-build
             - run:
@@ -58,7 +58,7 @@ jobs:
             - checkout
             - run:
                 name: Add HTTPS support in wget? TODO=move to Dockerfile
-                command: apk add --no-cache openssl ca-certificates
+                command: apt install -y openssl ca-certificates
             - restore_cache:
                 key: linux64-build
             - run:
@@ -79,7 +79,7 @@ jobs:
             - checkout
             - run:
                 name: Add HTTPS support in wget? TODO=move to Dockerfile
-                command: apk add --no-cache openssl ca-certificates
+                command: apt install -y openssl ca-certificates
             - restore_cache:
                 key: linux64-build
             - run:
