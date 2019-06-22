@@ -6,15 +6,16 @@ jobs:
             #- image: therecipe/qt:windows_64_shared
         steps:
             - checkout
-            - run: x86_64-w64-mingw32-qmake-qt5
-            - run: make -j$((`nproc`+1)) 
-            - run: mkdir -p build/win64
-            - run: cp iDeA-Craft.exe build/win64/iDeA-Craft-x64.exe
+            - run: 
+                name: Windows build
+                command: x86_64-w64-mingw32-qmake-qt5 && make -j$((`nproc`+1))
             - run:
                 name: Print the Current Time
-                command: date
-            - store_artifacts:
-                path: build/win64
+                command: date && date > win64.time
+             - save_cache:
+                paths:
+                    - iDeA-Craft.exe
+                key: win64-build
     build-linux64:
         docker: 
             - image: devsasha/qt-xbuild:linux #fffaraz/qt:latest # vookimedlo/ubuntu-qt
@@ -23,17 +24,42 @@ jobs:
             - checkout
             - run: 
                 name: Linux build
-                command: qmake && make -j$((`nproc`+1)) 
+                command: qmake && make -j$((`nproc`+1))
             - run:
-                name: Setup enviroment for Linux deploy
-                command: mkdir -p build/linux64
+                name: Print the Current Time
+                command: date && date > linux64.time
+            - save_cache:
+                paths:
+                    - iDeA-Craft
+                    - linux64.time
+                key: linux64-build
+    deploy-deb-stable:
+        steps:
+            - checkout
+            - restore_cache:
+                key: linux64-build
             - run: 
                 name: Makedeb
                 command: chmod +x deploy/mkdeb && deploy/mkdeb
             - run:
                 name: Copy in afrtifacts
-                command: cp -R idea-craft build/linux64/ && cp idea-craft.deb build/linux64/idea-craft_0.0.2-10_amd64.deb
-                #command: mkdir -p build/linux64 && cp iDeA-Craft build/linux64/idea-craft
+                command: cp idea-craft.deb build/linux64/idea-craft_0.0.2-10_amd64.deb
+            - store_artifacts:
+                path: build/linux64
+    deploy-deb-tested:
+        steps:
+            - restore_cache:
+                key: linux64-build
+            - run:
+                name:
+            - store_artifacts:
+                path: build/linux64
+    deploy-deb-dev:
+        steps:
+            - restore_cache:
+                key: linux64-build
+            - run:
+             
             - store_artifacts:
                 path: build/linux64
 workflows:
@@ -42,4 +68,21 @@ workflows:
         jobs:
             - build-linux64
             - build-win64
-    
+            - deploy-deb-stable:
+                filters:
+                    branches: 
+                        only: master
+                requires:
+                    - build-linux64
+            - deploy-deb-tested:
+                filters:
+                    branches: 
+                        only: tested
+                requires:
+                    - build-linux64
+            - deploy-deb-dev:
+                filters:
+                    branches: 
+                        only: dev
+                requires:
+                    - build-linux64
