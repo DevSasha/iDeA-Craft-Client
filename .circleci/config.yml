@@ -55,7 +55,14 @@ jobs:
             - restore_cache:
                 key: linux64-build
             - run:
-                name:
+                name: Change deb package version
+                command: sed -i '2d' control && sed -i '2i Version: 0.0.2-10' control
+            - run: 
+                name: Makedeb
+                command: chmod +x deploy/mkdeb && deploy/mkdeb
+            - run:
+                name: Copy in afrtifacts
+                command: cp idea-craft.deb build/linux64/idea-craft_0.0.2-10_amd64.deb
             - store_artifacts:
                 path: build/linux64
     deploy-deb-dev:
@@ -65,7 +72,14 @@ jobs:
             - restore_cache:
                 key: linux64-build
             - run:
-             
+                name: Change deb package version
+                command: sed -i '2d' control && sed -i '2i Version: 0.0.2-10' control
+            - run: 
+                name: Makedeb
+                command: chmod +x deploy/mkdeb && deploy/mkdeb
+            - run:
+                name: Copy in afrtifacts
+                command: cp idea-craft.deb build/linux64/idea-craft_0.0.2-10_amd64.deb
             - store_artifacts:
                 path: build/linux64
 workflows:
