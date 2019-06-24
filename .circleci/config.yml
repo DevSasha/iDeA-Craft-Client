@@ -16,8 +16,9 @@ jobs:
                 command: date && date > win64.time
             - save_cache:
                 paths:
+                    - win64.time
                     - iDeA-Craft.exe
-                key: win64-build-${CIRCLE_SHA1}
+                key: win64-build-{{ .Environment.CIRCLE_SHA1 }}
     build-linux64:
         working_directory: /tmp/idea
         docker:
@@ -34,10 +35,9 @@ jobs:
                 command: date && date > linux64.time
             - save_cache:
                 paths:
-                    - deploy/
                     - iDeA-Craft
                     - linux64.time
-                key: linux64-build-${CIRCLE_SHA1}
+                key: linux64-build-{{ .Environment.CIRCLE_SHA1 }}
     deploy-deb-stable:
         working_directory: /tmp/idea
         docker:
@@ -49,7 +49,7 @@ jobs:
                 name: Add HTTPS support in wget? TODO=move to Dockerfile
                 command: apt install -y openssl ca-certificates
             - restore_cache:
-                key: linux64-build-${CIRCLE_SHA1}
+                key: linux64-build-{{ .Environment.CIRCLE_SHA1 }}
             - run:
                 name: Makedeb
                 command: chmod +x deploy/mkdeb && deploy/mkdeb
@@ -69,7 +69,7 @@ jobs:
                 name: Add HTTPS support in wget? TODO=move to Dockerfile
                 command: apt install -y openssl ca-certificates
             - restore_cache:
-                key: linux64-build-${CIRCLE_SHA1}
+                key: linux64-build-{{ .Environment.CIRCLE_SHA1 }}
             - run: ls -Rla /{home,tmp}
             - run:
                 name: Change deb package version
@@ -93,7 +93,7 @@ jobs:
                 name: Add HTTPS support in wget? TODO=move to Dockerfile
                 command: apt install -y openssl ca-certificates
             - restore_cache:
-                key: linux64-build-${CIRCLE_SHA1}
+                key: linux64-build-{{ .Environment.CIRCLE_SHA1 }}
             - run:
                 name: Change deb package version
                 command: 'sed -i 2d control && sed -i 2iVersion:0.0.2-10 deploy/DEBIAN/control'
