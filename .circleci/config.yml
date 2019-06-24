@@ -55,7 +55,7 @@ jobs:
                 command: chmod +x deploy/mkdeb && deploy/mkdeb
             - run:
                 name: Copy in afrtifacts
-                command: cp idea-craft.deb build/linux64/idea-craft_0.0.2-10_amd64.deb
+                command: mkdir -p build/linux64 && cp idea-craft.deb build/linux64/idea-craft_0.0.2-10_amd64.deb
             - store_artifacts:
                 path: build/linux64
     deploy-deb-tested:
@@ -79,7 +79,7 @@ jobs:
                 command: chmod +x deploy/mkdeb && deploy/mkdeb
             - run:
                 name: Copy in afrtifacts
-                command: cp idea-craft.deb build/linux64/idea-craft_0.0.2-10_amd64.deb
+                command: mkdir -p build/linux64 && cp idea-craft.deb build/linux64/idea-craft_0.0.2-10_amd64.deb
             - store_artifacts:
                 path: build/linux64
     deploy-deb-dev:
@@ -102,7 +102,7 @@ jobs:
                 command: chmod +x deploy/mkdeb && deploy/mkdeb
             - run:
                 name: Copy in afrtifacts
-                command: cp idea-craft.deb build/linux64/idea-craft_0.0.2-10_amd64.deb
+                command: mkdir -p build/linux64 && cp idea-craft.deb build/linux64/idea-craft_0.0.2-10_amd64.deb
             - store_artifacts:
                 path: build/linux64
 workflows:
