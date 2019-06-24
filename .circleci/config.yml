@@ -4,8 +4,10 @@ jobs:
         docker:
             - image: burningdaylight/docker-mingw-qt5 # указываем образ в котором будет происходить сборка
             #- image: therecipe/qt:windows_64_shared
+            - working_directory: /tmp/idea
         steps:
-            - checkout
+            - checkout: 
+                path: /tmp/idea
             - run:
                 name: Windows build
                 command: x86_64-w64-mingw32-qmake-qt5 && make -j$((`nproc`+1))
@@ -20,8 +22,10 @@ jobs:
         docker:
             - image: devsasha/qt-xbuild:linux #fffaraz/qt:latest # vookimedlo/ubuntu-qt
               user: nonroot
+            - working_directory: /tmp/idea
         steps:
-            - checkout
+            - checkout:
+                path: /tmp/idea
             - run:
                 name: Linux build
                 command: qmake && make -j$((`nproc`+1))
@@ -37,8 +41,10 @@ jobs:
     deploy-deb-stable:
         docker:
             - image: 0xef53/deb-builder:stretch
+            - working_directory: /tmp/idea
         steps:
-            - checkout
+            - checkout:
+                path: /tmp/idea
             - run:
                 name: Add HTTPS support in wget? TODO=move to Dockerfile
                 command: apt install -y openssl ca-certificates
@@ -55,8 +61,10 @@ jobs:
     deploy-deb-tested:
         docker:
             - image: 0xef53/deb-builder:stretch
+            - working_directory: /tmp/idea
         steps:
-            - checkout
+            - checkout:
+                path: /tmp/idea
             - run:
                 name: Add HTTPS support in wget? TODO=move to Dockerfile
                 command: apt install -y openssl ca-certificates
@@ -76,8 +84,10 @@ jobs:
     deploy-deb-dev:
         docker:
             - image: 0xef53/deb-builder:stretch
+            - working_directory: /tmp/idea
         steps:
-            - checkout
+            - checkout:
+                path: /tmp/idea
             - run:
                 name: Add HTTPS support in wget? TODO=move to Dockerfile
                 command: apt install -y openssl ca-certificates
