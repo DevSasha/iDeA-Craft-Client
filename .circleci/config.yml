@@ -73,7 +73,7 @@ jobs:
             - run: ls -Rla /{home,tmp}
             - run:
                 name: Change deb package version
-                command: 'sed -i 2d control && sed -i 2iVersion:0.0.2-10 deploy/DEBIAN/control'
+                command: 'cd deploy/DEBIAN && sed -i 2d control && sed -i 2iVersion:0.0.2-10 control'
             - run: 
                 name: Makedeb
                 command: chmod +x deploy/mkdeb && deploy/mkdeb
@@ -96,7 +96,7 @@ jobs:
                 key: linux64-build-{{ .Environment.CIRCLE_SHA1 }}
             - run:
                 name: Change deb package version
-                command: 'sed -i 2d control && sed -i 2iVersion:0.0.2-10 deploy/DEBIAN/control'
+                command: 'cd deploy/DEBIAN && sed -i 2d control && sed -i 2iVersion:0.0.2-10 control'
             - run: 
                 name: Makedeb
                 command: chmod +x deploy/mkdeb && deploy/mkdeb
