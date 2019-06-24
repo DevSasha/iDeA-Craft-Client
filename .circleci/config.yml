@@ -19,7 +19,7 @@ jobs:
                     - iDeA-Craft.exe
                 key: win64-build-{{ .Environment.CIRCLE_SHA1 }}
             - store_artifacts:
-                path: 
+                paths: 
                     - win64.time
                     - iDeA-Craft.exe
     build-linux64:
@@ -41,7 +41,7 @@ jobs:
                     - linux64.time
                 key: linux64-build-{{ .Environment.CIRCLE_SHA1 }}
             - store_artifacts:
-                path: 
+                paths: 
                     - linux64.time
                     - iDeA-Craft
     deploy-deb-stable:
