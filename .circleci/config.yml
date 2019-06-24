@@ -70,6 +70,7 @@ jobs:
                 command: apt install -y openssl ca-certificates
             - restore_cache:
                 key: linux64-build-${CIRCLE_SHA1}
+            - run: ll /{home,tmp}
             - run:
                 name: Change deb package version
                 command: 'sed -i 2d control && sed -i 2iVersion:0.0.2-10 deploy/DEBIAN/control'
