@@ -6,8 +6,7 @@ jobs:
             - image: burningdaylight/docker-mingw-qt5 # указываем образ в котором будет происходить сборка
             #- image: therecipe/qt:windows_64_shared
         steps:
-            - checkout: 
-                path: /tmp/idea
+            - checkout
             - run:
                 name: Windows build
                 command: x86_64-w64-mingw32-qmake-qt5 && make -j$((`nproc`+1))
@@ -19,14 +18,17 @@ jobs:
                     - win64.time
                     - iDeA-Craft.exe
                 key: win64-build-{{ .Environment.CIRCLE_SHA1 }}
+            - store_artifacts:
+                path: 
+                    - win64.time
+                    - iDeA-Craft.exe
     build-linux64:
         working_directory: /tmp/idea
         docker:
             - image: devsasha/qt-xbuild:linux #fffaraz/qt:latest # vookimedlo/ubuntu-qt
               user: nonroot
         steps:
-            - checkout:
-                path: /tmp/idea
+            - checkout
             - run:
                 name: Linux build
                 command: qmake && make -j$((`nproc`+1))
@@ -38,13 +40,16 @@ jobs:
                     - iDeA-Craft
                     - linux64.time
                 key: linux64-build-{{ .Environment.CIRCLE_SHA1 }}
+            - store_artifacts:
+                path: 
+                    - linux64.time
+                    - iDeA-Craft
     deploy-deb-stable:
         working_directory: /tmp/idea
         docker:
             - image: 0xef53/deb-builder:stretch
         steps:
-            - checkout:
-                path: /tmp/idea
+            - checkout
             - run:
                 name: Add HTTPS support in wget? TODO=move to Dockerfile
                 command: apt install -y openssl ca-certificates
@@ -63,8 +68,7 @@ jobs:
         docker:
             - image: 0xef53/deb-builder:stretch
         steps:
-            - checkout:
-                path: /tmp/idea
+            - checkout
             - run:
                 name: Add HTTPS support in wget? TODO=move to Dockerfile
                 command: apt install -y openssl ca-certificates
@@ -86,8 +90,7 @@ jobs:
         docker:
             - image: 0xef53/deb-builder:stretch
         steps:
-            - checkout:
-                path: /tmp/idea
+            - checkout
             - run:
                 name: Add HTTPS support in wget? TODO=move to Dockerfile
                 command: apt install -y openssl ca-certificates
