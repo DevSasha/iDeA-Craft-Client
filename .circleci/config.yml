@@ -1,10 +1,10 @@
 version: 2
 jobs:
     build-win64:
+        working_directory: /tmp/idea
         docker:
             - image: burningdaylight/docker-mingw-qt5 # указываем образ в котором будет происходить сборка
             #- image: therecipe/qt:windows_64_shared
-            - working_directory: /tmp/idea
         steps:
             - checkout: 
                 path: /tmp/idea
@@ -19,10 +19,10 @@ jobs:
                     - iDeA-Craft.exe
                 key: win64-build-${CIRCLE_SHA1}
     build-linux64:
+        working_directory: /tmp/idea
         docker:
             - image: devsasha/qt-xbuild:linux #fffaraz/qt:latest # vookimedlo/ubuntu-qt
               user: nonroot
-            - working_directory: /tmp/idea
         steps:
             - checkout:
                 path: /tmp/idea
@@ -39,9 +39,9 @@ jobs:
                     - linux64.time
                 key: linux64-build-${CIRCLE_SHA1}
     deploy-deb-stable:
+        working_directory: /tmp/idea
         docker:
             - image: 0xef53/deb-builder:stretch
-            - working_directory: /tmp/idea
         steps:
             - checkout:
                 path: /tmp/idea
@@ -59,9 +59,9 @@ jobs:
             - store_artifacts:
                 path: build/linux64
     deploy-deb-tested:
+        working_directory: /tmp/idea
         docker:
             - image: 0xef53/deb-builder:stretch
-            - working_directory: /tmp/idea
         steps:
             - checkout:
                 path: /tmp/idea
@@ -82,9 +82,9 @@ jobs:
             - store_artifacts:
                 path: build/linux64
     deploy-deb-dev:
+        working_directory: /tmp/idea
         docker:
             - image: 0xef53/deb-builder:stretch
-            - working_directory: /tmp/idea
         steps:
             - checkout:
                 path: /tmp/idea
