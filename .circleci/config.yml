@@ -1,6 +1,7 @@
 version: 2
 jobs:
     build-win64:
+        working_directory: /tmp/idea
         docker:
             - image: burningdaylight/docker-mingw-qt5 # указываем образ в котором будет происходить сборка
             #- image: therecipe/qt:windows_64_shared
@@ -14,9 +15,13 @@ jobs:
                 command: date && date > win64.time
             - save_cache:
                 paths:
+                    - win64.time
                     - iDeA-Craft.exe
-                key: win64-build
+                key: win64-build-{{ .Environment.CIRCLE_SHA1 }}
+            - store_artifacts:
+                path: iDeA-Craft.exe
     build-linux64:
+        working_directory: /tmp/idea
         docker:
             - image: devsasha/qt-xbuild:linux #fffaraz/qt:latest # vookimedlo/ubuntu-qt
               user: nonroot
@@ -32,77 +37,126 @@ jobs:
                 paths:
                     - iDeA-Craft
                     - linux64.time
-                key: linux64-build
-    deploy-deb-stable:
+                key: linux64-build-{{ .Environment.CIRCLE_SHA1 }}
+            - store_artifacts:
+                path: iDeA-Craft
+    make-deb-stable:
+        working_directory: /tmp/idea
         docker:
             - image: 0xef53/deb-builder:stretch
         steps:
             - checkout
+            - run:
+                name: Add HTTPS support in wget? TODO=move to Dockerfile
+                command: apt update && apt install -y openssl ca-certificates
             - restore_cache:
-                key: linux64-build
+                key: linux64-build-{{ .Environment.CIRCLE_SHA1 }}
             - run:
                 name: Makedeb
                 command: chmod +x deploy/mkdeb && deploy/mkdeb
             - run:
                 name: Copy in afrtifacts
-                command: cp idea-craft.deb build/linux64/idea-craft_0.0.2-10_amd64.deb
+                command: mkdir -p build/linux64 && cp idea-craft.deb build/linux64/idea-craft_0.0.2-10_amd64.deb
+            - save_cache:
+                paths:
+                    - build/linux64
+                key: linux64-deb-{{ .Environment.CIRCLE_SHA1 }}
             - store_artifacts:
                 path: build/linux64
-    deploy-deb-tested:
+    make-deb-tested:
+        working_directory: /tmp/idea
         docker:
             - image: 0xef53/deb-builder:stretch
         steps:
+            - checkout
+            - run:
+                name: Add HTTPS support in wget? TODO=move to Dockerfile
+                command: apt update && apt install -y openssl ca-certificates
             - restore_cache:
-                key: linux64-build
+                key: linux64-build-{{ .Environment.CIRCLE_SHA1 }}
             - run:
                 name: Change deb package version
-                command: 'sed -i 2d control && sed -i 2iVersion:0.0.2-10 control'
+                command: 'cd deploy/DEBIAN && sed -i 2d control && sed -i 2iVersion:0.0.2-10 control'
             - run: 
                 name: Makedeb
                 command: chmod +x deploy/mkdeb && deploy/mkdeb
             - run:
                 name: Copy in afrtifacts
-                command: cp idea-craft.deb build/linux64/idea-craft_0.0.2-10_amd64.deb
+                command: mkdir -p build/linux64 && cp idea-craft.deb build/linux64/idea-craft_0.0.2-10_amd64.deb
+            - save_cache:
+                paths:
+                    - build/linux64
+                key: linux64-deb-{{ .Environment.CIRCLE_SHA1 }}
             - store_artifacts:
                 path: build/linux64
-    deploy-deb-dev:
+    make-deb-dev:
+        working_directory: /tmp/idea
         docker:
             - image: 0xef53/deb-builder:stretch
         steps:
+            - checkout
+            - run:
+                name: Add HTTPS support in wget? TODO=move to Dockerfile
+                command: apt update && apt install -y openssl ca-certificates
             - restore_cache:
-                key: linux64-build
+                key: linux64-build-{{ .Environment.CIRCLE_SHA1 }}
             - run:
                 name: Change deb package version
-                command: sed -i '2d' control && sed -i '2i Version: 0.0.2-10' control
+                command: 'cd deploy/DEBIAN && sed -i 2d control && sed -i 2iVersion:0.0.2-10 control'
             - run: 
                 name: Makedeb
                 command: chmod +x deploy/mkdeb && deploy/mkdeb
             - run:
                 name: Copy in afrtifacts
-                command: cp idea-craft.deb build/linux64/idea-craft_0.0.2-10_amd64.deb
+                command: mkdir -p build/linux64 && cp idea-craft.deb build/linux64/idea-craft_0.0.2-10_amd64.deb
+            - save_cache:
+                paths:
+                    - build/linux64
+                key: linux64-deb-{{ .Environment.CIRCLE_SHA1 }}
             - store_artifacts:
                 path: build/linux64
+    deploy:
+        working_directory: /tmp/idea
+        docker:
+            - image: ubuntu
+        steps:
+            - run:
+                name: Add HTTPS support in wget? TODO=move to Dockerfile
+                command: apt update && apt install -y openssl ca-certificates
+            - restore_cache:
+                key: linux64-deb-{{ .Environment.CIRCLE_SHA1 }}
+            - restore_cache:
+                key: win64-build-{{ .Environment.CIRCLE_SHA1 }}
+            - run: mkdir -p build/win64/ && cp iDeA-Craft.exe build/win64/
+            - store_artifacts:
+                path: build
 workflows:
     version: 2
     build-deploy:
         jobs:
             - build-linux64
             - build-win64
-            - deploy-deb-stable:
+            - make-deb-stable:
                 filters:
                     branches:
                         only: master
                 requires:
                     - build-linux64
-            - deploy-deb-tested:
+            - make-deb-tested:
                 filters:
                     branches:
                         only: tested
                 requires:
                     - build-linux64
-            - deploy-deb-dev:
+            - make-deb-dev:
                 filters:
                     branches:
                         only: dev
                 requires:
                     - build-linux64
+            - deploy:
+                requires:
+                    - build-win64
+                    - make-deb-stable
+                    - make-deb-tested
+                    - make-deb-dev
