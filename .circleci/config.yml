@@ -101,14 +101,17 @@ jobs:
             - restore_cache:
                 key: linux64-build-{{ .Environment.CIRCLE_SHA1 }}
             - run:
+                name: Get target version
+                command: VER=$(curl 'http://api.idea-craft.space/launcher/getTargetVersion.php?branch=dev&format=deb')
+            - run:
                 name: Change deb package version
-                command: 'cd deploy/DEBIAN && sed -i 2d control && sed -i 2iVersion:0.0.2-10 control'
+                command: 'cd deploy/DEBIAN && sed -i 2d control && sed -i 2iVersion:${VER} control'
             - run: 
                 name: Makedeb
                 command: chmod +x deploy/mkdeb && deploy/mkdeb
             - run:
                 name: Copy in afrtifacts
-                command: mkdir -p build/linux64 && cp idea-craft.deb build/linux64/idea-craft_0.0.2-10_amd64.deb
+                command: mkdir -p build/linux64 && cp idea-craft.deb build/linux64/idea-craft_${VER}_amd64.deb
             - save_cache:
                 paths:
                     - build/linux64
