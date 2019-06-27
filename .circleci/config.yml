@@ -97,7 +97,7 @@ jobs:
             - checkout
             - run:
                 name: Add HTTPS support in wget? TODO=move to Dockerfile
-                command: apt update && apt install -y openssl ca-certificates curl
+                command: apt update && apt install -y openssl ca-certificates curl wget
             - restore_cache:
                 key: linux64-build-{{ .Environment.CIRCLE_SHA1 }}
             - run:
@@ -105,7 +105,7 @@ jobs:
                 command: VER=$(curl 'http://api.idea-craft.space/launcher/getTargetVersion.php?branch=dev&format=deb')
             - run:
                 name: Change deb package version
-                command: 'cd deploy/DEBIAN && sed -i 2d control && sed -i 2iVersion:${VER} control'
+                command: 'cd deploy/DEBIAN && sed -i 2d control && sed -i 2iVersion:`VER` control'
             - run: 
                 name: Makedeb
                 command: chmod +x deploy/mkdeb && deploy/mkdeb
