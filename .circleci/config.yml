@@ -105,8 +105,8 @@ jobs:
                 command: VER=$(curl 'http://api.idea-craft.space/launcher/getTargetVersion.php?branch=dev&format=deb')
             - run:
                 name: Change deb package version
-                command: 'cd deploy/DEBIAN && sed -i 2d control && sed -i 2iVersion:`echo $VER` control'
-            - run: 
+                command: cd deploy/DEBIAN && sed -i 2d control && sed -i 2iVersion:$VER control
+            - run:
                 name: Makedeb
                 command: chmod +x deploy/mkdeb && deploy/mkdeb
             - run:
