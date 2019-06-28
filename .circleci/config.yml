@@ -54,7 +54,7 @@ jobs:
             - run:
                 name: Get target version
                 command: |
-                    VER=$(curl 'http://api.idea-craft.space/launcher/getTargetVersion.php?branch=dev&format=deb') &&
+                    VER=$(curl 'http://api.idea-craft.space/launcher/getTargetVersion.php?branch='${CIRCLE_BRANCH}'&format=deb') &&
                     echo $VER &&
                     echo 'export VER='$VER'' >> $BASH_ENV &&
                     cat $BASH_ENV
