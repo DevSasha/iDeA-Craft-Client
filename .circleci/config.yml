@@ -101,13 +101,16 @@ jobs:
             - restore_cache:
                 key: linux64-build-{{ .Environment.CIRCLE_SHA1 }}
             - run:
-                name: Change deb package version
+                name: Get target version
                 command: |
                     VER=$(curl 'http://api.idea-craft.space/launcher/getTargetVersion.php?branch=dev&format=deb') &&
+                    echo $VER &&
                     echo 'export $VER' >> $BASH_ENV &&
                     echo $VER'-'$BASH_ENV &&
-                    source $BASH_ENV &&       
-                    'cd deploy/DEBIAN && sed -i 2d control && sed -i 2iVersion:${VER} control'
+                    source $BASH_ENV &&
+            - run:
+                name: Change deb package version
+                command: 'cd deploy/DEBIAN && sed -i 2d control && sed -i 2iVersion:${VER} control'
             - run:
                 name: Makedeb
                 command: chmod +x deploy/mkdeb && deploy/mkdeb
