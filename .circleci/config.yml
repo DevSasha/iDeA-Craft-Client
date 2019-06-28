@@ -107,7 +107,7 @@ jobs:
                     echo $VER &&
                     echo 'export $VER' >> $BASH_ENV &&
                     echo $VER'-'$BASH_ENV &&
-                    source $BASH_ENV &&
+                    source $BASH_ENV
             - run:
                 name: Change deb package version
                 command: 'cd deploy/DEBIAN && sed -i 2d control && sed -i 2iVersion:${VER} control'
