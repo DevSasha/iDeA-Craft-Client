@@ -40,7 +40,7 @@ jobs:
                 key: linux64-build-{{ .Environment.CIRCLE_SHA1 }}
             - store_artifacts:
                 path: iDeA-Craft
-    make-deb-stable:
+    make-deb:
         working_directory: /tmp/idea
         docker:
             - image: 0xef53/deb-builder:stretch
@@ -48,67 +48,25 @@ jobs:
             - checkout
             - run:
                 name: Add HTTPS support in wget? TODO=move to Dockerfile
-                command: apt update && apt install -y openssl ca-certificates
+                command: apt update && apt install -y openssl ca-certificates curl wget
             - restore_cache:
                 key: linux64-build-{{ .Environment.CIRCLE_SHA1 }}
             - run:
-                name: Makedeb
-                command: chmod +x deploy/mkdeb && deploy/mkdeb
-            - run:
-                name: Copy in afrtifacts
-                command: mkdir -p build/linux64 && cp idea-craft.deb build/linux64/idea-craft_0.0.2-10_amd64.deb
-            - save_cache:
-                paths:
-                    - build/linux64
-                key: linux64-deb-{{ .Environment.CIRCLE_SHA1 }}
-            - store_artifacts:
-                path: build/linux64
-    make-deb-tested:
-        working_directory: /tmp/idea
-        docker:
-            - image: 0xef53/deb-builder:stretch
-        steps:
-            - checkout
-            - run:
-                name: Add HTTPS support in wget? TODO=move to Dockerfile
-                command: apt update && apt install -y openssl ca-certificates
-            - restore_cache:
-                key: linux64-build-{{ .Environment.CIRCLE_SHA1 }}
+                name: Get target version
+                command: |
+                    VER=$(curl 'http://api.idea-craft.space/launcher/getTargetVersion.php?branch='${CIRCLE_BRANCH}'&format=deb') &&
+                    echo $VER &&
+                    echo 'export VER='$VER'' >> $BASH_ENV &&
+                    cat $BASH_ENV
             - run:
                 name: Change deb package version
-                command: 'cd deploy/DEBIAN && sed -i 2d control && sed -i 2iVersion:0.0.2-10 control'
-            - run: 
+                command: 'cd deploy/DEBIAN && sed -i 2d control && sed -i 2iVersion:${VER} control'
+            - run:
                 name: Makedeb
                 command: chmod +x deploy/mkdeb && deploy/mkdeb
             - run:
                 name: Copy in afrtifacts
-                command: mkdir -p build/linux64 && cp idea-craft.deb build/linux64/idea-craft_0.0.2-10_amd64.deb
-            - save_cache:
-                paths:
-                    - build/linux64
-                key: linux64-deb-{{ .Environment.CIRCLE_SHA1 }}
-            - store_artifacts:
-                path: build/linux64
-    make-deb-dev:
-        working_directory: /tmp/idea
-        docker:
-            - image: 0xef53/deb-builder:stretch
-        steps:
-            - checkout
-            - run:
-                name: Add HTTPS support in wget? TODO=move to Dockerfile
-                command: apt update && apt install -y openssl ca-certificates
-            - restore_cache:
-                key: linux64-build-{{ .Environment.CIRCLE_SHA1 }}
-            - run:
-                name: Change deb package version
-                command: 'cd deploy/DEBIAN && sed -i 2d control && sed -i 2iVersion:0.0.2-10 control'
-            - run: 
-                name: Makedeb
-                command: chmod +x deploy/mkdeb && deploy/mkdeb
-            - run:
-                name: Copy in afrtifacts
-                command: mkdir -p build/linux64 && cp idea-craft.deb build/linux64/idea-craft_0.0.2-10_amd64.deb
+                command: mkdir -p build/linux64 && cp idea-craft.deb build/linux64/idea-craft_${VER}_amd64.deb
             - save_cache:
                 paths:
                     - build/linux64
@@ -130,33 +88,23 @@ jobs:
             - run: mkdir -p build/win64/ && cp iDeA-Craft.exe build/win64/
             - store_artifacts:
                 path: build
+            - run: echo $VER'-'$BASH_ENV
 workflows:
     version: 2
     build-deploy:
         jobs:
             - build-linux64
             - build-win64
-            - make-deb-stable:
+            - make-deb:
                 filters:
                     branches:
-                        only: master
-                requires:
-                    - build-linux64
-            - make-deb-tested:
-                filters:
-                    branches:
-                        only: tested
-                requires:
-                    - build-linux64
-            - make-deb-dev:
-                filters:
-                    branches:
-                        only: dev
+                        only: 
+                            - master
+                            - tested
+                            - dev
                 requires:
                     - build-linux64
             - deploy:
                 requires:
                     - build-win64
-                    - make-deb-stable
-                    - make-deb-tested
-                    - make-deb-dev
+                    - make-deb
