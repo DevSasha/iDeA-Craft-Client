@@ -102,8 +102,9 @@ jobs:
                 key: linux64-build-{{ .Environment.CIRCLE_SHA1 }}
             - run:
                 name: Change deb package version
-                command: VER=$(curl 'http://api.idea-craft.space/launcher/getTargetVersion.php?branch=dev&format=deb') |
-                         cd deploy/DEBIAN && sed -i 2d control && sed -i 2iVersion:${VER} control
+                command: |
+                    VER=$(curl 'http://api.idea-craft.space/launcher/getTargetVersion.php?branch=dev&format=deb') &&
+                    cd deploy/DEBIAN && sed -i 2d control && sed -i 2iVersion:${VER} control
             - run:
                 name: Makedeb
                 command: chmod +x deploy/mkdeb && deploy/mkdeb
