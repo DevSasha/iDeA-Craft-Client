@@ -103,10 +103,9 @@ jobs:
             - run:
                 name: Get target version
                 command: |
-                    VER1=$(curl 'http://api.idea-craft.space/launcher/getTargetVersion.php?branch=dev&format=deb') &&
-                    echo $VER1 &&
-                    echo 'export $VER=${VER1}' >> $BASH_ENV &&
-                    echo $VER'-'$BASH_ENV &&
+                    VER=$(curl 'http://api.idea-craft.space/launcher/getTargetVersion.php?branch=dev&format=deb') &&
+                    echo $VER &&
+                    echo 'export VER='$VER'' >> $BASH_ENV &&
                     cat $BASH_ENV
             - run:
                 name: Change deb package version
