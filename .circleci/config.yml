@@ -16,10 +16,11 @@ jobs:
             - save_cache:
                 paths:
                     - win64.time
-                    - iDeA-Craft.exe
+                    - client/iDeA-Craft.exe
+                    - server/idea-server.exe
                 key: win64-build-{{ .Environment.CIRCLE_SHA1 }}
             - store_artifacts:
-                path: iDeA-Craft.exe
+                path: . #iDeA-Craft.exe
     build-linux64:
         working_directory: /tmp/idea
         docker:
