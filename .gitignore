@@ -6,6 +6,7 @@ common/
 .vscode*
 .idea*
 iDeA-Craft
+idea-server
 *.deb
 
 # This file is used to ignore files which are generated

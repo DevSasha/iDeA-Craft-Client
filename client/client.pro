@@ -130,4 +130,4 @@ FORMS += \
     # Поскольку он хорошо для этого подходит
     #QMAKE_POST_LINK += $$(QTDIR)/../../QtIFW2.0.1/bin/repogen -p $$PWD/packages -i fun.ideacraft.launcher --update $$OUT_PWD/../../repository
 
-}
+#}
