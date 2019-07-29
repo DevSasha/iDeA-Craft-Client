@@ -5,6 +5,14 @@ CONFIG += c++11 console
 CONFIG -= app_bundle
 CONFIG -= debug_and_release debug_and_release_target
 
+# Разделяем по директориям все выходные файлы проекта
+MOC_DIR = $$OUT_PWD/common/Client/build
+RCC_DIR = $$OUT_PWD/common/Client/build
+UI_DIR = $$OUT_PWD/common/Client/build
+unix:OBJECTS_DIR = $$OUT_PWD/common/Client/build/o/unix
+win32:OBJECTS_DIR = $$OUT_PWD/common/Client/build/o/win32
+macx:OBJECTS_DIR = $$OUT_PWD/common/Client/build/o/mac
+
 TARGET = idea-server
 
 # The following define makes your compiler emit warnings if you use
