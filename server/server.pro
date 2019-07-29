@@ -3,6 +3,7 @@ QT += network sql
 
 CONFIG += c++11 console
 CONFIG -= app_bundle
+CONFIG -= debug_and_release debug_and_release_target
 
 TARGET = idea-server
 
