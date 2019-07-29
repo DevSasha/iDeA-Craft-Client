@@ -56,38 +56,38 @@ win32
 }
 
 SOURCES += \
-        src/main.cpp \
-        src/mainwindow.cpp \
-        src/authorization.cpp \
-        src/client.cpp \
-        src/core.cpp \
-        src/instanse.cpp
+        main.cpp \
+        mainwindow.cpp \
+        authorization.cpp \
+        client.cpp \
+        core.cpp \
+        instanse.cpp
 
 HEADERS += \
-        src/mainwindow.h \
-        src/authorization.h \
-        src/client.h \
-        src/core.h \
-        src/instanse.h
+        mainwindow.h \
+        authorization.h \
+        client.h \
+        core.h \
+        instanse.h
 
 FORMS += \
-        src/mainwindow.ui \
-        src/authorization.ui
+        mainwindow.ui \
+        authorization.ui
 
 #Installer
 
 # В зависимости от режима сборки, определяем, куда именно будут собираться инсталляторы
-CONFIG(release, debug|release) {
+#CONFIG(release, debug|release) {
     # Задаём переменные, которые будут содержать пути с названиями инсталляторов
-    INSTALLER_OFFLINE = $$PWD/../InstallerRelease/iDeA-Craft.offline
-    INSTALLER_ONLINE = $$PWD/../InstallerRelease/iDeA-Craft.online
+    #INSTALLER_OFFLINE = $$PWD/../InstallerRelease/iDeA-Craft.offline
+    #INSTALLER_ONLINE = $$PWD/../InstallerRelease/iDeA-Craft.online
 
     # Задаём переменную, которая должна содержать путь к папке с данными
-    DESTDIR_WIN = $$PWD/../packages/fun.ideacraft.launcher/data
-    DESTDIR_WIN ~= s,/,\\,g
+    #DESTDIR_WIN = $$PWD/../packages/fun.ideacraft.launcher/data
+    #DESTDIR_WIN ~= s,/,\\,g
     # Задаём путь откуда всё приложение с DLL-ками нужно будет скопировать
-    PWD_WIN = $$DESTDIR
-    PWD_WIN ~= s,/,\\,g
+    #PWD_WIN = $$DESTDIR
+    #PWD_WIN ~= s,/,\\,g
 
     # Прежде, чем выполнять сборку инсталляторов, необходимо скопировать файлы
     # из выходной папки проекта вместе со всеми DLL в папку data, которая относится
@@ -103,25 +103,25 @@ CONFIG(release, debug|release) {
     #QMAKE_POST_LINK += && $(COPY_DIR) $$PWD_WIN $$DESTDIR_WIN
 
     #CONFIG_XML1 = $$PWD/../packages/fun.ideacraft.launcher/config/config.xml
-    CONFIG_XML = $$PWD/config/config.xml
+    #CONFIG_XML = $$PWD/config/config.xml
 
     # Создаём цель по сборке Оффлайн Инсталлятора
-    INPUT = $$CONFIG_XML $$PWD/../packages
-    offlineInstaller.depends = copydata
-    offlineInstaller.input = $$INPUT
-    offlineInstaller.output = $$INSTALLER_OFFLINE
-    offlineInstaller.commands = $$(QTDIR)/../../QtIFW2.0.1/bin/binarycreator --offline-only -c $$CONFIG_XML -p $$PWD/../packages ${QMAKE_FILE_OUT}
-    offlineInstaller.CONFIG += target_predeps no_link combine
+    #INPUT = $$CONFIG_XML $$PWD/../packages
+    #offlineInstaller.depends = copydata
+    #offlineInstaller.input = $$INPUT
+    #offlineInstaller.output = $$INSTALLER_OFFLINE
+    #offlineInstaller.commands = $$(QTDIR)/../../QtIFW2.0.1/bin/binarycreator --offline-only -c $$CONFIG_XML -p $$PWD/../packages ${QMAKE_FILE_OUT}
+    #offlineInstaller.CONFIG += target_predeps no_link combine
     #message($$offlineInstaller.commands)
     #QMAKE_EXTRA_COMPILERS += offlineInstaller
 
     # Создаём цель по сборке Онлайн Инсталлятора
-    INPUT = $$CONFIG_XML $$PWD/../packages
-    onlineInstaller.depends = copydata
-    onlineInstaller.input = INPUT
-    onlineInstaller.output = $$INSTALLER_ONLINE
-    onlineInstaller.commands = $$(QTDIR)/../../QtIFW2.0.1/bin/binarycreator --online-only -c $$CONFIG_XML -p $$PWD/../packages ${QMAKE_FILE_OUT}
-    onlineInstaller.CONFIG += target_predeps no_link combine
+    #INPUT = $$CONFIG_XML $$PWD/../packages
+    #onlineInstaller.depends = copydata
+    #onlineInstaller.input = INPUT
+    #onlineInstaller.output = $$INSTALLER_ONLINE
+    #onlineInstaller.commands = $$(QTDIR)/../../QtIFW2.0.1/bin/binarycreator --online-only -c $$CONFIG_XML -p $$PWD/../packages ${QMAKE_FILE_OUT}
+    #onlineInstaller.CONFIG += target_predeps no_link combine
 
     #QMAKE_EXTRA_COMPILERS += onlineInstaller
 
