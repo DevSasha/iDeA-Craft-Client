@@ -11,20 +11,42 @@ jobs:
                 name: Windows build
                 command: x86_64-w64-mingw32-qmake-qt5 && make -j$((`nproc`+1))
             - run:
+                name: Move bin files in one dir
+                command: mkdir -p build/win64/ && mv {client,server}/idea-* build/win64/
+            - run:
                 name: Print the Current Time
-                command: date && date > win64.time
+                command: date && date > build/win64/win64.time
             - save_cache:
                 paths:
-                    - win64.time
-                    - client/iDeA-Craft.exe
-                    - server/idea-server.exe
+                    - build/win64
                 key: win64-build-{{ .Environment.CIRCLE_SHA1 }}
             - store_artifacts:
-                path: 
-                    - win64.time
-                    - client/iDeA-Craft.exe
-                    - server/idea-server.exe
-                    #- . #iDeA-Craft.exe
+                path: build/win64
+    deploy-win64:
+        working_directory: /tmp/idea/build/win64
+        docker:
+            - image: ubuntu
+        steps:
+            - run:
+                name: Add HTTPS support in wget? TODO=move to Dockerfile
+                command: apt update && apt install -y openssl ca-certificates curl wget
+            - restore_cache:
+                key: win64-build-{{ .Environment.CIRCLE_SHA1 }}
+            - run:
+                name: Setup workspace
+                command: mkdir -p {client,server} && mv idea-craft.exe client/ && mv idea-server.exe server/
+            - run:
+                name: Check sum of all files of client
+                command: find client -type f -exec sha256sum {} \; > client.sha256
+            - run:
+                name: Check sum of all files of server
+                command: find server -type f -exec sha256sum {} \; > server.sha256
+            - save_cache:
+                paths:
+                    - .
+                key: win64-deploy-{{ .Environment.CIRCLE_SHA1 }}
+            - store_artifacts:
+                path: .
     build-linux64:
         working_directory: /tmp/idea
         docker:
@@ -36,15 +58,17 @@ jobs:
                 name: Linux build
                 command: qmake && make -j$((`nproc`+1))
             - run:
+                name: Move bin files in one dir
+                command: mkdir -p build/linux64/ && mv {client,server}/idea-* build/linux64/
+            - run:
                 name: Print the Current Time
-                command: date && date > linux64.time
+                command: date && date > build/linux64/linux64.time
             - save_cache:
                 paths:
-                    - iDeA-Craft
-                    - linux64.time
+                    - build/linux64
                 key: linux64-build-{{ .Environment.CIRCLE_SHA1 }}
             - store_artifacts:
-                path: iDeA-Craft
+                path: build/linux64/
     make-deb:
         working_directory: /tmp/idea
         docker:
@@ -56,6 +80,9 @@ jobs:
                 command: apt update && apt install -y openssl ca-certificates curl wget
             - restore_cache:
                 key: linux64-build-{{ .Environment.CIRCLE_SHA1 }}
+            - run:
+                name: Setup workspace
+                command: mkdir -p {client,server} && mv idea-craft.exe client/ && mv idea-server.exe server/
             - run:
                 name: Get target version
                 command: |
@@ -78,7 +105,7 @@ jobs:
                 key: linux64-deb-{{ .Environment.CIRCLE_SHA1 }}
             - store_artifacts:
                 path: build/linux64
-    deploy:
+    delivery:
         working_directory: /tmp/idea
         docker:
             - image: ubuntu
@@ -100,16 +127,25 @@ workflows:
         jobs:
             - build-linux64
             - build-win64
-            - make-deb:
+            - deploy-win64:
+                requires:
+                    - build-win64
                 filters:
                     branches:
                         only: 
                             - master
                             - tested
                             - dev
+            # - make-deb:
+            #     filters:
+            #         branches:
+            #             only: 
+            #                 - master
+            #                 - tested
+            #                 - dev
+            #     requires:
+            #         - build-linux64
+            - delivery:
                 requires:
-                    - build-linux64
-            - deploy:
-                requires:
-                    - build-win64
-                    - make-deb
+                    - deploy-win64
+                   # - make-deb
