@@ -69,6 +69,31 @@ jobs:
                 key: linux64-build-{{ .Environment.CIRCLE_SHA1 }}
             - store_artifacts:
                 path: build/linux64/
+    deploy-linux64:
+        working_directory: /tmp/idea/build/linux64
+        docker:
+            - image: ubuntu
+        steps:
+            - run:
+                name: Add HTTPS support in wget? TODO=move to Dockerfile
+                command: apt update && apt install -y openssl ca-certificates curl wget
+            - restore_cache:
+                key: linux64-build-{{ .Environment.CIRCLE_SHA1 }}
+            - run:
+                name: Setup workspace
+                command: mkdir -p {client,server} && mv idea-craft client/ && mv idea-server server/
+            - run:
+                name: Check sum of all files of client
+                command: find client -type f -exec sha256sum {} \; > client.sha256
+            - run:
+                name: Check sum of all files of server
+                command: find server -type f -exec sha256sum {} \; > server.sha256
+            - save_cache:
+                paths:
+                    - .
+                key: linux64-deploy-{{ .Environment.CIRCLE_SHA1 }}
+            - store_artifacts:
+                path: .
     make-deb:
         working_directory: /tmp/idea
         docker:
@@ -117,7 +142,6 @@ jobs:
                 key: linux64-deb-{{ .Environment.CIRCLE_SHA1 }}
             - restore_cache:
                 key: win64-build-{{ .Environment.CIRCLE_SHA1 }}
-            - run: mkdir -p build/win64/ && cp iDeA-Craft.exe build/win64/
             - store_artifacts:
                 path: build
             - run: echo $VER'-'$BASH_ENV
@@ -136,6 +160,15 @@ workflows:
                             - master
                             - tested
                             - dev
+            - deploy-linux64:
+                requires:
+                    - build-linux64
+                filters:
+                    branches:
+                        only: 
+                            - master
+                            - tested
+                            - dev
             # - make-deb:
             #     filters:
             #         branches:
@@ -148,4 +181,5 @@ workflows:
             - delivery:
                 requires:
                     - deploy-win64
+                    - deploy-linux64
                    # - make-deb
