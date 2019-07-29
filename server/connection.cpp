@@ -28,7 +28,7 @@ int Connection::write(QByteArray msg)
 {
     QByteArray block;
     QDataStream out(&block, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_5_10);
+    //out.setVersion(QDataStream::Qt_5_10);
 
     out << msg;
 

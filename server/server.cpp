@@ -114,7 +114,7 @@ void Server::broadcast(QString msg)
 {
     QByteArray block;
     QDataStream out(&block, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_5_10);
+    //out.setVersion(QDataStream::Qt_5_10);
 
     out << msg; //fortunes[QRandomGenerator::global()->bounded(fortunes.size())];
     //tcpSockets.last()->write(block);
