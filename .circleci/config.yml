@@ -12,18 +12,18 @@ jobs:
                 command: x86_64-w64-mingw32-qmake-qt5 && make -j$((`nproc`+1))
             - run:
                 name: Move bin files in one dir
-                command: mkdir -p build/win64/ && mv {client,server}/idea-* build/win64/
+                command: mkdir -p win64/ && mv idea-craft.exe win64/client && mv idea-server.exe win64/server
             - run:
                 name: Print the Current Time
-                command: date && date > build/win64/win64.time
+                command: date && date > win64/win64.time
             - save_cache:
                 paths:
-                    - build/win64
+                    - win64/
                 key: win64-build-{{ .Environment.CIRCLE_SHA1 }}
             - store_artifacts:
-                path: build/win64
+                path: win64/
     deploy-win64:
-        working_directory: /tmp/idea/build/win64
+        working_directory: /tmp/idea/win64
         docker:
             - image: ubuntu
         steps:
@@ -32,9 +32,6 @@ jobs:
                 command: apt update && apt install -y openssl ca-certificates curl wget
             - restore_cache:
                 key: win64-build-{{ .Environment.CIRCLE_SHA1 }}
-            - run:
-                name: Setup workspace
-                command: mkdir -p {client,server} && mv idea-craft.exe client/ && mv idea-server.exe server/
             - run:
                 name: Check sum of all files of client
                 command: find client -type f -exec sha256sum {} \; > client.sha256
@@ -59,18 +56,18 @@ jobs:
                 command: qmake && make -j$((`nproc`+1))
             - run:
                 name: Move bin files in one dir
-                command: mkdir -p build/linux64/ && mv {client,server}/idea-* build/linux64/
+                command: mkdir -p linux64/ && mv idea-craft linux64/client && mv idea-server server/
             - run:
                 name: Print the Current Time
-                command: date && date > build/linux64/linux64.time
+                command: date && date > linux64/linux64.time
             - save_cache:
                 paths:
-                    - build/linux64
+                    - linux64/
                 key: linux64-build-{{ .Environment.CIRCLE_SHA1 }}
             - store_artifacts:
-                path: build/linux64/
+                path: linux64/
     deploy-linux64:
-        working_directory: /tmp/idea/build/linux64
+        working_directory: /tmp/idea/linux64
         docker:
             - image: ubuntu
         steps:
@@ -79,9 +76,6 @@ jobs:
                 command: apt update && apt install -y openssl ca-certificates curl wget
             - restore_cache:
                 key: linux64-build-{{ .Environment.CIRCLE_SHA1 }}
-            - run:
-                name: Setup workspace
-                command: mkdir -p {client,server} && mv idea-craft client/ && mv idea-server server/
             - run:
                 name: Check sum of all files of client
                 command: find client -type f -exec sha256sum {} \; > client.sha256
@@ -144,9 +138,9 @@ jobs:
                 key: win64-deploy-{{ .Environment.CIRCLE_SHA1 }}
             - run: 
                 name: Specify branch
-                command: echo "${CIRCLE_BRANCH}" >> build/branch
+                command: echo "${CIRCLE_BRANCH}" >> branch
             - store_artifacts:
-                path: build
+                path: .
             - run: echo $VER'-'$BASH_ENV
 workflows:
     version: 2

@@ -13,7 +13,7 @@ unix:OBJECTS_DIR = $$OUT_PWD/common/Client/build/o/unix
 win32:OBJECTS_DIR = $$OUT_PWD/common/Client/build/o/win32
 macx:OBJECTS_DIR = $$OUT_PWD/common/Client/build/o/mac
 
-TARGET = idea-server
+TARGET = ../idea-server
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
