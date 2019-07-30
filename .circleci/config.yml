@@ -142,6 +142,9 @@ jobs:
                 key: linux64-deploy-{{ .Environment.CIRCLE_SHA1 }}
             - restore_cache:
                 key: win64-deploy-{{ .Environment.CIRCLE_SHA1 }}
+            - run: 
+                name: Specify branch
+                command: echo "${CIRCLE_BRANCH}" >> build/branch
             - store_artifacts:
                 path: build
             - run: echo $VER'-'$BASH_ENV
