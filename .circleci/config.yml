@@ -139,9 +139,9 @@ jobs:
                 name: Add HTTPS support in wget? TODO=move to Dockerfile
                 command: apt update && apt install -y openssl ca-certificates
             - restore_cache:
-                key: linux64-deb-{{ .Environment.CIRCLE_SHA1 }}
+                key: linux64-deploy-{{ .Environment.CIRCLE_SHA1 }}
             - restore_cache:
-                key: win64-build-{{ .Environment.CIRCLE_SHA1 }}
+                key: win64-deploy-{{ .Environment.CIRCLE_SHA1 }}
             - store_artifacts:
                 path: build
             - run: echo $VER'-'$BASH_ENV
