@@ -56,7 +56,7 @@ jobs:
                 command: qmake && make -j$((`nproc`+1))
             - run:
                 name: Move bin files in one dir
-                command: mkdir -p linux64/{client,server} && mv idea-craft linux64/client && mv idea-server server/
+                command: mkdir -p linux64/{client,server} && mv idea-craft linux64/client && mv idea-server linux64/server/
             - run:
                 name: Print the Current Time
                 command: date && date > linux64/linux64.time
