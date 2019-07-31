@@ -138,7 +138,7 @@ jobs:
                 key: win64-deploy-{{ .Environment.CIRCLE_SHA1 }}
             - run: 
                 name: Specify branch
-                command: echo "${CIRCLE_BRANCH}" >> branch
+                command: mkdir branch && echo "" >> branch/${CIRCLE_BRANCH}
             - store_artifacts:
                 path: .
             - run: echo $VER'-'$BASH_ENV
