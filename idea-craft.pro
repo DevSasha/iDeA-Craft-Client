@@ -4,4 +4,4 @@ CONFIG   += ordered
  
 SUBDIRS += \
     client \
-    server
+    server.old
