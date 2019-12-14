@@ -8,8 +8,14 @@ void Update::checkUpdate() {
 	qDebug() << "Checking update...";
 	connect(this->manager, &QNetworkAccessManager::finished, this, &Update::onResponse);
 	QNetworkRequest request;
-	request.setUrl(QString(API_SERVER));
-	manager->get(request);
+	request.setUrl(QString(API_SERVER)+ "launcher.updates");
+
+	QUrlQuery post;
+	post.addQueryItem("os", QSysInfo::kernelType());
+
+	QByteArray postData = post.toString(QUrl::FullyEncoded).toUtf8();
+	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+	manager->post(request, postData);
 }
 
 void Update::onResponse(QNetworkReply *reply) {
