@@ -30,7 +30,7 @@ void Update::onResponse(QNetworkReply *reply) {
 		int statusCode = vStatusCode.toInt();
 
 		if (statusCode != 0) {
-			QJsonValue vStatusMsg = jStatus.value("mgs");
+			QJsonValue vStatusMsg = jStatus.value("msg");
 			if (!vStatusMsg.isString()) {
 				qCritical() << "Uncorrect server response: vStatusMsg " << vStatusMsg.type();
 			}
