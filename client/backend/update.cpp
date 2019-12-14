@@ -63,14 +63,14 @@ void Update::parseBody(QJsonObject body) {
 		QJsonObject jUpdates_i = jUpdates[i].toObject();
 
 		QJsonValue vFilename = jUpdates_i.value("filename");
-		if (!vFilename.isArray()) {
+		if (!vFilename.isString()) {
 			qCritical() << "Uncorrect server response: vFilename " << vFilename.type();
 		}
 		if (vFilename.toString() == "idea-craft") continue;
 		filenames.append(vFilename.toString());
 
 		QJsonValue vHash = jUpdates_i.value("hash");
-		if (!vHash.isArray()) {
+		if (!vHash.isString()) {
 			qCritical() << "Uncorrect server response: vHash " << vHash.type();
 		}
 		filehashs.append(vHash.toString());

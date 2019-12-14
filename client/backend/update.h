@@ -23,6 +23,7 @@ public slots:
 	void onResponse(QNetworkReply *reply);
 	void parseBody(QJsonObject body);
 
+private:
 	QNetworkAccessManager *manager;
 };
 
