@@ -26,7 +26,7 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
         break;
     case QtWarningMsg:
         out << "WRN ";
-        //QMessageBox::warning(nullptr, "Waring", msg);
+		QMessageBox::warning(nullptr, "Waring", msg);
         break;
     case QtCriticalMsg:
         out << "CRT ";
@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
     m_logFile.data()->open(QFile::Append | QFile::Text); // Открываем файл логирования
     qInstallMessageHandler(messageHandler); // Устанавливаем обработчик
 
-    Core core(&a);
+    Core core;
     return a.exec();
 }
 
