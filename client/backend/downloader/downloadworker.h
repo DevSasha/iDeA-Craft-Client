@@ -5,26 +5,29 @@
 #include <QList>
 #include <QString>
 #include <QNetworkAccessManager>
-#include <QNetworkReply>
+#include <QCryptographicHash>
+#include <backend/downloader/downloadfile.h>
 
 class DownloadWorker : public QObject {
 	Q_OBJECT
 public:
 	DownloadWorker();
 	~DownloadWorker();
-	void setFileList(const QList<QString> names, const QList<QString> paths, const QList<QString> hashes);
+	void setFileList(QList<DownloadFile *> files);
 	void start();
 
 signals:
 	void onDownloaded();
+	void finished();
 
 private slots:
-	void saveFile(QNetworkReply *reply);
 	void downloadFile();
+	void nextFile();
+
 private:
-	QList<QString> names {}, paths {}, hashes {};
+	QList<DownloadFile *> files;
 	QNetworkAccessManager *http;
-	quint64 currentFile = 0;
+	DownloadFile *current = nullptr;
 };
 
 #endif // DOWNLOADWORKER_H
