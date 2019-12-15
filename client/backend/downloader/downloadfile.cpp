@@ -17,10 +17,12 @@ DownloadFile::DownloadFile(QString name, QString hash, QString path, QString uri
 		this->correct = this->check();
 
 		file->close();
+		emit this->onCorrect();
 	}
 
 	connect(this, &DownloadFile::onDownload, this, &DownloadFile::deleteLater);
 	connect(this, &DownloadFile::onError, this, &DownloadFile::deleteLater);
+	connect(this, &DownloadFile::onCorrect, this, &DownloadFile::deleteLater);
 }
 
 DownloadFile::~DownloadFile() {
@@ -35,7 +37,7 @@ bool DownloadFile::isCorrect() {
 
 void DownloadFile::get(QNetworkAccessManager *http) {
 	if (this->correct) {
-		emit this->onDownload();
+		emit this->onCorrect();
 		return;
 	}
 
@@ -65,6 +67,7 @@ void DownloadFile::save() {
 	out << this->data;
 	file->close();
 	emit this->onDownload();
+	emit this->onCorrect();
 }
 
 bool DownloadFile::check() {

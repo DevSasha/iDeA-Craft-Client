@@ -19,6 +19,7 @@ public:
 signals:
 	void onDownload();
 	void onError(QString);
+	void onCorrect();
 
 public slots:
 	void get(QNetworkAccessManager *http);
