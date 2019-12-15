@@ -30,6 +30,7 @@ public slots:
 
 	void downloadFinished(quint64 countDownloadedFiles);
 	void restart();
+	void error(QString msg);
 
 private:
 	QNetworkAccessManager *manager;

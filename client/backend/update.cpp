@@ -95,6 +95,7 @@ void Update::startDownload(const QList<DownloadFile *> &files) {
 	this->dw = new DownloadWorker();
 	this->dw->setFileList(files);
 	connect(this->dw, &DownloadWorker::onFinish, this, &Update::downloadFinished);
+	connect(this->dw, &DownloadWorker::onError, this, &Update::error);
 	this->dw->start();
 }
 
@@ -112,4 +113,8 @@ void Update::restart() {
 	if (kernel == "linux") {
 
 	}
+}
+
+void Update::error(QString msg) {
+	qWarning() << msg;
 }
