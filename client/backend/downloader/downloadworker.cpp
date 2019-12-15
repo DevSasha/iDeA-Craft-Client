@@ -22,7 +22,7 @@ void DownloadWorker::downloadFile() {
 	if (this->current->isCorrect())
 		this->nextFile();
 
-	connect(this->http, &QNetworkAccessManager::finished, this->current, &DownloadFile::save);
+	connect(this->http, &QNetworkAccessManager::finished, this->current, &DownloadFile::take);
 	connect(this->current, &DownloadFile::onDownload, this, &DownloadWorker::nextFile);
 	this->current->get(this->http);
 }

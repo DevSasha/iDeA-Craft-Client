@@ -23,6 +23,8 @@ signals:
 public slots:
 	void get(QNetworkAccessManager *http);
 	void take(QNetworkReply *reply);
+
+private slots:
 	void save();
 	bool check();
 
