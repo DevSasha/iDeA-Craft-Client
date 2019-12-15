@@ -20,6 +20,7 @@ public:
 	explicit Update(QObject *parent = nullptr);
 
 signals:
+	void updated();
 
 public slots:
 	void checkUpdate();
@@ -27,7 +28,7 @@ public slots:
 	void parseBody(QJsonObject body);
 	void startDownload(const QList<DownloadFile *> &files);
 
-	void downloadFinished();
+	void downloadFinished(quint64 countDownloadedFiles);
 	void restart();
 
 private:

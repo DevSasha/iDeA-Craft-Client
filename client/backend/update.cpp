@@ -94,13 +94,17 @@ void Update::parseBody(QJsonObject body) {
 void Update::startDownload(const QList<DownloadFile *> &files) {
 	this->dw = new DownloadWorker();
 	this->dw->setFileList(files);
-	connect(this->dw, &DownloadWorker::finished, this, &Update::downloadFinished);
+	connect(this->dw, &DownloadWorker::onFinish, this, &Update::downloadFinished);
 	this->dw->start();
 }
 
-void Update::downloadFinished() {
-	qInfo() << "Update downloaded";
-	this->restart();
+void Update::downloadFinished(quint64 countDownloadedFiles) {
+	if (countDownloadedFiles > 0) {
+		qInfo() << "Update downloaded";
+		this->restart();
+	} else {
+		emit this->updated();
+	}
 }
 
 void Update::restart() {
