@@ -2,7 +2,7 @@
 
 DownloadWorker::DownloadWorker() {
 	this->http = new QNetworkAccessManager();
-	connect(this, &DownloadWorker::finished, this, &DownloadWorker::deleteLater);
+	connect(this, &DownloadWorker::onFinish, this, &DownloadWorker::deleteLater);
 }
 
 DownloadWorker::~DownloadWorker() {
@@ -14,9 +14,11 @@ void DownloadWorker::setFileList(const QList<DownloadFile *> files) {
 }
 
 void DownloadWorker::start() {
-	//this->current = this->files.first();
-	//this->downloadFile();
 	this->nextFile();
+}
+
+void DownloadWorker::fileDownloaded() {
+	this->countDownloadedFiles++;
 }
 
 void DownloadWorker::downloadFile() {
@@ -24,14 +26,15 @@ void DownloadWorker::downloadFile() {
 		this->nextFile();
 	else {
 		connect(this->http, &QNetworkAccessManager::finished, this->current, &DownloadFile::take);
-		connect(this->current, &DownloadFile::onDownload, this, &DownloadWorker::nextFile);
+		connect(this->current, &DownloadFile::onCorrect, this, &DownloadWorker::nextFile);
+		connect(this->current, &DownloadFile::onDownload, this, &DownloadWorker::fileDownloaded);
 		this->current->get(this->http);
 	}
 }
 
 void DownloadWorker::nextFile() {
 	if (this->files.size() == 0) {
-		emit this->finished();
+		emit this->onFinish(this->countDownloadedFiles);
 	} else {
 		this->current = this->files.first();
 		this->files.pop_front();

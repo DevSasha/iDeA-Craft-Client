@@ -18,15 +18,17 @@ public:
 
 signals:
 	void onDownloaded();
-	void finished();
+	void onFinish(quint64);
 
-private slots:
+public slots:
+	void fileDownloaded();
 	void nextFile();
 
 private:
 	QList<DownloadFile *> files;
 	QNetworkAccessManager *http;
 	DownloadFile *current = nullptr;
+	quint64 countDownloadedFiles = 0;
 
 	void downloadFile();
 };
