@@ -31,7 +31,6 @@ private:
 	QCryptographicHash::Algorithm alg;
 	QByteArray data;
 	QFile *file = nullptr;
-	QNetworkAccessManager *http;
 	bool correct;
 };
 
