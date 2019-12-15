@@ -27,6 +27,7 @@ void DownloadWorker::downloadFile() {
 	else {
 		connect(this->http, &QNetworkAccessManager::finished, this->current, &DownloadFile::take);
 		connect(this->current, &DownloadFile::onCorrect, this, &DownloadWorker::nextFile);
+		connect(this->current, &DownloadFile::onError, this, &DownloadWorker::error);
 		connect(this->current, &DownloadFile::onDownload, this, &DownloadWorker::fileDownloaded);
 		this->current->get(this->http);
 	}
@@ -40,4 +41,8 @@ void DownloadWorker::nextFile() {
 		this->files.pop_front();
 		this->downloadFile();
 	}
+}
+
+void DownloadWorker::error(QString msg) {
+	emit this->onError(msg);
 }

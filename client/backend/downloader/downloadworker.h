@@ -19,10 +19,12 @@ public:
 signals:
 	void onDownloaded();
 	void onFinish(quint64);
+	void onError(QString);
 
 public slots:
 	void fileDownloaded();
 	void nextFile();
+	void error(QString msg);
 
 private:
 	QList<DownloadFile *> files;
