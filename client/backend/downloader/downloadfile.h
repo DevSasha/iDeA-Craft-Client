@@ -6,6 +6,8 @@
 #include <QFile>
 #include <QString>
 #include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QDataStream>
 
 class DownloadFile : public QObject {
 	Q_OBJECT
@@ -14,10 +16,15 @@ public:
 	~DownloadFile();
 	bool isCorrect();
 
+signals:
+	void onDownload();
+	void onError(QString);
+
 public slots:
-	void get();
+	void get(QNetworkAccessManager *http);
+	void take(QNetworkReply *reply);
 	void save();
-	bool checkData();
+	bool check();
 
 private:
 	QString name, hash, path, uri;

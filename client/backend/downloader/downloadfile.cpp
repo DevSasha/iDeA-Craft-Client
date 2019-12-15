@@ -14,13 +14,17 @@ DownloadFile::DownloadFile(QString name, QString hash, QString path, QString uri
 		file->open(QIODevice::ReadOnly);
 
 		this->data = file->readAll();
-		this->correct = this->checkData();
+		this->correct = this->check();
+
+		file->close();
 	}
+
+	connect(this, &DownloadFile::onDownload, this, &DownloadFile::deleteLater);
+	connect(this, &DownloadFile::onError, this, &DownloadFile::deleteLater);
 }
 
 DownloadFile::~DownloadFile() {
 	if (this->file != nullptr) {
-		file->close();
 		delete this->file;
 	}
 }
@@ -29,7 +33,36 @@ bool DownloadFile::isCorrect() {
 	return this->correct;
 }
 
-bool DownloadFile::checkData() {
+void DownloadFile::get(QNetworkAccessManager *http) {
+	QNetworkRequest req(this->uri);
+	http->get(req);
+}
+
+void DownloadFile::take(QNetworkReply *reply) {
+	if (reply->error()) {
+			qCritical() << "Download error: " << reply->errorString();
+	} else {
+		this->data = reply->readAll();
+		this->correct = this->check();
+
+		if (this->correct) {
+			this->save();
+		} else {
+			emit this->onError("Incorrect response");
+		}
+	}
+}
+
+void DownloadFile::save() {
+	this->file->open(QIODevice::WriteOnly);
+	QDataStream out(this->file);
+
+	out << this->data;
+	file->close();
+	emit this->onDownload();
+}
+
+bool DownloadFile::check() {
 	QString hash = QCryptographicHash::hash(this->data, this->alg).toHex();
 	return hash == this->hash;
 }
