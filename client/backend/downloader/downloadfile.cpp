@@ -62,10 +62,8 @@ void DownloadFile::take(QNetworkReply *reply) {
 
 void DownloadFile::save() {
 	this->file->open(QIODevice::WriteOnly);
-	QDataStream out(this->file);
-
-	out << this->data;
-	file->close();
+	this->file->write(this->data);
+	this->file->close();
 	emit this->onDownload();
 	emit this->onCorrect();
 }

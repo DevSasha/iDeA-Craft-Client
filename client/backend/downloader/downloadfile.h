@@ -7,7 +7,6 @@
 #include <QString>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
-#include <QDataStream>
 
 class DownloadFile : public QObject {
 	Q_OBJECT
