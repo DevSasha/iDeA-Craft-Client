@@ -36,6 +36,7 @@ bool DownloadFile::isCorrect() {
 void DownloadFile::get(QNetworkAccessManager *http) {
 	if (this->correct) {
 		emit this->onDownload();
+		return;
 	}
 
 	QNetworkRequest req(this->uri);
