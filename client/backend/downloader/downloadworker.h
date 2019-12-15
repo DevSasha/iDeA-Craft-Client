@@ -21,13 +21,14 @@ signals:
 	void finished();
 
 private slots:
-	void downloadFile();
 	void nextFile();
 
 private:
 	QList<DownloadFile *> files;
 	QNetworkAccessManager *http;
 	DownloadFile *current = nullptr;
+
+	void downloadFile();
 };
 
 #endif // DOWNLOADWORKER_H

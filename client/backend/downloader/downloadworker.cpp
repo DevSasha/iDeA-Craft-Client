@@ -14,26 +14,27 @@ void DownloadWorker::setFileList(const QList<DownloadFile *> files) {
 }
 
 void DownloadWorker::start() {
-	this->current = this->files.first();
-	this->downloadFile();
+	//this->current = this->files.first();
+	//this->downloadFile();
+	this->nextFile();
 }
 
 void DownloadWorker::downloadFile() {
 	if (this->current->isCorrect())
 		this->nextFile();
-
-	connect(this->http, &QNetworkAccessManager::finished, this->current, &DownloadFile::take);
-	connect(this->current, &DownloadFile::onDownload, this, &DownloadWorker::nextFile);
-	this->current->get(this->http);
+	else {
+		connect(this->http, &QNetworkAccessManager::finished, this->current, &DownloadFile::take);
+		connect(this->current, &DownloadFile::onDownload, this, &DownloadWorker::nextFile);
+		this->current->get(this->http);
+	}
 }
 
 void DownloadWorker::nextFile() {
-	if (this->files.size() <= 1) {
+	if (this->files.size() == 0) {
 		emit this->finished();
-		return;
+	} else {
+		this->current = this->files.first();
+		this->files.pop_front();
+		this->downloadFile();
 	}
-	this->files.pop_front();
-	this->current = this->files.first();
-	this->downloadFile();
-	emit this->onDownloaded();
 }
