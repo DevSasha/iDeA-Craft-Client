@@ -60,7 +60,7 @@ void Update::parseBody(QJsonObject body) {
 	}
 	QJsonArray jUpdates = vUpdates.toArray();
 
-	QList<QString> filenames {}, filehashs {};
+	QList<DownloadFile *> files;
 	for (int i = 0;i < jUpdates.size(); ++i) {
 		if (!jUpdates[i].isObject()) {
 			qCritical() << "Uncorrect server response: jUpdates " << jUpdates[i].type();
@@ -72,14 +72,40 @@ void Update::parseBody(QJsonObject body) {
 		if (!vFilename.isString()) {
 			qCritical() << "Uncorrect server response: vFilename " << vFilename.type();
 		}
-		if (vFilename.toString() == "idea-craft") continue;
-		filenames.append(vFilename.toString());
+
 
 		QJsonValue vHash = jUpdates_i.value("hash");
 		if (!vHash.isString()) {
 			qCritical() << "Uncorrect server response: vHash " << vHash.type();
 		}
-		filehashs.append(vHash.toString());
-	}
 
+		QString name, hash, path, uri;
+		name = vFilename.toString();
+		hash = vHash.toString();
+		path = QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/" + vFilename.toString();
+		uri = "https://ftp.idea-craft.space/launcher/" + QSysInfo::kernelType() + "/" + name;
+
+		DownloadFile *file = new DownloadFile(name, hash, path, uri, QCryptographicHash::Md5);
+		files.append(file);
+	}
+	this->startDownload(files);
+}
+
+void Update::startDownload(const QList<DownloadFile *> &files) {
+	this->dw = new DownloadWorker();
+	this->dw->setFileList(files);
+	connect(this->dw, &DownloadWorker::finished, this, &Update::downloadFinished);
+	this->dw->start();
+}
+
+void Update::downloadFinished() {
+	qInfo() << "Update downloaded";
+	this->restart();
+}
+
+void Update::restart() {
+	QString kernel = QSysInfo::kernelType();
+	if (kernel == "linux") {
+
+	}
 }

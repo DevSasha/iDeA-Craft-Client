@@ -10,6 +10,8 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QUrlQuery>
+#include <QStandardPaths>
+#include <backend/downloader/downloadworker.h>
 
 class Update : public QObject
 {
@@ -23,9 +25,14 @@ public slots:
 	void checkUpdate();
 	void onResponse(QNetworkReply *reply);
 	void parseBody(QJsonObject body);
+	void startDownload(const QList<DownloadFile *> &files);
+
+	void downloadFinished();
+	void restart();
 
 private:
 	QNetworkAccessManager *manager;
+	DownloadWorker *dw;
 };
 
 #endif // UPDATE_H
