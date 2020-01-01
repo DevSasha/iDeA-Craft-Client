@@ -1,35 +1,21 @@
 stages:
-    - build-win-x86_64
-    - push-latest
+    - build
 
 build-win-x86_64:
-    stage: build-win-x86_64
+    stage: build
     # image: garthk/qt-build:bionic-5.12.0
     image: burningdaylight/docker-mingw-qt5 # указываем образ в котором будет происходить сборка
 
     # указываем команды для сборки
     script:
-    - cd /builds/DrSasha/idea-craft
+    - cd /builds/DrSasha/iDea-Craft
     - x86_64-w64-mingw32-qmake-qt5
-    - make
-    - mkdir -p build/win64
-    - cp iDeA-Craft.exe build/win64/iDeA-Craft-x64.exe
+    - make -j$((`nproc`+1))
     # x86_64-w64-mingw32-windeployqt-qt5 -release
     # qmake -makefile
     # make -B /builds/DrSasha/idea-craft/Makefile
-    # i686-w64-mingw32-qmake-qt5
     
     # загружаем собранные файлы в gitlab
     artifacts:
         paths:
             - ./build
-
-#
-# Tag the master image as 'latest'.
-#
-#push-latest:
-    #stage: push-latest
-    #script:
-    #- sudo pacman -S --noconfirm curl
-    #- cd /builds/DrSasha/idea-craft/build/win64
-    #- curl 
