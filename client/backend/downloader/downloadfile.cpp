@@ -55,7 +55,7 @@ void DownloadFile::take(QNetworkReply *reply) {
 		if (this->correct) {
 			this->save();
 		} else {
-			emit this->onError("Incorrect response");
+			emit this->onError("Incorrect downloaded file");
 		}
 	}
 }
