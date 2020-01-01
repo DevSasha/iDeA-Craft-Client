@@ -112,17 +112,35 @@ void Update::startDownload(const QList<DownloadFile *> &files) {
 
 void Update::downloadFinished(quint64 countDownloadedFiles) {
 	if (countDownloadedFiles > 0) {
-		qInfo() << "Update downloaded";
+		this->finishUpdate();
 		this->restart();
 	} else {
 		emit this->updated();
 	}
 }
 
+void Update::finishUpdate() {
+	QFile inFile(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/idea-craft_new");
+	QFile outFile(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/idea-craft");
+
+	if (!inFile.exists())
+		qCritical() << "Update not downloaded";
+	else {
+		outFile.remove();
+		inFile.rename("idea-craft");
+		inFile.setPermissions(QFile::ExeGroup  | QFile::ExeOther  | QFile::ExeOther  | QFile::ExeUser |
+							  QFile::ReadGroup | QFile::ReadOther | QFile::ReadOther | QFile::ReadUser |
+							  QFile::WriteOwner);
+	}
+}
+
 void Update::restart() {
 	QString kernel = QSysInfo::kernelType();
 	if (kernel == "linux") {
-
+		QProcess *proc = new QProcess();
+		proc->setWorkingDirectory(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
+		proc->startDetached("bash -c \"sleep 1s && ./idea-craft\"");
+		qApp->exit();
 	}
 }
 

@@ -12,6 +12,8 @@
 #include <QUrlQuery>
 #include <QStandardPaths>
 #include <backend/downloader/downloadworker.h>
+#include <QApplication>
+#include <QProcess>
 
 class Update : public QObject
 {
@@ -29,6 +31,7 @@ public slots:
 	void startDownload(const QList<DownloadFile *> &files);
 
 	void downloadFinished(quint64 countDownloadedFiles);
+	void finishUpdate();
 	void restart();
 	void error(QString msg);
 
