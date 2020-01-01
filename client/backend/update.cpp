@@ -82,11 +82,22 @@ void Update::parseBody(QJsonObject body) {
 		QString name, hash, path, uri;
 		name = vFilename.toString();
 		hash = vHash.toString();
-		path = QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/" + vFilename.toString();
 		uri = "https://ftp.idea-craft.space/launcher/" + QSysInfo::kernelType() + "/" + name;
+		path = QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/" + name;
 
-		DownloadFile *file = new DownloadFile(name, hash, path, uri, QCryptographicHash::Md5);
-		files.append(file);
+		DownloadFile *file = nullptr;
+		if (name == "idea-craft") {
+			DownloadFile *mFile = new DownloadFile(name, hash, path, uri, QCryptographicHash::Md5);
+			if (!mFile->isCorrect()) {
+				path += "_new";
+				file = new DownloadFile(name, hash, path, uri, QCryptographicHash::Md5);
+				files.append(file);
+			}
+			mFile->deleteLater();
+		} else {
+			file = new DownloadFile(name, hash, path, uri, QCryptographicHash::Md5);
+			files.append(file);
+		}
 	}
 	this->startDownload(files);
 }
