@@ -13,3 +13,13 @@ build-win64:
     artifacts:
         paths:
             - ./build
+
+build-lin64:
+    stage: build
+    image: fffaraz/qt:latest
+    script:
+        - x86_64-linux-gnu-qmake
+        - make -j$((`nproc`+1))
+    artifacts:
+        paths:
+            - ./build
