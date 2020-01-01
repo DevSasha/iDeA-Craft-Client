@@ -1,21 +1,15 @@
 stages:
     - build
 
-build-win-x86_64:
+build-win64:
     stage: build
-    # image: garthk/qt-build:bionic-5.12.0
-    image: burningdaylight/docker-mingw-qt5 # указываем образ в котором будет происходить сборка
-
-    # указываем команды для сборки
+    image: burningdaylight/docker-mingw-qt5 #image: garthk/qt-build:bionic-5.12.0
     script:
-    - cd /builds/DrSasha/iDea-Craft
-    - x86_64-w64-mingw32-qmake-qt5
-    - make -j$((`nproc`+1))
-    # x86_64-w64-mingw32-windeployqt-qt5 -release
-    # qmake -makefile
-    # make -B /builds/DrSasha/idea-craft/Makefile
-    
-    # загружаем собранные файлы в gitlab
+        - x86_64-w64-mingw32-qmake-qt5
+        - make -j$((`nproc`+1))
+        # x86_64-w64-mingw32-windeployqt-qt5 -release
+        # qmake -makefile
+        # make -B /builds/DrSasha/idea-craft/Makefile
     artifacts:
         paths:
             - ./build
