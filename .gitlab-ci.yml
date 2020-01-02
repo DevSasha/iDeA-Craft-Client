@@ -12,7 +12,7 @@ build-win64:
         # make -B /builds/DrSasha/idea-craft/Makefile
     artifacts:
         paths:
-            - ./build
+            - idea-craft
 
 build-lin64:
     stage: build
@@ -22,4 +22,4 @@ build-lin64:
         - make -j$((`nproc`+1))
     artifacts:
         paths:
-            - ./build
+            - iDeA-Craft.exe
