@@ -1,35 +1,54 @@
 stages:
-    - build-win-x86_64
-    - push-latest
+    - build
+    - deploy
 
-build-win-x86_64:
-    stage: build-win-x86_64
-    # image: garthk/qt-build:bionic-5.12.0
-    image: burningdaylight/docker-mingw-qt5 # указываем образ в котором будет происходить сборка
-
-    # указываем команды для сборки
+build-win64:
+    stage: build
+    image: burningdaylight/docker-mingw-qt5 #image: garthk/qt-build:bionic-5.12.0
     script:
-    - cd /builds/DrSasha/idea-craft
-    - x86_64-w64-mingw32-qmake-qt5
-    - make
-    - mkdir -p build/win64
-    - cp iDeA-Craft.exe build/win64/iDeA-Craft-x64.exe
-    # x86_64-w64-mingw32-windeployqt-qt5 -release
-    # qmake -makefile
-    # make -B /builds/DrSasha/idea-craft/Makefile
-    # i686-w64-mingw32-qmake-qt5
-    
-    # загружаем собранные файлы в gitlab
+        - x86_64-w64-mingw32-qmake-qt5
+        - make -j$((`nproc`+1))
+        # x86_64-w64-mingw32-windeployqt-qt5 -release
+        # qmake -makefile
+        # make -B /builds/DrSasha/idea-craft/Makefile
     artifacts:
         paths:
-            - ./build
+            - iDeA-Craft.exe
 
-#
-# Tag the master image as 'latest'.
-#
-#push-latest:
-    #stage: push-latest
-    #script:
-    #- sudo pacman -S --noconfirm curl
-    #- cd /builds/DrSasha/idea-craft/build/win64
-    #- curl 
+build-lin64:
+    stage: build
+    image: fffaraz/qt:latest
+    script:
+        - x86_64-linux-gnu-qmake
+        - make -j$((`nproc`+1))
+    artifacts:
+        paths:
+            - idea-craft
+
+deploy:
+    stage: deploy
+    image: ubuntu:18.04
+    before_script:
+        - apt-get update
+        - apt-get install -y curl
+    script:
+        - curl
+            -X POST http://apiv1.launcher.idea-craft.space/api/launcher.push
+            -F "os=linux"
+            -F "sessionToken="$SESSION_TOKEN
+            -F "branch="$CI_COMMIT_BRANCH
+            -F "filename=idea-craft"
+            -F "file=@idea-craft"
+        - curl
+            -X POST http://apiv1.launcher.idea-craft.space/api/launcher.push
+            -F "os=windows"
+            -F "sessionToken="$SESSION_TOKEN
+            -F "branch="$CI_COMMIT_BRANCH
+            -F "filename=iDea-Craft.exe"
+            -F "file=@iDea-Craft.exe"
+    dependencies:
+        - build-win64
+        - build-lin64
+    only:
+        - master
+        - develop
