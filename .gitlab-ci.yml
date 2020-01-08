@@ -1,5 +1,6 @@
 stages:
     - build
+    - deploy
 
 build-win64:
     stage: build
@@ -23,3 +24,31 @@ build-lin64:
     artifacts:
         paths:
             - idea-craft
+
+deploy:
+    stage: deploy
+    image: ubuntu:18.04
+    before_script:
+        - apt-get update
+        - apt-get install -y curl
+    script:
+        - curl
+            -X POST http://apiv1.launcher.idea-craft.space/api/launcher.push
+            -F "os=linux"
+            -F "sessionToken="$SESSION_TOKEN
+            -F "branch="$CI_COMMIT_BRANCH
+            -F "filename=idea-craft"
+            -F "file=@idea-craft"
+        - curl
+            -X POST http://apiv1.launcher.idea-craft.space/api/launcher.push
+            -F "os=windows"
+            -F "sessionToken="$SESSION_TOKEN
+            -F "branch="$CI_COMMIT_BRANCH
+            -F "filename=iDea-Craft.exe"
+            -F "file=@iDea-Craft.exe"
+    dependencies:
+        - build-win64
+        - build-lin64
+    only:
+        - master
+        - develop
