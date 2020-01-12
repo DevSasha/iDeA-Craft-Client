@@ -26,7 +26,6 @@ void Core::load()
     qDebug() << "loading...";
     //cfgs = new QSettings(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/configs.ini", QSettings::IniFormat);
     cfgs = new QSettings("DrSasha", "iDeA-Craft Launcher");
-    client = new Client;
     inst = new Instanse("lite12");
     window_auth = new Authorization(client);
         connect(window_auth, &Authorization::authorized, this, &Core::authorized);
