@@ -1,24 +1,14 @@
 #include "core.h"
 
-Core::Core(QApplication *parent) : QObject(parent)
+Core::Core() : QObject()
 {
-    app = parent;
     manager = new QNetworkAccessManager;
     //load();
     qDebug() << "Checking update...";
     checkUpdate();
 }
 
-void Core::checkUpdate()
-{
-    connect(manager, &QNetworkAccessManager::finished, this, &Core::takeUpdeteNews);
-    QNetworkRequest request;    // Отправляемый запрос
-    request.setUrl(QString("http://launcher.idea-craft.space/versions.json")); // Устанавлвиваем URL в запрос
-    manager->get(request);      // Выполняем запрос
-}
-
-void Core::authorized()
-{
+void Core::authorized() {
     qDebug() << "Creating main window";
     window_main = new MainWindow;
     window_main->setNik(window_auth->nik);

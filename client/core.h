@@ -21,23 +21,18 @@ public:
 signals:
 
 public slots:
-    void checkUpdate();
-    void authorized();
+	void authorized();
 	void load();
 
 private:
-    void load();
-    void chekedUpdate();
-
     QSettings *cfgs;
-    Client *client;
+	//Client *client;
     Authorization *window_auth;
     MainWindow *window_main;
     QProcess *runMC;
     QDir *Local, *Temp;
     Instanse *inst;
     QNetworkAccessManager *manager;
-    QApplication *app;
 };
 
 #endif // CORE_H
