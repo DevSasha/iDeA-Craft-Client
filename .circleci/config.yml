@@ -79,9 +79,24 @@ jobs:
                 key: linux64-build-{{ .Environment.CIRCLE_SHA1 }}
             - restore_cache:
                 key: win64-build-{{ .Environment.CIRCLE_SHA1 }}
-            - run: 
-                name: Specify branch
-                command: mkdir branch && echo "" >> branch/${CIRCLE_BRANCH}
+            - run:
+                name: Push Linux binaries to server
+                command: curl
+                    -X POST http://apiv1.launcher.idea-craft.space/api/launcher.push
+                    -F "os=linux"
+                    -F "sessionToken="$SESSION_TOKEN
+                    -F "branch="$CI_COMMIT_BRANCH
+                    -F "filename=idea-craft"
+                    -F "file=@idea-craft"
+            - run:
+                name: Push Windows binaries to server
+                command: curl
+                    -X POST http://apiv1.launcher.idea-craft.space/api/launcher.push
+                    -F "os=windows"
+                    -F "sessionToken="$SESSION_TOKEN
+                    -F "branch="$CI_COMMIT_BRANCH
+                    -F "filename=iDea-Craft.exe"
+                    -F "file=@iDea-Craft.exe"
             - store_artifacts:
                 path: .
             - run: echo $VER'-'$BASH_ENV
