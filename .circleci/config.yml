@@ -20,7 +20,6 @@ jobs:
         working_directory: /tmp/idea
         docker:
             - image: devsasha/qt-xbuild:linux #fffaraz/qt:latest # vookimedlo/ubuntu-qt
-              user: nonroot
         steps:
             - checkout
             - run:
