@@ -5,6 +5,8 @@
 #include <QMessageBox>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
 #include "ui_authorization.h"
 
 namespace Ui {
