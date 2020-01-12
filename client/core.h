@@ -9,7 +9,6 @@
 #include <QMessageBox>
 #include <QInputDialog>
 #include "authorization.h"
-#include "client.h"
 #include "mainwindow.h"
 #include "instanse.h"
 

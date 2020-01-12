@@ -3,7 +3,6 @@
 
 #include <QDialog>
 #include <QMessageBox>
-#include "client.h"
 #include <QJsonDocument>
 #include <QJsonObject>
 #include "ui_authorization.h"
