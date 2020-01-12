@@ -1,19 +1,19 @@
 #include "authorization.h"
 
-Authorization::Authorization(Client *client, QWidget *parent) :
+Authorization::Authorization(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Authorization)
 {
-    this->client = client;
+	this->manager = new QNetworkAccessManager;
+
     ui->setupUi(this);
     setWindowTitle("Вход");
     setFixedSize(466, 307);
-    connect(client, &Client::ReadyRead, this, &Authorization::read);
 }
 
 Authorization::~Authorization(){
     delete ui;
-    disconnect(client, &Client::ReadyRead, this, &Authorization::read);
+	delete this->manager;
 }
 
 int Authorization::auth()
@@ -29,7 +29,6 @@ int Authorization::auth()
         root.insert("login", login);
         root.insert("password", password);
         QJsonDocument doc(root);
-        client->send(doc.toBinaryData());
     }
     return 0;
 }
@@ -71,7 +70,6 @@ void Authorization::on_signin_button_clicked()
             root.insert("login", login);
             root.insert("password", password);
             QJsonDocument doc(root);
-            client->send(doc.toBinaryData());
         }
     }
 }

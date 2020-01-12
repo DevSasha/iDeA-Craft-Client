@@ -16,7 +16,7 @@ class Authorization : public QDialog
     Q_OBJECT
 
 public:
-    explicit Authorization(Client *client, QWidget *parent = nullptr);
+    explicit Authorization(QWidget *parent = nullptr);
     ~Authorization();
     int auth();
 
@@ -40,7 +40,7 @@ private:
     Ui::Authorization *ui;
     QLineEdit *nikname;
     bool SignIn = false;
-    Client *client;
+	QNetworkAccessManager *manager;
 };
 
 #endif // AUTHORIZATION_H
