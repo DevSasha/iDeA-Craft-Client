@@ -81,14 +81,14 @@ jobs:
                 key: win64-build-{{ .Environment.CIRCLE_SHA1 }}
             - run:
                 name: Print metadata
-                command: echo $CI_COMMIT_BRANCH
+                command: echo $CIRCLE_BRANCH
             - run:
                 name: Push Linux binaries to server
                 command: curl
                     -X POST https://apiv1.launcher.idea-craft.space/api/launcher.push
                     -F "os=linux"
                     -F "sessionToken="$SESSION_TOKEN
-                    -F "branch="$CI_COMMIT_BRANCH
+                    -F "branch="$CIRCLE_BRANCH
                     -F "filename=idea-craft"
                     -F "file=@idea-craft"
             - run:
@@ -97,7 +97,7 @@ jobs:
                     -X POST https://apiv1.launcher.idea-craft.space/api/launcher.push
                     -F "os=windows"
                     -F "sessionToken="$SESSION_TOKEN
-                    -F "branch="$CI_COMMIT_BRANCH
+                    -F "branch="$CIRCLE_BRANCH
                     -F "filename=iDeA-Craft.exe"
                     -F "file=@iDeA-Craft.exe"
             - store_artifacts:
