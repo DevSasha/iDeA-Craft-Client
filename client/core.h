@@ -23,8 +23,7 @@ signals:
 public slots:
     void checkUpdate();
     void authorized();
-    void takeUpdeteNews(QNetworkReply* reply);
-    void takeUpdate(QNetworkReply* reply);
+	void load();
 
 private:
     void load();

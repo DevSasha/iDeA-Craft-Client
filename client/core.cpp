@@ -27,63 +27,6 @@ void Core::authorized()
     window_main->show();
 }
 
-void Core::takeUpdeteNews(QNetworkReply *reply)
-{
-    if(reply->error()){
-            qDebug() << "ERROR1" << reply->errorString();
-            QMessageBox::critical(nullptr, "Error update", "Can`t get list versions");
-            QApplication::exit();
-    } else {
-        QJsonDocument doc = QJsonDocument::fromJson(reply->readAll());
-        QJsonObject root = doc.object();
-        QJsonValue lastVersion = root.value("lastVersion");
-        QString lastVer;
-        if(lastVersion.isString()) lastVer = lastVersion.toString(); else {
-            qDebug() << lastVersion.type();
-            QMessageBox::critical(nullptr, "Error update", "Can`t read last version");
-            QApplication::exit();
-        }
-
-        if(lastVer == appVersion){
-            disconnect(manager, &QNetworkAccessManager::finished, this, &Core::takeUpdeteNews);
-            load();
-        }else {
-            disconnect(manager, &QNetworkAccessManager::finished, this, &Core::takeUpdeteNews);
-
-            if(QSysInfo::productType() == "windows"){
-
-            }
-            else if(QSysInfo::kernelType() == "linux"){
-
-            }
-            //connect(manager, &QNetworkAccessManager::finished, this, &Core::takeUpdate);
-            //QNetworkRequest request;    // Отправляемый запрос
-            //request.setUrl(QString("http://idea-craft.space/repo/idea-launcher/iDeA-Craft-Updater.exe")); // Устанавлвиваем URL в запрос
-            //manager->get(request);      // Выполняем запрос
-        }
-    }
-}
-
-void Core::takeUpdate(QNetworkReply* reply) // Only for Windows
-{
-    if(reply->error()){
-        qCritical() << "Can`t download updater" << reply->errorString();
-    } else {
-        QFile file("./Updater.exe");
-        if(file.open(QFile::WriteOnly)){
-            file.write(reply->readAll());  // ... и записываем всю информацию со страницы в файл
-            file.close();                  // закрываем файл
-        }
-
-        QProcess updater;
-        updater.setWorkingDirectory(".");
-        QList<QString> args;
-        args << "-Ver" << appVersion;
-        updater.startDetached("Updater", args);
-        QApplication::exit();
-    }
-}
-
 void Core::load()
 {
     qDebug() << "loading...";
