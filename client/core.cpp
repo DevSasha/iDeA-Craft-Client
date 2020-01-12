@@ -3,9 +3,13 @@
 Core::Core() : QObject()
 {
     manager = new QNetworkAccessManager;
-    //load();
-    qDebug() << "Checking update...";
-    checkUpdate();
+#ifdef DEVELOP_MODE
+	Update *upd = new Update();
+	connect(upd, &Update::updated, this, &Core::load);
+	upd->checkUpdate();
+#else
+	load();
+#endif
 }
 
 void Core::authorized() {
