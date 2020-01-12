@@ -59,16 +59,23 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
         authorization.cpp \
-        client.cpp \
         core.cpp \
-        instanse.cpp
+        instanse.cpp \
+    backend/config.cpp \
+    backend/update.cpp \
+    backend/downloader/downloadworker.cpp \
+    backend/downloader/downloadfile.cpp
 
 HEADERS += \
         mainwindow.h \
         authorization.h \
-        client.h \
         core.h \
-        instanse.h
+        instanse.h \
+    backend/config.h \
+    backend/update.h \
+    defines.h \
+    backend/downloader/downloadworker.h \
+    backend/downloader/downloadfile.h
 
 FORMS += \
         mainwindow.ui \
