@@ -13,8 +13,7 @@
 #include "instanse.h"
 #include "backend/update.h"
 
-class Core : public QObject
-{
+class Core : public QObject {
     Q_OBJECT
 public:
     explicit Core(QApplication *parent = nullptr);

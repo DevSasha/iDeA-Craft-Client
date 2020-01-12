@@ -1,7 +1,6 @@
 #include "core.h"
 
-Core::Core() : QObject()
-{
+Core::Core() {
     manager = new QNetworkAccessManager;
 #ifdef DEVELOP_MODE
 	Update *upd = new Update();
