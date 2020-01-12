@@ -1,8 +1,7 @@
 #ifndef AUTHORIZATION_H
 #define AUTHORIZATION_H
 
-#include <QDialog>
-#include <QMessageBox>
+#include <backend/config.h>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QNetworkAccessManager>
