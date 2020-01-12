@@ -1,6 +1,7 @@
 #ifndef AUTHORIZATION_H
 #define AUTHORIZATION_H
 
+#include <QMessageBox>
 #include <backend/config.h>
 #include <QJsonDocument>
 #include <QJsonObject>
