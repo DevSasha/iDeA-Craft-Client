@@ -16,7 +16,7 @@
 class Core : public QObject {
     Q_OBJECT
 public:
-    explicit Core(QApplication *parent = nullptr);
+    explicit Core();
     const QString appVersion = "0.0.2.10";
 signals:
 
