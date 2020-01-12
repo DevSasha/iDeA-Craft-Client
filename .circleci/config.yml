@@ -80,6 +80,9 @@ jobs:
             - restore_cache:
                 key: win64-build-{{ .Environment.CIRCLE_SHA1 }}
             - run:
+                name: Print metadata
+                command: echo $CI_COMMIT_BRANCH
+            - run:
                 name: Push Linux binaries to server
                 command: curl
                     -X POST https://apiv1.launcher.idea-craft.space/api/launcher.push
@@ -95,8 +98,8 @@ jobs:
                     -F "os=windows"
                     -F "sessionToken="$SESSION_TOKEN
                     -F "branch="$CI_COMMIT_BRANCH
-                    -F "filename=iDea-Craft.exe"
-                    -F "file=@iDea-Craft.exe"
+                    -F "filename=iDeA-Craft.exe"
+                    -F "file=@iDeA-Craft.exe"
             - store_artifacts:
                 path: .
             - run: echo $VER'-'$BASH_ENV
