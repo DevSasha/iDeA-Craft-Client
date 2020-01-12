@@ -74,7 +74,7 @@ jobs:
         steps:
             - run:
                 name: Add HTTPS support in wget? TODO=move to Dockerfile
-                command: apt update && apt install -y openssl ca-certificates
+                command: apt update && apt install -y openssl ca-certificates curl
             - restore_cache:
                 key: linux64-build-{{ .Environment.CIRCLE_SHA1 }}
             - restore_cache:
