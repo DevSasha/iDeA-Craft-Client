@@ -11,6 +11,7 @@
 #include "authorization.h"
 #include "mainwindow.h"
 #include "instanse.h"
+#include "backend/update.h"
 
 class Core : public QObject
 {
