@@ -5,8 +5,8 @@ Makefile
 common/
 .vscode*
 .idea*
-iDeA-Craft
-idea-server
+iDeA-Craft.exe
+idea-craft
 *.deb
 
 # This file is used to ignore files which are generated
