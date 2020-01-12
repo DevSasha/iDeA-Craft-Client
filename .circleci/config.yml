@@ -82,7 +82,7 @@ jobs:
             - run:
                 name: Push Linux binaries to server
                 command: curl
-                    -X POST http://apiv1.launcher.idea-craft.space/api/launcher.push
+                    -X POST https://apiv1.launcher.idea-craft.space/api/launcher.push
                     -F "os=linux"
                     -F "sessionToken="$SESSION_TOKEN
                     -F "branch="$CI_COMMIT_BRANCH
@@ -91,7 +91,7 @@ jobs:
             - run:
                 name: Push Windows binaries to server
                 command: curl
-                    -X POST http://apiv1.launcher.idea-craft.space/api/launcher.push
+                    -X POST https://apiv1.launcher.idea-craft.space/api/launcher.push
                     -F "os=windows"
                     -F "sessionToken="$SESSION_TOKEN
                     -F "branch="$CI_COMMIT_BRANCH
