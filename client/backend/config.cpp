@@ -23,7 +23,7 @@ void Config::save(const QString &key, const QVariant &value) {
 
 QVariant Config::get(const QString &key, const QVariant &defaultValue, bool saveDefault) {
     if (!set->value(key).isNull()) {
-        return set->value("login");
+		return set->value(key);
     } else {
         if (saveDefault)
             this->save(key, defaultValue);
@@ -31,6 +31,6 @@ QVariant Config::get(const QString &key, const QVariant &defaultValue, bool save
     }
 }
 
-Config::Config(QObject *parent) : QObject(parent) {
-	this->set = new QSettings("idea-craft");
+Config::Config() {
+	this->set = new QSettings(QSettings::UserScope, "idea-craft");
 }

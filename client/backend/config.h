@@ -9,7 +9,7 @@ class Config : public QObject
 {
     Q_OBJECT
 public:
-    static Config *config();
+	static Config *config();
     void save(const QString &key, const QVariant &value);
     QVariant get(const QString &key, const QVariant &defaultValue = QVariant(), bool saveDefault = true);
 
@@ -18,7 +18,7 @@ signals:
 public slots:
 
 private:
-    explicit Config(QObject *parent = nullptr);
+	explicit Config();
     static Config *pConfig;
     QSettings *set;
 };
