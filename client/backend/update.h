@@ -14,6 +14,7 @@
 #include <backend/downloader/downloadworker.h>
 #include <QApplication>
 #include <QProcess>
+#include <backend/config.h>
 
 class Update : public QObject
 {
@@ -38,6 +39,7 @@ public slots:
 private:
 	QNetworkAccessManager *manager;
 	DownloadWorker *dw;
+	QString branch;
 };
 
 #endif // UPDATE_H

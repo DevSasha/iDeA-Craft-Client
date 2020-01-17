@@ -2,6 +2,7 @@
 
 Update::Update(QObject *parent) : QObject(parent) {
 	this->manager = new QNetworkAccessManager;
+	this->branch = Config::config()->get("updates.branch", "master").toString();
 }
 
 void Update::checkUpdate() {
@@ -12,6 +13,7 @@ void Update::checkUpdate() {
 
 	QUrlQuery post;
 	post.addQueryItem("os", QSysInfo::kernelType());
+	post.addQueryItem("branch", this->branch);
 
 	QByteArray postData = post.toString(QUrl::FullyEncoded).toUtf8();
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
@@ -82,7 +84,7 @@ void Update::parseBody(QJsonObject body) {
 		QString name, hash, path, uri;
 		name = vFilename.toString();
 		hash = vHash.toString();
-		uri = "https://ftp.idea-craft.space/launcher/" + QSysInfo::kernelType() + "/" + name;
+		uri = LAUNCHER_MIRROR + this->branch + "/" + QSysInfo::kernelType() + "/" + name;
 		path = QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/" + name;
 
 		DownloadFile *file = nullptr;
