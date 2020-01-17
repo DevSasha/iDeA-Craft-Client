@@ -84,7 +84,7 @@ void Update::parseBody(QJsonObject body) {
 		QString name, hash, path, uri;
 		name = vFilename.toString();
 		hash = vHash.toString();
-		uri = LAUNCHER_MIRROR + this->branch + "/" + QSysInfo::kernelType() + "/" + name;
+		uri = LAUNCHER_MIRROR + QSysInfo::kernelType() + "/" + this->branch + "/" + name;
 		path = QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/" + name;
 
 		DownloadFile *file = nullptr;
