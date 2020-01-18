@@ -145,7 +145,7 @@ void Update::restart() {
 	if (kernel == "linux") {
 		QProcess *proc = new QProcess();
 		proc->setWorkingDirectory(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
-		proc->startDetached("bash -c \"sleep 1s && ./idea-craft\"");
+		proc->startDetached(LINUX_BIN);
 		qApp->exit();
 	}
 }
