@@ -2,7 +2,7 @@
 
 Core::Core() {
     manager = new QNetworkAccessManager;
-#ifdef DEVELOP_MODE
+#ifndef DEVELOP_MODE
 	Update *upd = new Update();
 	connect(upd, &Update::updated, this, &Core::load);
 	upd->checkUpdate();
