@@ -3,6 +3,11 @@
 Update::Update(QObject *parent) : QObject(parent) {
 	this->manager = new QNetworkAccessManager;
 	this->branch = Config::config()->get("updates.branch", "master").toString();
+	if (QSysInfo::kernelType() == "linux") {
+		this->mainFile = LINUX_BIN;
+	} else if (QSysInfo::kernelType() == "windows") {
+		this->mainFile = WINDOWS_BIN;
+	}
 }
 
 void Update::checkUpdate() {
@@ -88,7 +93,7 @@ void Update::parseBody(QJsonObject body) {
 		path = QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/" + name;
 
 		DownloadFile *file = nullptr;
-		if (name == "idea-craft") {
+		if (name == this->mainFile) {
 			DownloadFile *mFile = new DownloadFile(name, hash, path, uri, QCryptographicHash::Md5);
 			if (!mFile->isCorrect()) {
 				path += "_new";

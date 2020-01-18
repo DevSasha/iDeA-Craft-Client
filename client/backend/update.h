@@ -40,6 +40,7 @@ private:
 	QNetworkAccessManager *manager;
 	DownloadWorker *dw;
 	QString branch;
+	QString mainFile;
 };
 
 #endif // UPDATE_H
