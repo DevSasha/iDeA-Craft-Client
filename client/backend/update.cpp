@@ -133,7 +133,7 @@ void Update::finishUpdate() {
 		qCritical() << "Update not downloaded";
 	else {
 		outFile.remove();
-		inFile.rename("idea-craft");
+		inFile.rename(this->mainFile);
 		inFile.setPermissions(QFile::ExeGroup  | QFile::ExeOther  | QFile::ExeOther  | QFile::ExeUser |
 							  QFile::ReadGroup | QFile::ReadOther | QFile::ReadOther | QFile::ReadUser |
 							  QFile::WriteOwner);
