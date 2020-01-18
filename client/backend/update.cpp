@@ -72,14 +72,12 @@ void Update::parseBody(QJsonObject body) {
 		if (!jUpdates[i].isObject()) {
 			qCritical() << "Uncorrect server response: jUpdates " << jUpdates[i].type();
 		}
-
 		QJsonObject jUpdates_i = jUpdates[i].toObject();
 
 		QJsonValue vFilename = jUpdates_i.value("filename");
 		if (!vFilename.isString()) {
 			qCritical() << "Uncorrect server response: vFilename " << vFilename.type();
 		}
-
 
 		QJsonValue vHash = jUpdates_i.value("hash");
 		if (!vHash.isString()) {
