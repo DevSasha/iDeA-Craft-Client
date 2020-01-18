@@ -125,8 +125,9 @@ void Update::downloadFinished(quint64 countDownloadedFiles) {
 }
 
 void Update::finishUpdate() {
-	QFile inFile(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/idea-craft_new");
-	QFile outFile(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/idea-craft");
+	QString filePath = QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/" + this->mainFile;
+	QFile inFile(filePath + "_new");
+	QFile outFile(filePath);
 
 	if (!inFile.exists())
 		qCritical() << "Update not downloaded";
