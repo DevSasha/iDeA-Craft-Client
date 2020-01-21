@@ -111,6 +111,8 @@ void Authorization::regReply(QNetworkReply *reply) {
 			}
 			qCritical() << "Error(" << statusCode << "): " << vStatusMsg.toString();
 		}
+
+		auth();
 	}
 }
 
