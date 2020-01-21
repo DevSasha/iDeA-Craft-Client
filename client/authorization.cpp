@@ -206,6 +206,10 @@ void Authorization::authStep2Reply(QNetworkReply *reply) {
 }
 
 bool Authorization::checkLoginPasswd() {
+	if (this->login == this->password) {
+		qWarning() << "Логин и пароль не могут быть идентичными.";
+		return false;
+	}
 	if (this->login.size() == 0) {
 		if (this->password.size() == 0) qWarning() << "Вы не ввели логин и пароль.";
 		else qWarning() << "Вы не ввели логин.";
