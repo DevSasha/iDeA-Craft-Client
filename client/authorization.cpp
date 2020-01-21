@@ -16,21 +16,18 @@ Authorization::~Authorization(){
 	delete this->manager;
 }
 
-int Authorization::auth()
-{
-    if(!login.size() && password.size()) QMessageBox::warning(this, "Ошибка", "Вы не ввели логин");
-    if(login.size() && !password.size()) QMessageBox::warning(this, "Ошибка", "Вы не ввели пароль");
-    if(!login.size() && !password.size()) QMessageBox::warning(this, "Ошибка", "Вы не ввели логин и пароль");
-    if(login.size() && password.size()){
-        QJsonObject root;
-        root.insert("lock", "");
-        root.insert("method", "authorization");
-        root.insert("version", "1");
-        root.insert("login", login);
-        root.insert("password", password);
-        QJsonDocument doc(root);
-    }
-    return 0;
+void Authorization::auth() {
+	connect(manager, &QNetworkAccessManager::finished, this, &Authorization::authReply);
+	QNetworkRequest request;
+	request.setUrl(QString(API_SERVER)+ "user.auth");
+
+	QUrlQuery post;
+	post.addQueryItem("nickname", login);
+	post.addQueryItem("step", "1");
+
+	QByteArray postData = post.toString(QUrl::FullyEncoded).toUtf8();
+	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+	manager->post(request, postData);
 }
 
 void Authorization::on_login_button_clicked() {
