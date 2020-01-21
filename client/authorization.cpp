@@ -51,9 +51,12 @@ void Authorization::on_signin_button_clicked() {
 		this->nikname->setPlaceholderText("Ник");
         ui->verticalLayout->insertWidget(0, nikname);
     }else {
-		this->nik = nikname->text();
 		this->login = ui->login_field->text();
 		this->password = ui->password_field->text();
+
+		if (checkLoginPasswd()) {
+			auth();
+		}
     }
 }
 
