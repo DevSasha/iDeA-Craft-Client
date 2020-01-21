@@ -39,9 +39,9 @@ void Authorization::authStep2(QString salt) {
 	post.addQueryItem("nickname", login);
 	post.addQueryItem("step", "2");
 
-	QByteArray md5Password = QCryptographicHash::hash(this->password.toUtf8(), QCryptographicHash::Md5);
-	QByteArray doubleMd5Password = QCryptographicHash::hash(md5Password, QCryptographicHash::Md5);
-	QString password = QCryptographicHash::hash((doubleMd5Password + salt).toUtf8(), QCryptographicHash::Sha512);
+	QString md5Password = QCryptographicHash::hash(this->password.toUtf8(), QCryptographicHash::Md5).toHex();
+	QString doubleMd5Password = QCryptographicHash::hash(md5Password.toUtf8(), QCryptographicHash::Md5).toHex();
+	QString password = QCryptographicHash::hash((doubleMd5Password.toUtf8() + salt).toUtf8(), QCryptographicHash::Sha512).toHex();
 	post.addQueryItem("password", password);
 
 	QByteArray postData = post.toString(QUrl::FullyEncoded).toUtf8();
