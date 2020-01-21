@@ -7,12 +7,12 @@ Authorization::Authorization(QWidget *parent) :
 	this->manager = new QNetworkAccessManager;
 
     ui->setupUi(this);
-    setWindowTitle("Вход");
-    setFixedSize(466, 307);
+	setWindowTitle("Вход");
+	setFixedSize(466, 307);
 }
 
 Authorization::~Authorization(){
-    delete ui;
+	delete this->ui;
 	delete this->manager;
 }
 
