@@ -79,28 +79,6 @@ void Authorization::on_signin_button_clicked() {
     }
 }
 
-int Authorization::logIn(QJsonObject *obj)
-{
-    QString response = "";
-    QJsonValue res = obj->value("response");
-    if(res.isString()) response = res.toString();
-    if(response == "sucsess"){
-        nik = obj->value("nikname").toString();
-        qDebug() << "authorized";
-        emit authorized();
-        //TODO: logIn sucsess
-        if(this->safePass){
-            Config *cfg = Config::config();
-            cfg->save("auth.login", this->login);
-            cfg->save("auth.password", this->password);
-        }
-    }
-    else {
-        return -1;
-    }
-    return 0;
-}
-
 void Authorization::on_isSafe_stateChanged(int arg1)
 {
 	this->safePass = arg1;
