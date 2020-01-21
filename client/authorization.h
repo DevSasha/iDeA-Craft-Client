@@ -38,6 +38,7 @@ private slots:
     void on_isSafe_stateChanged(int arg1);
 
 	void regReply(QNetworkReply *reply);
+	void authReply(QNetworkReply *reply);
 
 private:
     int logIn(QJsonObject *obj);

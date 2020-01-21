@@ -119,6 +119,45 @@ void Authorization::regReply(QNetworkReply *reply) {
 
 }
 
+void Authorization::authReply(QNetworkReply *reply) {
+	if(reply->error()){
+			qCritical() << "ERROR" << reply->errorString();
+	} else {
+		QJsonObject root = QJsonDocument::fromJson(reply->readAll()).object();
+		QJsonValue vStatus = root.value("status");
+		if (!vStatus.isObject()) {
+			qCritical() << "Uncorrect server response: vStatus " << vStatus.type();
+		}
+		QJsonObject jStatus = vStatus.toObject();
+
+		QJsonValue vStatusCode = jStatus.value("code");
+		if (!vStatusCode.isDouble()) {
+			qCritical() << "Uncorrect server response: vStatusCode " << vStatus.type();
+		}
+		int statusCode = vStatusCode.toInt();
+
+		if (statusCode != 0) {
+			QJsonValue vStatusMsg = jStatus.value("msg");
+			if (!vStatusMsg.isString()) {
+				qCritical() << "Uncorrect server response: vStatusMsg " << vStatusMsg.type();
+			}
+			qCritical() << "Error(" << statusCode << "): " << vStatusMsg.toString();
+		}
+
+		QJsonValue vBody = root.value("body");
+		if (!vBody.isObject()) {
+			qCritical() << "Uncorrect server response: vBody " << vBody.type();
+		}
+		QJsonObject jBody = vBody.toObject();
+
+		QJsonValue vSalt = jBody.value("salt");
+		if (!vSalt.isString()) {
+			qCritical() << "Uncorrect server response: vSalt " << vSalt.type();
+		}
+		QString salt = vSalt.toString();
+	}
+}
+
 bool Authorization::checkLoginPasswd() {
 	if (this->login.size() == 0) {
 		if (this->password.size() == 0) qWarning() << "Вы не ввели логин и пароль.";
