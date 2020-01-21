@@ -158,6 +158,10 @@ void Authorization::authReply(QNetworkReply *reply) {
 
 void Authorization::authStep2Reply(QNetworkReply *reply) {
 	disconnect(manager, &QNetworkAccessManager::finished, this, &Authorization::authStep2Reply);
+	if(reply->error()){
+		qCritical() << "ERROR" << reply->errorString();
+		return;
+	}
 	QJsonObject root = QJsonDocument::fromJson(reply->readAll()).object();
 	QJsonValue vStatus = root.value("status");
 	if (!vStatus.isObject()) {
