@@ -38,6 +38,7 @@ private slots:
 private:
     int logIn(QJsonObject *obj);
     int signIn(QJsonObject *obj);
+	bool checkLoginPasswd();
 
     Ui::Authorization *ui;
     QLineEdit *nikname;

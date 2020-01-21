@@ -128,4 +128,14 @@ int Authorization::signIn(QJsonObject *obj)
 void Authorization::on_isSafe_stateChanged(int arg1)
 {
     safePass = arg1;
+
+bool Authorization::checkLoginPasswd() {
+	if (this->login.size() == 0) {
+		if (this->password.size() == 0) qWarning() << "Вы не ввели логин и пароль.";
+		else qWarning() << "Вы не ввели логин.";
+	} else {
+		if (this->password.size() == 0) qWarning() << "Вы не ввели пароль.";
+		else return true;
+	}
+	return false;
 }
