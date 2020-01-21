@@ -55,7 +55,7 @@ void Authorization::on_signin_button_clicked() {
 		this->password = ui->password_field->text();
 
 		if (checkLoginPasswd()) {
-			auth();
+			reg(this->login, this->emailField->text(), this->password);
 		}
     }
 }
