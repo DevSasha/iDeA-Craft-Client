@@ -33,18 +33,18 @@ int Authorization::auth()
     return 0;
 }
 
-void Authorization::on_login_button_clicked()
-{
-    if(SignIn){
-        SignIn = false;
-        nikname->deleteLater();
-    }
-    else {
-        login = ui->login_field->text();
-        password = ui->password_field->text();
-        auth();
-    }
-}
+void Authorization::on_login_button_clicked() {
+	if (this->isSigninMode) {
+		this->isSigninMode = false;
+		this->nikname->deleteLater();
+	} else {
+		this->login = ui->login_field->text();
+		this->password = ui->password_field->text();
+
+		if (checkLoginPasswd()) {
+			auth();
+		}
+	}
 
 void Authorization::on_signin_button_clicked()
 {
