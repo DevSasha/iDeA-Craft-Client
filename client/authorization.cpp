@@ -190,13 +190,13 @@ void Authorization::authStep2Reply(QNetworkReply *reply) {
 	QJsonObject jBody = vBody.toObject();
 
 	QJsonValue vSessionToken = jBody.value("sessionToken");
-	if (!vSessionToken.isObject()) {
+	if (!vSessionToken.isString()) {
 		qCritical() << "Uncorrect server response: vSessionToken " << vSessionToken.type();
 	}
 	this->sessionToken = vSessionToken.toString();
 
 	qDebug() << "authorized";
-	if(this->safePass){
+	if(this->safePass) {
 		Config *cfg = Config::config();
 		cfg->save("auth.login", this->login);
 		cfg->save("auth.password", this->password);
