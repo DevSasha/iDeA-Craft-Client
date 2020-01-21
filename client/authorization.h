@@ -23,7 +23,7 @@ public:
     explicit Authorization(QWidget *parent = nullptr);
     ~Authorization();
 
-    QString nik, login, password;
+	QString login, password;
     bool safePass = false;
 
 signals:

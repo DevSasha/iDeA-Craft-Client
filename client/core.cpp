@@ -14,7 +14,7 @@ Core::Core() {
 void Core::authorized() {
     qDebug() << "Creating main window";
 	window_main = new MainWindow();
-    window_main->setNik(window_auth->nik);
+	window_main->setNik(window_auth->login);
     window_auth->hide();
     window_main->show();
 }
