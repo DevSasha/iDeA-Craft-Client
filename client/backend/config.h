@@ -12,6 +12,7 @@ public:
 	static Config *config();
     void save(const QString &key, const QVariant &value);
     QVariant get(const QString &key, const QVariant &defaultValue = QVariant(), bool saveDefault = true);
+	bool keyExists(QString key);
 
 signals:
 

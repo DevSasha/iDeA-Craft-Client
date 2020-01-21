@@ -28,7 +28,11 @@ QVariant Config::get(const QString &key, const QVariant &defaultValue, bool save
         if (saveDefault)
             this->save(key, defaultValue);
         return defaultValue;
-    }
+	}
+}
+
+bool Config::keyExists(QString key) {
+	return !set->value(key).isNull();
 }
 
 Config::Config() {
