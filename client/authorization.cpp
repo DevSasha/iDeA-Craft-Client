@@ -33,7 +33,7 @@ void Authorization::auth() {
 void Authorization::on_login_button_clicked() {
 	if (this->isSigninMode) {
 		this->isSigninMode = false;
-		this->nikname->deleteLater();
+		this->emailField->deleteLater();
 	} else {
 		this->login = ui->login_field->text();
 		this->password = ui->password_field->text();
@@ -47,9 +47,9 @@ void Authorization::on_login_button_clicked() {
 void Authorization::on_signin_button_clicked() {
 	if(!this->isSigninMode){
 		this->isSigninMode = true;
-		this->nikname = new QLineEdit(ui->layoutWidget1);
-		this->nikname->setPlaceholderText("Ник");
-        ui->verticalLayout->insertWidget(0, nikname);
+		this->emailField = new QLineEdit(ui->layoutWidget1);
+		this->emailField->setPlaceholderText("E-Mail");
+		ui->verticalLayout->insertWidget(0, this->emailField);
     }else {
 		this->login = ui->login_field->text();
 		this->password = ui->password_field->text();

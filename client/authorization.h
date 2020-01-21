@@ -44,7 +44,7 @@ private:
 	void auth();
 
     Ui::Authorization *ui;
-    QLineEdit *nikname;
+	QLineEdit *emailField;
 	QNetworkAccessManager *manager;
 
 	bool isSigninMode = false;
