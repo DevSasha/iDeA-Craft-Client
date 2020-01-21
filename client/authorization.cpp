@@ -68,7 +68,6 @@ int Authorization::logIn(QJsonObject *obj)
     if(response == "sucsess"){
         nik = obj->value("nikname").toString();
         qDebug() << "authorized";
-        //safePass = true;
         emit authorized();
         //TODO: logIn sucsess
         if(this->safePass){
@@ -89,7 +88,30 @@ void Authorization::on_isSafe_stateChanged(int arg1)
 }
 
 void Authorization::regReply(QNetworkReply *reply) {
+	if(reply->error()){
+			qCritical() << "ERROR" << reply->errorString();
+	} else {
+		QJsonObject root = QJsonDocument::fromJson(reply->readAll()).object();
+		QJsonValue vStatus = root.value("status");
+		if (!vStatus.isObject()) {
+			qCritical() << "Uncorrect server response: vStatus " << vStatus.type();
+		}
+		QJsonObject jStatus = vStatus.toObject();
 
+		QJsonValue vStatusCode = jStatus.value("code");
+		if (!vStatusCode.isDouble()) {
+			qCritical() << "Uncorrect server response: vStatusCode " << vStatus.type();
+		}
+		int statusCode = vStatusCode.toInt();
+
+		if (statusCode != 0) {
+			QJsonValue vStatusMsg = jStatus.value("msg");
+			if (!vStatusMsg.isString()) {
+				qCritical() << "Uncorrect server response: vStatusMsg " << vStatusMsg.type();
+			}
+			qCritical() << "Error(" << statusCode << "): " << vStatusMsg.toString();
+		}
+	}
 }
 
 void Authorization::authReply(QNetworkReply *reply) {
