@@ -88,6 +88,7 @@ void Authorization::on_isSafe_stateChanged(int arg1)
 }
 
 void Authorization::regReply(QNetworkReply *reply) {
+	disconnect(manager, &QNetworkAccessManager::finished, this, &Authorization::regReply);
 	if(reply->error()){
 			qCritical() << "ERROR" << reply->errorString();
 	} else {
@@ -117,6 +118,7 @@ void Authorization::regReply(QNetworkReply *reply) {
 }
 
 void Authorization::authReply(QNetworkReply *reply) {
+	disconnect(manager, &QNetworkAccessManager::finished, this, &Authorization::authReply);
 	if(reply->error()){
 			qCritical() << "ERROR" << reply->errorString();
 	} else {
