@@ -22,7 +22,6 @@ class Authorization : public QDialog
 public:
     explicit Authorization(QWidget *parent = nullptr);
     ~Authorization();
-    int auth();
 
     QString nik, login, password;
     bool safePass = false;
@@ -46,11 +45,13 @@ private:
 	bool checkLoginPasswd();
 
 	void reg(QString login, QString email, QString password);
+	void auth();
 
     Ui::Authorization *ui;
     QLineEdit *nikname;
-	bool isSigninMode = false;
 	QNetworkAccessManager *manager;
+
+	bool isSigninMode = false;
 };
 
 #endif // AUTHORIZATION_H

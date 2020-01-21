@@ -113,7 +113,8 @@ int Authorization::signIn(QJsonObject *obj)
 
 void Authorization::on_isSafe_stateChanged(int arg1)
 {
-    safePass = arg1;
+	this->safePass = arg1;
+}
 
 void Authorization::regReply(QNetworkReply *reply) {
 
