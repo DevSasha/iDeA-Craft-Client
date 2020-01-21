@@ -23,7 +23,7 @@ public:
     explicit Authorization(QWidget *parent = nullptr);
     ~Authorization();
 
-	QString login, password;
+	QString login;
     bool safePass = false;
 
 signals:
@@ -36,16 +36,19 @@ private slots:
 
 	void regReply(QNetworkReply *reply);
 	void authReply(QNetworkReply *reply);
+	void authStep2Reply(QNetworkReply *reply);
 
 private:
 	bool checkLoginPasswd();
 
 	void reg(QString login, QString email, QString password);
 	void auth();
+	void authStep2(QString salt);
 
     Ui::Authorization *ui;
 	QLineEdit *emailField;
 	QNetworkAccessManager *manager;
+	QString password, sessionToken;
 
 	bool isSigninMode = false;
 };

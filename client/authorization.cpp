@@ -30,6 +30,25 @@ void Authorization::auth() {
 	manager->post(request, postData);
 }
 
+void Authorization::authStep2(QString salt) {
+	connect(this->manager, &QNetworkAccessManager::finished, this, &Authorization::authStep2Reply);
+	QNetworkRequest request;
+	request.setUrl(QString(API_SERVER)+ "user.reg");
+
+	QUrlQuery post;
+	post.addQueryItem("nickname", login);
+	post.addQueryItem("step", "2");
+
+	QByteArray md5Password = QCryptographicHash::hash(this->password.toUtf8(), QCryptographicHash::Md5);
+	QByteArray doubleMd5Password = QCryptographicHash::hash(md5Password, QCryptographicHash::Md5);
+	QString password = QCryptographicHash::hash((doubleMd5Password + salt).toUtf8(), QCryptographicHash::Sha512);
+	post.addQueryItem("password", password);
+
+	QByteArray postData = post.toString(QUrl::FullyEncoded).toUtf8();
+	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+	manager->post(request, postData);
+}
+
 void Authorization::on_login_button_clicked() {
 	if (this->isSigninMode) {
 		this->isSigninMode = false;
@@ -154,7 +173,46 @@ void Authorization::authReply(QNetworkReply *reply) {
 			qCritical() << "Uncorrect server response: vSalt " << vSalt.type();
 		}
 		QString salt = vSalt.toString();
+
+		authStep2(salt);
 	}
+}
+
+void Authorization::authStep2Reply(QNetworkReply *reply) {
+	disconnect(manager, &QNetworkAccessManager::finished, this, &Authorization::authStep2Reply);
+	QJsonObject root = QJsonDocument::fromJson(reply->readAll()).object();
+	QJsonValue vStatus = root.value("status");
+	if (!vStatus.isObject()) {
+		qCritical() << "Uncorrect server response: vStatus " << vStatus.type();
+	}
+	QJsonObject jStatus = vStatus.toObject();
+
+	QJsonValue vStatusCode = jStatus.value("code");
+	if (!vStatusCode.isDouble()) {
+		qCritical() << "Uncorrect server response: vStatusCode " << vStatus.type();
+	}
+	int statusCode = vStatusCode.toInt();
+
+	if (statusCode != 0) {
+		QJsonValue vStatusMsg = jStatus.value("msg");
+		if (!vStatusMsg.isString()) {
+			qCritical() << "Uncorrect server response: vStatusMsg " << vStatusMsg.type();
+		}
+		qCritical() << "Error(" << statusCode << "): " << vStatusMsg.toString();
+	}
+
+	QJsonValue vBody = root.value("body");
+	if (!vBody.isObject()) {
+		qCritical() << "Uncorrect server response: vBody " << vBody.type();
+	}
+	QJsonObject jBody = vBody.toObject();
+
+	QJsonValue vSessionToken = jBody.value("sessionToken");
+	if (!vSessionToken.isObject()) {
+		qCritical() << "Uncorrect server response: vSessionToken " << vSessionToken.type();
+	}
+	this->sessionToken = vSessionToken.toString();
+	emit this->authorized();
 }
 
 bool Authorization::checkLoginPasswd() {
