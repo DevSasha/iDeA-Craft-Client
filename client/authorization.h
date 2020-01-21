@@ -30,7 +30,7 @@ signals:
 
 private slots:
 	void on_login_button_clicked();
-    void on_signin_button_clicked();
+	void on_signin_button_clicked();
     void read(QByteArray msg);
 
     void on_isSafe_stateChanged(int arg1);

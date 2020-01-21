@@ -45,32 +45,18 @@ void Authorization::on_login_button_clicked() {
 			auth();
 		}
 	}
+}
 
-void Authorization::on_signin_button_clicked()
-{
-    if(!SignIn){
-        SignIn = true;
-        nikname = new QLineEdit(ui->layoutWidget1);
-        nikname->setPlaceholderText("Ник");
+void Authorization::on_signin_button_clicked() {
+	if(!this->isSigninMode){
+		this->isSigninMode = true;
+		this->nikname = new QLineEdit(ui->layoutWidget1);
+		this->nikname->setPlaceholderText("Ник");
         ui->verticalLayout->insertWidget(0, nikname);
     }else {
-        nik = nikname->text();
-        login = ui->login_field->text();
-        password = ui->password_field->text();
-
-        if(!login.size() && password.size()) QMessageBox::warning(this, "Ошибка", "Вы не ввели логин");
-        if(login.size() && !password.size()) QMessageBox::warning(this, "Ошибка", "Вы не ввели пароль");
-        if(!login.size() && !password.size()) QMessageBox::warning(this, "Ошибка", "Вы не ввели логин и пароль");
-        if(login.size() && password.size() && nik.size()){
-            QJsonObject root;
-            root.insert("lock", "");
-            root.insert("method", "registration");
-            root.insert("version", "1");
-            root.insert("nikname", nik);
-            root.insert("login", login);
-            root.insert("password", password);
-            QJsonDocument doc(root);
-        }
+		this->nik = nikname->text();
+		this->login = ui->login_field->text();
+		this->password = ui->password_field->text();
     }
 }
 
