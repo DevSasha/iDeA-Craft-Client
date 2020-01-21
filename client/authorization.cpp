@@ -115,6 +115,10 @@ void Authorization::on_isSafe_stateChanged(int arg1)
 {
     safePass = arg1;
 
+void Authorization::regReply(QNetworkReply *reply) {
+
+}
+
 bool Authorization::checkLoginPasswd() {
 	if (this->login.size() == 0) {
 		if (this->password.size() == 0) qWarning() << "Вы не ввели логин и пароль.";
@@ -124,4 +128,19 @@ bool Authorization::checkLoginPasswd() {
 		else return true;
 	}
 	return false;
+}
+
+void Authorization::reg(QString login, QString email, QString password) {
+	connect(this->manager, &QNetworkAccessManager::finished, this, &Authorization::regReply);
+	QNetworkRequest request;
+	request.setUrl(QString(API_SERVER)+ "user.reg");
+
+	QUrlQuery post;
+	post.addQueryItem("nickname", login);
+	post.addQueryItem("email", email);
+	post.addQueryItem("password", password);
+
+	QByteArray postData = post.toString(QUrl::FullyEncoded).toUtf8();
+	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+	manager->post(request, postData);
 }

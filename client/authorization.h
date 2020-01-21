@@ -7,7 +7,9 @@
 #include <QJsonObject>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
+#include <QUrlQuery>
 #include "ui_authorization.h"
+#include "defines.h"
 
 namespace Ui {
     class Authorization;
@@ -35,10 +37,14 @@ private slots:
 
     void on_isSafe_stateChanged(int arg1);
 
+	void regReply(QNetworkReply *reply);
+
 private:
     int logIn(QJsonObject *obj);
     int signIn(QJsonObject *obj);
 	bool checkLoginPasswd();
+
+	void reg(QString login, QString email, QString password);
 
     Ui::Authorization *ui;
     QLineEdit *nikname;
