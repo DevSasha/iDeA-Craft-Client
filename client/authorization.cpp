@@ -212,6 +212,14 @@ void Authorization::authStep2Reply(QNetworkReply *reply) {
 		qCritical() << "Uncorrect server response: vSessionToken " << vSessionToken.type();
 	}
 	this->sessionToken = vSessionToken.toString();
+
+	qDebug() << "authorized";
+	if(this->safePass){
+		Config *cfg = Config::config();
+		cfg->save("auth.login", this->login);
+		cfg->save("auth.password", this->password);
+	}
+
 	emit this->authorized();
 }
 
