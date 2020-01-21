@@ -32,16 +32,12 @@ signals:
 private slots:
 	void on_login_button_clicked();
 	void on_signin_button_clicked();
-    void read(QByteArray msg);
-
     void on_isSafe_stateChanged(int arg1);
 
 	void regReply(QNetworkReply *reply);
 	void authReply(QNetworkReply *reply);
 
 private:
-    int logIn(QJsonObject *obj);
-    int signIn(QJsonObject *obj);
 	bool checkLoginPasswd();
 
 	void reg(QString login, QString email, QString password);

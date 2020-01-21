@@ -60,19 +60,6 @@ void Authorization::on_signin_button_clicked() {
     }
 }
 
-void Authorization::read(QByteArray msg)
-{
-    QJsonDocument doc = QJsonDocument::fromBinaryData(msg);
-    QJsonObject root = doc.object();
-    QJsonValue method = root.value("method");
-    QString strMethod;
-    if(method.isString()) strMethod = method.toString(); else return;
-
-         if(strMethod == "registration") signIn(&root);
-    else if(strMethod == "authorization") logIn(&root);
-         else qDebug("Err");
-}
-
 int Authorization::logIn(QJsonObject *obj)
 {
     QString response = "";
@@ -89,21 +76,6 @@ int Authorization::logIn(QJsonObject *obj)
             cfg->save("auth.login", this->login);
             cfg->save("auth.password", this->password);
         }
-    }
-    else {
-        return -1;
-    }
-    return 0;
-}
-
-int Authorization::signIn(QJsonObject *obj)
-{
-    QString response = "";
-    QJsonValue res = obj->value("response");
-    if(res.isString()) response = res.toString();
-    if(response == "sucsess"){
-        qDebug() << "Sucsess";
-        auth();
     }
     else {
         return -1;
