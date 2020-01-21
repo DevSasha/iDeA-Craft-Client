@@ -33,7 +33,7 @@ void Authorization::auth() {
 void Authorization::authStep2(QString salt) {
 	connect(this->manager, &QNetworkAccessManager::finished, this, &Authorization::authStep2Reply);
 	QNetworkRequest request;
-	request.setUrl(QString(API_SERVER)+ "user.reg");
+	request.setUrl(QString(API_SERVER)+ "user.auth");
 
 	QUrlQuery post;
 	post.addQueryItem("nickname", login);
