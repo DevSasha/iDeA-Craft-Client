@@ -107,7 +107,8 @@ void Authorization::regReply(QNetworkReply *reply) {
 			if (!vStatusMsg.isString()) {
 				qCritical() << "Uncorrect server response: vStatusMsg " << vStatusMsg.type();
 			}
-			qCritical() << "Error(" << statusCode << "): " << vStatusMsg.toString();
+			qWarning() << "Error(" << statusCode << "): " << vStatusMsg.toString();
+			return;
 		}
 
 		auth();
@@ -137,7 +138,8 @@ void Authorization::authReply(QNetworkReply *reply) {
 			if (!vStatusMsg.isString()) {
 				qCritical() << "Uncorrect server response: vStatusMsg " << vStatusMsg.type();
 			}
-			qCritical() << "Error(" << statusCode << "): " << vStatusMsg.toString();
+			qWarning() << "Error(" << statusCode << "): " << vStatusMsg.toString();
+			return;
 		}
 
 		QJsonValue vBody = root.value("body");
@@ -180,7 +182,8 @@ void Authorization::authStep2Reply(QNetworkReply *reply) {
 		if (!vStatusMsg.isString()) {
 			qCritical() << "Uncorrect server response: vStatusMsg " << vStatusMsg.type();
 		}
-		qCritical() << "Error(" << statusCode << "): " << vStatusMsg.toString();
+		qWarning() << "Error(" << statusCode << "): " << vStatusMsg.toString();
+		return;
 	}
 
 	QJsonValue vBody = root.value("body");
