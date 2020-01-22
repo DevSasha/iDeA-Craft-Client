@@ -2,7 +2,7 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
-#define DEVELOP_MODE
+// #define DEVELOP_MODE // Uncomment to enable develop mode
 #define API_SERVER "https://apiv1.launcher.idea-craft.space/api/"
 #define LAUNCHER_MIRROR "https://ftp.idea-craft.space/launcher/"
 #define LINUX_BIN "idea-craft"
