@@ -1,5 +1,7 @@
 #include "apirequest.h"
 
-APIRequest::APIRequest(QObject *parent) : QObject(parent) {
-
+APIRequest::APIRequest(QString method) {
+	if (this->mng == nullptr) {
+		this->mng = new QNetworkAccessManager;
+	}
 }
