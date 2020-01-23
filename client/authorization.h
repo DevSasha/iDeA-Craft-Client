@@ -26,6 +26,8 @@ public:
 	QString login;
     bool safePass = false;
 
+	QString getSessionToken();
+
 signals:
     void authorized();
 

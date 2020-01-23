@@ -16,6 +16,10 @@ Authorization::~Authorization(){
 	delete this->manager;
 }
 
+QString Authorization::getSessionToken() {
+	return this->sessionToken;
+}
+
 void Authorization::auth() {
 	connect(manager, &QNetworkAccessManager::finished, this, &Authorization::authReply);
 	QNetworkRequest request;
