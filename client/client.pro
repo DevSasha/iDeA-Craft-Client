@@ -64,7 +64,7 @@ SOURCES += \
     backend/config.cpp \
     backend/update.cpp \
     backend/downloader/downloadworker.cpp \
-    backend/downloader/downloadfile.cpp
+    #backend/downloader/dwthread.cpp
     backend/downloader/downloadfile.cpp \
     backend/apirequest.cpp
 
@@ -77,7 +77,7 @@ HEADERS += \
     backend/update.h \
     defines.h \
     backend/downloader/downloadworker.h \
-    backend/downloader/downloadfile.h
+    #backend/downloader/dwthread.h
     backend/downloader/downloadfile.h \
     backend/apirequest.h
 
