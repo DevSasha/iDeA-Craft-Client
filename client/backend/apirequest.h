@@ -28,7 +28,7 @@ public slots:
 private:
 	static std::vector<QString> defaultKeys, defaultValues;
 
-	QNetworkAccessManager *mng;
+	QNetworkAccessManager *mng = nullptr;
 	QUrlQuery form;
 	QString method;
 };
