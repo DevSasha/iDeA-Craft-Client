@@ -17,6 +17,7 @@ void Update::checkUpdate() {
 	req->addQueryItem("branch", this->branch);
 
 	connect(req, &APIRequest::finished, this, &Update::parseBody);
+	req->send();
 }
 
 void Update::parseBody(QJsonObject *body) {
