@@ -65,6 +65,8 @@ SOURCES += \
     backend/update.cpp \
     backend/downloader/downloadworker.cpp \
     backend/downloader/downloadfile.cpp
+    backend/downloader/downloadfile.cpp \
+    backend/apirequest.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -76,6 +78,8 @@ HEADERS += \
     defines.h \
     backend/downloader/downloadworker.h \
     backend/downloader/downloadfile.h
+    backend/downloader/downloadfile.h \
+    backend/apirequest.h
 
 FORMS += \
         mainwindow.ui \
