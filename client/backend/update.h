@@ -4,8 +4,6 @@
 #include "defines.h"
 #include <QObject>
 #include <QtDebug>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
@@ -15,6 +13,7 @@
 #include <QApplication>
 #include <QProcess>
 #include <backend/config.h>
+#include <backend/apirequest.h>
 
 class Update : public QObject
 {
@@ -27,8 +26,7 @@ signals:
 
 public slots:
 	void checkUpdate();
-	void onResponse(QNetworkReply *reply);
-	void parseBody(QJsonObject body);
+	void parseBody(QJsonObject *body);
 	void startDownload(const QList<DownloadFile *> &files);
 
 	void downloadFinished(quint64 countDownloadedFiles);
@@ -37,7 +35,6 @@ public slots:
 	void error(QString msg);
 
 private:
-	QNetworkAccessManager *manager;
 	DownloadWorker *dw;
 	QString branch;
 	QString mainFile;

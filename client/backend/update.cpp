@@ -1,7 +1,6 @@
 #include "update.h"
 
 Update::Update(QObject *parent) : QObject(parent) {
-	this->manager = new QNetworkAccessManager;
 	this->branch = Config::config()->get("updates.branch", "master").toString();
 	if (QSysInfo::kernelType() == "linux") {
 		this->mainFile = LINUX_BIN;
@@ -12,56 +11,18 @@ Update::Update(QObject *parent) : QObject(parent) {
 
 void Update::checkUpdate() {
 	qDebug() << "Checking update...";
-	connect(this->manager, &QNetworkAccessManager::finished, this, &Update::onResponse);
-	QNetworkRequest request;
-	request.setUrl(QString(API_SERVER)+ "launcher.updates");
+	APIRequest *req = new APIRequest("launcher.updates");
 
-	QUrlQuery post;
-	post.addQueryItem("os", QSysInfo::kernelType());
-	post.addQueryItem("branch", this->branch);
+	req->addQueryItem("os", QSysInfo::kernelType());
+	req->addQueryItem("branch", this->branch);
 
-	QByteArray postData = post.toString(QUrl::FullyEncoded).toUtf8();
-	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-	manager->post(request, postData);
+	connect(req, &APIRequest::finished, this, &Update::parseBody);
 }
 
-void Update::onResponse(QNetworkReply *reply) {
-	if (reply->error()) {
-			qCritical() << "Update error: " << reply->errorString();
-	} else {
-		QJsonObject root = QJsonDocument::fromJson(reply->readAll()).object();
-		QJsonValue vStatus = root.value("status");
-		if (!vStatus.isObject()) {
-			qCritical() << "Uncorrect server response: vStatus " << vStatus.type();
-		}
-		QJsonObject jStatus = vStatus.toObject();
+void Update::parseBody(QJsonObject *body) {
+	QJsonValue vUpdates = body->value("updates");
+	delete body;
 
-		QJsonValue vStatusCode = jStatus.value("code");
-		if (!vStatusCode.isDouble()) {
-			qCritical() << "Uncorrect server response: vStatusCode " << vStatus.type();
-		}
-		int statusCode = vStatusCode.toInt();
-
-		if (statusCode != 0) {
-			QJsonValue vStatusMsg = jStatus.value("msg");
-			if (!vStatusMsg.isString()) {
-				qCritical() << "Uncorrect server response: vStatusMsg " << vStatusMsg.type();
-			}
-			qCritical() << "Error(" << statusCode << "): " << vStatusMsg.toString();
-		}
-
-		disconnect(this->manager, &QNetworkAccessManager::finished, this, &Update::onResponse);
-
-		QJsonValue vBody = root.value("body");
-		if (!vBody.isObject()) {
-			qCritical() << "Uncorrect server response: vBody " << vBody.type();
-		}
-		this->parseBody(vBody.toObject());
-	}
-}
-
-void Update::parseBody(QJsonObject body) {
-	QJsonValue vUpdates = body.value("updates");
 	if (!vUpdates.isArray()) {
 		qCritical() << "Uncorrect server response: vUpdates " << vUpdates.type();
 	}
