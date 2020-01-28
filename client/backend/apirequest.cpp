@@ -74,5 +74,6 @@ void APIRequest::reply(QNetworkReply *reply) {
 		}
 		QJsonObject *body = new QJsonObject(vBody.toObject());
 		emit this->finished(body);
+		this->deleteLater();
 	}
 }
