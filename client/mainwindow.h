@@ -17,8 +17,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void setNik(QString nik);
-
+	void setNickname(QString nick);
 
 signals:
     void startInst(QString name);
