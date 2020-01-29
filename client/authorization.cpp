@@ -108,6 +108,7 @@ void Authorization::authStep2Reply(QJsonObject *body) {
 		qCritical() << "Uncorrect server response: vSessionToken " << vSessionToken.type();
 	}
 	this->sessionToken = vSessionToken.toString();
+	APIRequest::addDefaultQueryItem("sessionToken", this->sessionToken);
 
 	qDebug() << "authorized";
 	if(this->safePass) {
