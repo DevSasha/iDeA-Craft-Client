@@ -28,8 +28,8 @@ void APIRequest::addQueryItem(QString key, QString value) {
 }
 
 void APIRequest::addDefaultQueryItem(QString key, QString value) {
-	this->defaultKeys.push_back(key);
-	this->defaultValues.push_back(value);
+	defaultKeys.push_back(key);
+	defaultValues.push_back(value);
 }
 
 void APIRequest::send() {

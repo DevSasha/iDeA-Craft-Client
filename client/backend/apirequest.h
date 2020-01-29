@@ -16,7 +16,7 @@ public:
 	explicit APIRequest(QString mathod);
 	~APIRequest();
 	void addQueryItem(QString key, QString value);
-	void addDefaultQueryItem(QString key, QString value);
+	static void addDefaultQueryItem(QString key, QString value);
 	void send();
 
 signals:
