@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QDebug>
 #include <QSysInfo>
+#include <defines.h>
 
 namespace Ui {
 class MainWindow;

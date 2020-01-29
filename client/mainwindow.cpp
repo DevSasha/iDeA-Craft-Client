@@ -6,19 +6,16 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    setWindowTitle("iDeA-Craft Launcher");
+	setWindowTitle(WINDOW_TITLE);
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
     delete ui;
-    qDebug() << "Close";
+	qDebug() << "Close";
 }
 
-void MainWindow::setNik(QString nik)
-{
-    this->nik = nik;
-    ui->statusBar->showMessage("v0.0.2.10    Authorized as " + nik);
+void MainWindow::setNickname(QString nick) {
+	this->nickname = nick;
 }
 
 void MainWindow::processUpdate(int status)
