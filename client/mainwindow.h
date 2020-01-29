@@ -31,7 +31,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-	QString nickname, sessionToken;
+	QString nickname = "", sessionToken;
 };
 
 #endif // MAINWINDOW_H

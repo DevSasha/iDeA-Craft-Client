@@ -15,5 +15,6 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::setNickname(QString nick) {
+	if (this->nickname != "") return;
 	this->nickname = nick;
 }
