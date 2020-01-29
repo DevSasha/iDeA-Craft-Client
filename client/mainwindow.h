@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QDebug>
 #include <QSysInfo>
+#include <backend/apirequest.h>
 #include <defines.h>
 
 namespace Ui {
@@ -20,18 +21,17 @@ public:
 	void setNickname(QString nick);
 
 signals:
-    void startInst(QString name);
+
 
 public slots:
-    void processUpdate(int status);
-    void installationComplete();
+
 
 private slots:
-    void on_run_clicked();
+
 
 private:
     Ui::MainWindow *ui;
-    QString nik;
+	QString nickname, sessionToken;
 };
 
 #endif // MAINWINDOW_H
