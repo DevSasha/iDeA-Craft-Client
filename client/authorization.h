@@ -3,11 +3,8 @@
 
 #include <QMessageBox>
 #include <backend/config.h>
-#include <QJsonDocument>
+#include <backend/apirequest.h>
 #include <QJsonObject>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QUrlQuery>
 #include "ui_authorization.h"
 #include "defines.h"
 
@@ -36,9 +33,9 @@ private slots:
 	void on_signin_button_clicked();
     void on_isSafe_stateChanged(int arg1);
 
-	void regReply(QNetworkReply *reply);
-	void authReply(QNetworkReply *reply);
-	void authStep2Reply(QNetworkReply *reply);
+	void regReply(QJsonObject *body);
+	void authReply(QJsonObject *body);
+	void authStep2Reply(QJsonObject *body);
 
 private:
 	bool checkLoginPasswd();
@@ -49,7 +46,6 @@ private:
 
     Ui::Authorization *ui;
 	QLineEdit *emailField;
-	QNetworkAccessManager *manager;
 	QString password, sessionToken;
 
 	bool isSigninMode = false;
