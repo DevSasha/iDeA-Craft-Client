@@ -60,7 +60,7 @@ SOURCES += \
         mainwindow.cpp \
         authorization.cpp \
         core.cpp \
-        instanse.cpp \
+    backend/instanse.cpp \
     backend/config.cpp \
     backend/update.cpp \
     backend/downloader/downloadworker.cpp \
@@ -72,7 +72,7 @@ HEADERS += \
         mainwindow.h \
         authorization.h \
         core.h \
-        instanse.h \
+    backend/instanse.h \
     backend/config.h \
     backend/update.h \
     defines.h \

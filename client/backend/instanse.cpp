@@ -1,22 +1,15 @@
 #include "instanse.h"
 
-Instanse::Instanse(QString nameInst, QObject *parent) : QObject(parent)
-{
-    urlRepo = "http://mc.idea-craft.space/" + nameInst + "/";
+Instanse::Instanse(uint instanseId) : QObject() {
     instanses = new QDir(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "\\instanses");
     instDir = new QDir(instanses->path() + "\\" + nameInst);
     if(!instanses->exists()) instanses->mkdir(instanses->path());
-    checkInstallation("fast");
-    manager = new QNetworkAccessManager;
+	checkInstallation("fast");
     connect(manager, &QNetworkAccessManager::finished, this, &Instanse::takeMetadata);
-    QNetworkRequest request;    // Отправляемый запрос
-    request.setUrl(urlRepo + "meta.json");   // Устанавлвиваем URL в запрос
-    manager->get(request);      // Выполняем запрос
+
 }
 
-Instanse::~Instanse()
-{
-    delete manager;
+Instanse::~Instanse() {
 }
 
 void Instanse::download()

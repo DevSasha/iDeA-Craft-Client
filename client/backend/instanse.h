@@ -3,11 +3,6 @@
 
 #include <QObject>
 #include <QProcess>
-#include <QSettings>
-#include <QMessageBox>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonParseError>
@@ -19,7 +14,7 @@ class Instanse : public QObject
 {
     Q_OBJECT
 public:
-    explicit Instanse(QString nameInst, QObject *parent = nullptr);
+	explicit Instanse(uint instanseId);
     ~Instanse();
     void download();
     void run(QString nik);
@@ -38,15 +33,17 @@ private slots:
     void takeFile(QNetworkReply *reply);
 
 private:
+	QDir *instanse;
+	QString instanseName, instanseVersion, instanseMC, instanseForge, nikname;
+
     bool checkInstallation(QString mode);
     void wget(QUrl url, const QMetaMethod &method);
     void getFile();
 
     bool installed = false, infoUpdate = false;
-    QString instanseName, instanseVersion, instanseMC, instanseForge, nikname;
-    QDir *instanses, *instDir;
+
+
     QString urlRepo; // = "http://idea-craft.net/repository/mc/";
-    QNetworkAccessManager *manager;
     QList<QString> filenames, cheksums, filetypes;
     QList<int> filesizes;
 
