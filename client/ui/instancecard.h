@@ -5,21 +5,21 @@
 #include <QMouseEvent>
 
 namespace Ui {
-class InstanseCard;
+class InstanceCard;
 }
 
-class InstanseCard : public QWidget {
+class InstanceCard : public QWidget {
 	Q_OBJECT
 
 public:
-	explicit InstanseCard(int id, QString name);
-	~InstanseCard();
+	explicit InstanceCard(int id, QString name);
+	~InstanceCard();
 
 protected:
 	void mousePressEvent(QMouseEvent *event);
 
 private:
-	Ui::InstanseCard *ui;
+	Ui::InstanceCard *ui;
 };
 
 #endif // INSTANSECARD_H

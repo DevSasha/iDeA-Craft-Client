@@ -1,4 +1,4 @@
-#include "instanse.h"
+#include "instance.h"
 
 Instanse::Instanse(uint instanseId) : QObject() {
     instanses = new QDir(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "\\instanses");

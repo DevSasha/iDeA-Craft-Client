@@ -10,12 +10,11 @@
 #include <QStandardPaths>
 #include <QFile>
 
-class Instanse : public QObject
-{
+class Instance : public QObject {
     Q_OBJECT
 public:
-	explicit Instanse(uint instanseId);
-    ~Instanse();
+	explicit Instance(uint instanseId);
+	~Instance();
     void download();
     void run(QString nik);
 

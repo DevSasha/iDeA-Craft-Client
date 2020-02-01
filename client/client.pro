@@ -67,7 +67,9 @@ SOURCES += \
     #backend/downloader/dwthread.cpp
     backend/downloader/downloadfile.cpp \
     backend/apirequest.cpp \
-    ui/instansecard.cpp \
+    backend/player.cpp \
+    ui/instancecard.cpp \
+    backend/instance.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -81,12 +83,14 @@ HEADERS += \
     #backend/downloader/dwthread.h
     backend/downloader/downloadfile.h \
     backend/apirequest.h \
-    ui/instansecard.h \
+    backend/player.h \
+    ui/instancecard.h \
+    backend/instance.h
 
 FORMS += \
         mainwindow.ui \
         authorization.ui \
-        ui/instansecard.ui
+    ui/instancecard.ui
 
 #Installer
 
