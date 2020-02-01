@@ -10,7 +10,6 @@
 #include <QInputDialog>
 #include "authorization.h"
 #include "mainwindow.h"
-#include "backend/instance.h"
 #include "backend/update.h"
 
 class Core : public QObject {
