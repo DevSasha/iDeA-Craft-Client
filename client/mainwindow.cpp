@@ -38,9 +38,14 @@ void MainWindow::refreshServerListReply(QJsonObject *body) {
 		QString imgUri = server.value("img_uri").toString();
 
 		InstanceCard *card = new InstanceCard(id, title, imgUri);
+		connect(card, &InstanceCard::clicked, this, &MainWindow::changeInstance);
 
 		ui->instanseList->addWidget(card);
 	}
+}
+
+void MainWindow::changeInstance(InstancePanel *panel) {
+	ui->instanceWidget = panel;
 }
 
 void MainWindow::refreshServerList() {

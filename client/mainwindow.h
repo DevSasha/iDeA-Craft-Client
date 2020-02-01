@@ -7,6 +7,7 @@
 #include <QJsonArray>
 #include <backend/apirequest.h>
 #include <ui/instancecard.h>
+#include <ui/instancepanel.h>
 #include <defines.h>
 
 namespace Ui {
@@ -24,9 +25,9 @@ public:
 
 signals:
 
-
 public slots:
 	void refreshServerListReply(QJsonObject *body);
+	void changeInstance(InstancePanel *panel);
 
 private slots:
 
