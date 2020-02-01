@@ -23,7 +23,18 @@
       <height>311</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="instanseList"/>
+    <layout class="QVBoxLayout" name="instanceList"/>
+   </widget>
+   <widget class="QWidget" name="gridLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>10</y>
+      <width>421</width>
+      <height>311</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="instancePanel"/>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

@@ -45,7 +45,9 @@ void MainWindow::refreshServerListReply(QJsonObject *body) {
 }
 
 void MainWindow::changeInstance(InstancePanel *panel) {
-	ui->instanceWidget = panel;
+	if (this->currentPanel != nullptr) delete this->currentPanel;
+	ui->instancePanel->addWidget(panel);
+	this->currentPanel = panel;
 }
 
 void MainWindow::refreshServerList() {
