@@ -4,7 +4,9 @@
 #include <QMainWindow>
 #include <QDebug>
 #include <QSysInfo>
+#include <QJsonArray>
 #include <backend/apirequest.h>
+#include <ui/instansecard.h>
 #include <defines.h>
 
 namespace Ui {
@@ -24,7 +26,7 @@ signals:
 
 
 public slots:
-
+	void refreshServerListReply(QJsonObject *body);
 
 private slots:
 
@@ -32,6 +34,8 @@ private slots:
 private:
     Ui::MainWindow *ui;
 	QString nickname = "", sessionToken;
+
+	void refreshServerList();
 };
 
 #endif // MAINWINDOW_H
