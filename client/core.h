@@ -25,13 +25,8 @@ public slots:
 	void load();
 
 private:
-    QSettings *cfgs;
-	//Client *client;
     Authorization *window_auth;
     MainWindow *window_main;
-    QProcess *runMC;
-    QDir *Local, *Temp;
-    QNetworkAccessManager *manager;
 };
 
 #endif // CORE_H
