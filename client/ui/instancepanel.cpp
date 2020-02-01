@@ -8,7 +8,6 @@ InstancePanel::InstancePanel(QWidget *parent) :
 	ui->setupUi(this);
 }
 
-InstancePanel::~InstancePanel()
-{
+InstancePanel::~InstancePanel() {
 	delete ui;
 }

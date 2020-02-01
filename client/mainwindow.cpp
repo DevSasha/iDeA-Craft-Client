@@ -32,7 +32,12 @@ void MainWindow::refreshServerListReply(QJsonObject *body) {
 
 	for (int i = 0; i < list.size(); ++i) {
 		QJsonObject server = list[i].toObject();
-		InstanceCard *card = new InstanceCard(server.value("id").toInt(), server.value("title").toString());
+
+		int id = server.value("id").toInt();
+		QString title = server.value("title").toString();
+		QString imgUri = server.value("img_uri").toString();
+
+		InstanceCard *card = new InstanceCard(id, title, imgUri);
 
 		ui->instanseList->addWidget(card);
 	}

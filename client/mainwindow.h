@@ -6,7 +6,6 @@
 #include <QSysInfo>
 #include <QJsonArray>
 #include <backend/apirequest.h>
-#include <backend/instance.h>
 #include <ui/instancecard.h>
 #include <defines.h>
 

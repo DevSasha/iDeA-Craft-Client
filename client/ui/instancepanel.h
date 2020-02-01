@@ -7,13 +7,13 @@ namespace Ui {
 class InstancePanel;
 }
 
-class InstancePanel : public QWidget
-{
+class InstancePanel : public QWidget {
 	Q_OBJECT
-
 public:
 	explicit InstancePanel(QWidget *parent = 0);
 	~InstancePanel();
+
+signals:
 
 private:
 	Ui::InstancePanel *ui;
