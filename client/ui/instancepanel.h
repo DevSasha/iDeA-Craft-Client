@@ -11,11 +11,10 @@ class InstancePanel;
 class InstancePanel : public QWidget {
 	Q_OBJECT
 public:
-	explicit InstancePanel(int id);
+	explicit InstancePanel(QString name, QString description);
 	~InstancePanel();
 
 public slots:
-	void replyServerInfo(QJsonObject *body);
 
 signals:
 

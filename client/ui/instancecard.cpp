@@ -21,7 +21,7 @@ InstanceCard::~InstanceCard() {
 
 void InstanceCard::getIcon(QNetworkReply *reply) {
 	if (reply->error()) {
-		qWarning() << "Coudnt get server icon";
+		qWarning() << "Couldn`t get server icon";
 	} else {
 		// TODO Read reply and add to QGraphics View
 	}
@@ -29,8 +29,7 @@ void InstanceCard::getIcon(QNetworkReply *reply) {
 
 void InstanceCard::mousePressEvent(QMouseEvent *event) {
 	if (event->button() == Qt::LeftButton) {
-		if (this->panel != nullptr) {
-			emit this->clicked(this->panel);
-		}
+		InstancePanel *panel = new InstancePanel(this->instance->getName(), this->instance->getDescription());
+		emit this->clicked(panel);
 	}
 }
