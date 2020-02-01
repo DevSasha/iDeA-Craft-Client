@@ -10,12 +10,12 @@ Authorization::Authorization(QWidget *parent) :
 
 	auto cfg = Config::config();
 	if (cfg->keyExists("auth.login") && cfg->keyExists("auth.password")) {
-		this->hide();
-
 		this->login = cfg->get("auth.login").toString();
 		this->password = cfg->get("auth.password").toString();
 
 		auth();
+	} else {
+		this->show();
 	}
 }
 

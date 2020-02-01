@@ -22,6 +22,4 @@ void Core::load() {
     qDebug() << "loading...";
 	window_auth = new Authorization();
         connect(window_auth, &Authorization::authorized, this, &Core::authorized);
-
-	window_auth->show();
 }
