@@ -20,6 +20,8 @@ public slots:
 
 private:
 	explicit Config();
+	QVariant find(const QString &key);
+
     static Config *pConfig;
     QSettings *set;
 };

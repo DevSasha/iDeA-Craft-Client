@@ -10,20 +10,21 @@ Config* Config::config() {
 }
 
 void Config::save(const QString &key, const QVariant &value) {
-    bool inGroup = false;
     QStringList path = key.split('.');
-    if (path.size() > 1) {
-        inGroup = true;
-        set->beginGroup(path.first());
-    }
+
+	for (int i = 0; i < path.size() - 1; ++i) {
+		set->beginGroup(path[i]);
+	}
     set->setValue(path.last(), value);
-    if (inGroup)
-        set->endGroup();
+	for (int i = 0; i < path.size() - 1; ++i) {
+		set->endGroup();
+	}
 }
 
 QVariant Config::get(const QString &key, const QVariant &defaultValue, bool saveDefault) {
-    if (!set->value(key).isNull()) {
-		return set->value(key);
+	QVariant val = this->find(key);
+	if (!val.isNull()) {
+		return val;
     } else {
         if (saveDefault)
             this->save(key, defaultValue);
@@ -32,9 +33,24 @@ QVariant Config::get(const QString &key, const QVariant &defaultValue, bool save
 }
 
 bool Config::keyExists(QString key) {
-	return !set->value(key).isNull();
+	QVariant val = this->find(key);
+	return !val.isNull();
 }
 
 Config::Config() {
 	this->set = new QSettings(QSettings::UserScope, "idea-craft");
+}
+
+QVariant Config::find(const QString &key) {
+	QStringList path = key.split('.');
+	for (int i = 0; i < path.size() - 1; ++i) {
+		set->beginGroup(path[i]);
+	}
+
+	QVariant ret = set->value(path.last());
+	for (int i = 0; i < path.size() - 1; ++i) {
+		set->endGroup();
+	}
+
+	return ret;
 }
