@@ -64,6 +64,7 @@ SOURCES += \
     backend/downloader/downloadfile.cpp \
     backend/apirequest.cpp \
     backend/player.cpp \
+    backend/instance.cpp \
     mainwindow.cpp \
     authorization.cpp \
     ui/instancecard.cpp \
@@ -78,6 +79,7 @@ HEADERS += \
     backend/downloader/downloadfile.h \
     backend/apirequest.h \
     backend/player.h \
+    backend/instance.h \
     mainwindow.h \
     authorization.h \
     ui/instancecard.h \

@@ -12,7 +12,7 @@ InstanceCard::InstanceCard(int id, QString name, QString imgUri) :
 	this->mng = new QNetworkAccessManager;
 	connect(this->mng, &QNetworkAccessManager::finished, this, &InstanceCard::getIcon);
 
-	this->panel = new InstancePanel(id);
+	this->instance = new Instance(id);
 }
 
 InstanceCard::~InstanceCard() {

@@ -5,6 +5,7 @@
 #include <QMouseEvent>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
+#include <backend/instance.h>
 #include <ui/instancepanel.h>
 
 namespace Ui {
@@ -30,7 +31,7 @@ protected:
 private:
 	int id;
 	Ui::InstanceCard *ui;
-	InstancePanel *panel;
+	Instance *instance;
 	QNetworkAccessManager *mng;
 };
 
