@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <QMouseEvent>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
 #include <ui/instancepanel.h>
 
 namespace Ui {
@@ -16,6 +18,9 @@ public:
 	explicit InstanceCard(int id, QString name, QString imgUri);
 	~InstanceCard();
 
+public slots:
+	void getIcon(QNetworkReply *reply);
+
 signals:
 	void clicked(InstancePanel *);
 
@@ -26,6 +31,7 @@ private:
 	int id;
 	Ui::InstanceCard *ui;
 	InstancePanel *panel;
+	QNetworkAccessManager *mng;
 };
 
 #endif // INSTANSECARD_H

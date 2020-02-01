@@ -8,10 +8,23 @@ InstanceCard::InstanceCard(int id, QString name, QString imgUri) :
 	this->id = id;
 	ui->setupUi(this);
 	ui->serverName->setText(name);
+
+	this->mng = new QNetworkAccessManager;
+	connect(this->mng, &QNetworkAccessManager::finished, this, &InstanceCard::getIcon);
+
+	this->panel = new InstancePanel(id);
 }
 
 InstanceCard::~InstanceCard() {
 	delete ui;
+}
+
+void InstanceCard::getIcon(QNetworkReply *reply) {
+	if (reply->error()) {
+		qWarning() << "Coudnt get server icon";
+	} else {
+		// TODO Read reply and add to QGraphics View
+	}
 }
 
 void InstanceCard::mousePressEvent(QMouseEvent *event) {
