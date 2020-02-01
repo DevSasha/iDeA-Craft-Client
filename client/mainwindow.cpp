@@ -33,7 +33,7 @@ void MainWindow::refreshServerListReply(QJsonObject *body) {
 	for (int i = 0; i < list.size(); ++i) {
 		QJsonObject server = list[i].toObject();
 
-		int id = server.value("id").toInt();
+		int id = server.value("id").toString().toInt();
 		QString title = server.value("title").toString();
 		QString imgUri = server.value("img_uri").toString();
 
