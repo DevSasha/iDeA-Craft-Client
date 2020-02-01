@@ -40,7 +40,7 @@ void MainWindow::refreshServerListReply(QJsonObject *body) {
 		InstanceCard *card = new InstanceCard(id, title, imgUri);
 		connect(card, &InstanceCard::clicked, this, &MainWindow::changeInstance);
 
-		ui->instanseList->addWidget(card);
+		ui->instanceList->addWidget(card);
 	}
 }
 
