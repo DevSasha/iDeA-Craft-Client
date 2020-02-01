@@ -5,7 +5,7 @@
 #include <QMouseEvent>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
-#include <backend/instance.h>
+#include <backend/minecraft/instance.h>
 #include <ui/instancepanel.h>
 
 namespace Ui {

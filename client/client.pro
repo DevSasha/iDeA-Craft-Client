@@ -63,8 +63,8 @@ SOURCES += \
     backend/downloader/downloadworker.cpp \
     backend/downloader/downloadfile.cpp \
     backend/apirequest.cpp \
-    backend/player.cpp \
-    backend/instance.cpp \
+    backend/minecraft/player.cpp \
+    backend/minecraft/instance.cpp \
     mainwindow.cpp \
     authorization.cpp \
     ui/instancecard.cpp \
@@ -78,8 +78,8 @@ HEADERS += \
     backend/downloader/downloadworker.h \
     backend/downloader/downloadfile.h \
     backend/apirequest.h \
-    backend/player.h \
-    backend/instance.h \
+    backend/minecraft/player.h \
+    backend/minecraft/instance.h \
     mainwindow.h \
     authorization.h \
     ui/instancecard.h \
