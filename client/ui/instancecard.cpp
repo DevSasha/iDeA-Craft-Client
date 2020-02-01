@@ -1,5 +1,5 @@
 #include "instancecard.h"
-#include "ui_instansecard.h"
+#include "ui_instancecard.h"
 
 InstanceCard::InstanceCard(int id, QString name) :
 	QWidget(),

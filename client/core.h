@@ -10,7 +10,7 @@
 #include <QInputDialog>
 #include "authorization.h"
 #include "mainwindow.h"
-#include "backend/instanse.h"
+#include "backend/instance.h"
 #include "backend/update.h"
 
 class Core : public QObject {
@@ -31,7 +31,6 @@ private:
     MainWindow *window_main;
     QProcess *runMC;
     QDir *Local, *Temp;
-    Instanse *inst;
     QNetworkAccessManager *manager;
 };
 
