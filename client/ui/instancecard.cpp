@@ -8,6 +8,8 @@ InstanceCard::InstanceCard(int id, QString name, QString imgUri) :
 	this->id = id;
 	ui->setupUi(this);
 	ui->serverName->setText(name);
+
+	this->panel = new InstancePanel(id);
 }
 
 InstanceCard::~InstanceCard() {

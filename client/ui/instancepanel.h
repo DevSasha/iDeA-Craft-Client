@@ -2,6 +2,7 @@
 #define INSTANCEPANEL_H
 
 #include <QWidget>
+#include <backend/apirequest.h>
 
 namespace Ui {
 class InstancePanel;
@@ -10,8 +11,11 @@ class InstancePanel;
 class InstancePanel : public QWidget {
 	Q_OBJECT
 public:
-	explicit InstancePanel(QWidget *parent = 0);
+	explicit InstancePanel(int id);
 	~InstancePanel();
+
+public slots:
+	void replyServerInfo(QJsonObject *body);
 
 signals:
 
