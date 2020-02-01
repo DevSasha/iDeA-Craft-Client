@@ -56,35 +56,38 @@ win32
 }
 
 SOURCES += \
-        main.cpp \
-        core.cpp \
-        backend/config.cpp \
-        backend/update.cpp \
-        backend/downloader/downloadworker.cpp \
-        backend/downloader/downloadfile.cpp \
-        backend/apirequest.cpp \
-        backend/player.cpp \
-        ui/instancecard.cpp \
-        mainwindow.cpp \
-        authorization.cpp
+    main.cpp \
+    core.cpp \
+    backend/config.cpp \
+    backend/update.cpp \
+    backend/downloader/downloadworker.cpp \
+    backend/downloader/downloadfile.cpp \
+    backend/apirequest.cpp \
+    backend/player.cpp \
+    mainwindow.cpp \
+    authorization.cpp \
+    ui/instancecard.cpp \
+    ui/instancepanel.cpp
 
 HEADERS += \
-        defines.h \
-        core.h \
-        backend/config.h \
-        backend/update.h \
-        backend/downloader/downloadworker.h \
-        backend/downloader/downloadfile.h \
-        backend/apirequest.h \
-        backend/player.h \
-        ui/instancecard.h \
-        mainwindow.h \
-        authorization.h
+    defines.h \
+    core.h \
+    backend/config.h \
+    backend/update.h \
+    backend/downloader/downloadworker.h \
+    backend/downloader/downloadfile.h \
+    backend/apirequest.h \
+    backend/player.h \
+    mainwindow.h \
+    authorization.h \
+    ui/instancecard.h \
+    ui/instancepanel.h
 
 FORMS += \
-        mainwindow.ui \
-        authorization.ui \
-        ui/instancecard.ui
+    mainwindow.ui \
+    authorization.ui \
+    ui/instancecard.ui \
+    ui/instancepanel.ui
 
 #Installer
 
