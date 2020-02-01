@@ -78,6 +78,7 @@ HEADERS += \
     backend/downloader/downloadworker.h \
     backend/downloader/downloadfile.h \
     backend/apirequest.h \
+    backend/minecraft/versions.h \
     backend/minecraft/player.h \
     backend/minecraft/instance.h \
     mainwindow.h \
