@@ -83,6 +83,7 @@ void Update::downloadFinished(quint64 countDownloadedFiles) {
 		this->restart();
 	} else {
 		emit this->updated();
+		this->deleteLater();
 	}
 }
 

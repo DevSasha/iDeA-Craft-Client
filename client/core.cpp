@@ -15,6 +15,7 @@ void Core::authorized() {
 	window_main = new MainWindow();
 	window_main->setNickname(window_auth->login);
     window_auth->hide();
+	window_auth->deleteLater();
     window_main->show();
 }
 
