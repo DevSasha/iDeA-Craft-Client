@@ -17,6 +17,10 @@ public:
 public slots:
 
 signals:
+	void run();
+
+private slots:
+	void on_runInstance_clicked();
 
 private:
 	Ui::InstancePanel *ui;

@@ -16,6 +16,7 @@ signals:
 
 public slots:
 	void replyServerInfo(QJsonObject *body);
+	void run();
 
 private:
 	QString name;

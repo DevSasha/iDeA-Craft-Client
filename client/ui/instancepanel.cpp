@@ -13,3 +13,7 @@ InstancePanel::InstancePanel(QString name, QString description) :
 InstancePanel::~InstancePanel() {
 	delete ui;
 }
+
+void InstancePanel::on_runInstance_clicked() {
+	emit this->run();
+}

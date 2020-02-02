@@ -30,6 +30,9 @@ void InstanceCard::getIcon(QNetworkReply *reply) {
 void InstanceCard::mousePressEvent(QMouseEvent *event) {
 	if (event->button() == Qt::LeftButton) {
 		InstancePanel *panel = new InstancePanel(this->instance->getName(), this->instance->getDescription());
+
+		connect(panel, &InstancePanel::run, this->instance, &Instance::run);
+
 		emit this->clicked(panel);
 	}
 }

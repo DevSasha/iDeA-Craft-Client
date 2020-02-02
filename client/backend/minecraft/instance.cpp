@@ -15,6 +15,10 @@ void Instance::replyServerInfo(QJsonObject *body) {
 	this->description = vServer.toObject().value("description").toString();
 }
 
+void Instance::run() {
+
+}
+
 QString Instance::getDescription() const {
 	return description;
 }
