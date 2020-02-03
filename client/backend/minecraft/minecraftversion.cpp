@@ -67,6 +67,10 @@ void MinecraftVersion::replyVersionMeta(QNetworkReply *reply) {
 	}
 }
 
+QString MinecraftVersion::getVersion() const {
+    return version;
+}
+
 QString MinecraftVersion::getMinecraftArguments() const {
 	return minecraftArguments;
 }

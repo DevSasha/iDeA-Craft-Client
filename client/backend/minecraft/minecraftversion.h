@@ -16,6 +16,7 @@ public:
 	~MinecraftVersion();
 
 	bool isUpdated() const;
+	QString getVersion() const;
 	QJsonObject getAssetIndex() const;
 	QJsonArray getLibraries() const;
 	QString getMainClass() const;
