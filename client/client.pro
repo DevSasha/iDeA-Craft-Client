@@ -63,6 +63,7 @@ SOURCES += \
     backend/downloader/downloadworker.cpp \
     backend/downloader/downloadfile.cpp \
     backend/apirequest.cpp \
+    backend/minecraft/minecraftversion.cpp \
     backend/minecraft/player.cpp \
     backend/minecraft/instance.cpp \
     mainwindow.cpp \
@@ -79,6 +80,7 @@ HEADERS += \
     backend/downloader/downloadfile.h \
     backend/apirequest.h \
     backend/minecraft/versions.h \
+    backend/minecraft/minecraftversion.h \
     backend/minecraft/player.h \
     backend/minecraft/instance.h \
     mainwindow.h \
