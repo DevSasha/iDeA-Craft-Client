@@ -46,10 +46,10 @@ void MinecraftVersion::replyVersionMeta(QNetworkReply *reply) {
 		this->assetIndex = vAssetIndex.toObject();
 
 		QJsonValue vLibraries = root.value("libraries");
-		if (!vLibraries.isObject()) {
+		if (!vLibraries.isArray()) {
 			qCritical() << "Libraries is incorrect: " << vLibraries.type();
 		}
-		this->libraries = vLibraries.toObject();
+		this->libraries = vLibraries.toArray();
 
 		QJsonValue vMainClass = root.value("mainClass");
 		if (!vMainClass.isString()) {
@@ -75,7 +75,7 @@ QString MinecraftVersion::getMainClass() const {
 	return mainClass;
 }
 
-QJsonObject MinecraftVersion::getLibraries() const {
+QJsonArray MinecraftVersion::getLibraries() const {
 	return libraries;
 }
 

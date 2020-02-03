@@ -17,7 +17,7 @@ public:
 
 	bool isUpdated() const;
 	QJsonObject getAssetIndex() const;
-	QJsonObject getLibraries() const;
+	QJsonArray getLibraries() const;
 	QString getMainClass() const;
 	QString getMinecraftArguments() const;
 
@@ -33,7 +33,7 @@ private:
 	QNetworkAccessManager mng;
 
 	QJsonObject assetIndex;
-	QJsonObject libraries;
+	QJsonArray libraries;
 	QString mainClass;
 	QString minecraftArguments;
 };
