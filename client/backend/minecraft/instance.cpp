@@ -11,8 +11,10 @@ void Instance::replyServerInfo(QJsonObject *body) {
 	QJsonValue vServer = body->value("server");
 	delete body;
 
-	this->name = vServer.toObject().value("title").toString();
-	this->description = vServer.toObject().value("description").toString();
+	QJsonObject server = vServer.toObject();
+	this->name = server.value("title").toString();
+	this->description = server.value("description").toString();
+	this->version = new MinecraftVersion(server.value("version").toString());
 }
 
 void Instance::run() {
