@@ -61,6 +61,11 @@ void DownloadFile::take(QNetworkReply *reply) {
 }
 
 void DownloadFile::save() {
+	QStringList dirPath = this->path.split("/");
+	dirPath.removeLast();
+	QDir dir;
+	dir.mkpath(dirPath.join("/"));
+
 	this->file->open(QIODevice::WriteOnly);
 	this->file->write(this->data);
 	this->file->close();

@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QCryptographicHash>
+#include <QDir>
 #include <QFile>
 #include <QString>
 #include <QNetworkAccessManager>
