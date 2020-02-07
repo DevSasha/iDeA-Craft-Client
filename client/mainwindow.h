@@ -34,7 +34,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-	InstancePanel *currentPanel;
+	InstancePanel *currentPanel = nullptr;
 	QString nickname = "", sessionToken;
 
 	void refreshServerList();
