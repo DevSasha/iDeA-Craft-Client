@@ -17,7 +17,7 @@ public:
 	void start();
 
 signals:
-	void onDownloaded();
+	void onDownloaded(int);
 	void onFinish(quint64);
 	void onError(QString);
 
@@ -31,6 +31,7 @@ private:
 	QNetworkAccessManager *http;
 	DownloadFile *current = nullptr;
 	quint64 countDownloadedFiles = 0;
+	quint64 needDownload = 0;
 
 	void downloadFile();
 };

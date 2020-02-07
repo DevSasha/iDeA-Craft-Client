@@ -14,11 +14,18 @@ void DownloadWorker::setFileList(const QList<DownloadFile *> files) {
 }
 
 void DownloadWorker::start() {
+	for (int i = 0; i < this->files.size(); ++i) {
+		if (!this->files[i]->isCorrect()) {
+			this->needDownload++;
+		}
+	}
+
 	this->nextFile();
 }
 
 void DownloadWorker::fileDownloaded() {
 	this->countDownloadedFiles++;
+	emit this->onDownloaded((this->countDownloadedFiles * 100) / this->needDownload);
 }
 
 void DownloadWorker::downloadFile() {
