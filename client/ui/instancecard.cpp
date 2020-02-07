@@ -32,6 +32,8 @@ void InstanceCard::mousePressEvent(QMouseEvent *event) {
 		InstancePanel *panel = new InstancePanel(this->instance->getName(), this->instance->getDescription());
 
 		connect(panel, &InstancePanel::run, this->instance, &Instance::run);
+		connect(this->instance, &Instance::updateProgress, panel, &InstancePanel::updateProgress);
+		connect(this->instance, &Instance::showProgressBar, panel, &InstancePanel::showProgress);
 
 		emit this->clicked(panel);
 	}

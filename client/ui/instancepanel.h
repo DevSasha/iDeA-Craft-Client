@@ -15,6 +15,8 @@ public:
 	~InstancePanel();
 
 public slots:
+	void showProgress(bool);
+	void updateProgress(QString text, int progress);
 
 signals:
 	void run();

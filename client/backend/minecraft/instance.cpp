@@ -18,7 +18,25 @@ void Instance::replyServerInfo(QJsonObject *body) {
 }
 
 void Instance::run() {
+	if (!this->version->isUpdated()) {
+		qDebug() << "Runing instance before version meta updated";
+		return;
+	}
 
+	this->assets = new AssetsDownloader(this->version);
+	connect(this->assets, &AssetsDownloader::onProgressUpdate, this, &Instance::assetsProgress);
+	connect(this->assets, &AssetsDownloader::metaUpdated, this->assets, &AssetsDownloader::startDownload);
+	connect(this->assets, &AssetsDownloader::updated, this, &Instance::assetsUpdated);
+
+	emit this->showProgressBar(true);
+}
+
+void Instance::assetsProgress(int progress) {
+	emit this->updateProgress("Downloading assets...", progress);
+}
+
+void Instance::assetsUpdated() {
+	emit this->showProgressBar(false);
 }
 
 QString Instance::getDescription() const {

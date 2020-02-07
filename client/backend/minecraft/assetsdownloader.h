@@ -15,7 +15,6 @@ class AssetsDownloader : public QObject {
 	Q_OBJECT
 public:
 	explicit AssetsDownloader(MinecraftVersion *version);
-	void startDownload();
 
 signals:
 	void updated();
@@ -23,6 +22,7 @@ signals:
 	void metaUpdated();
 
 public slots:
+	void startDownload();
 	void replyAssetMeta(QNetworkReply * reply);
 	void updateProgress(int progress);
 

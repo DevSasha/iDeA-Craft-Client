@@ -4,6 +4,7 @@
 #include <QObject>
 #include <backend/apirequest.h>
 #include <backend/minecraft/minecraftversion.h>
+#include <backend/minecraft/assetsdownloader.h>
 
 class Instance : public QObject {
 	Q_OBJECT
@@ -14,10 +15,15 @@ public:
 	QString getDescription() const;
 
 signals:
+	void updateProgress(QString, int);
+	void showProgressBar(bool);
 
 public slots:
 	void replyServerInfo(QJsonObject *body);
 	void run();
+
+	void assetsProgress(int progress);
+	void assetsUpdated();
 
 private:
 	QString name;
@@ -25,6 +31,7 @@ private:
 	QString ip;
 
 	MinecraftVersion *version;
+	AssetsDownloader *assets;
 };
 
 #endif // INSTANCE_H
