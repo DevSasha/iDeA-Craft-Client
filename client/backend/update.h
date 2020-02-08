@@ -37,6 +37,7 @@ public slots:
 private:
 	DownloadWorker *dw;
 	QString branch;
+    QString platform;
 	QString mainFile;
 };
 

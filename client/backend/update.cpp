@@ -4,8 +4,10 @@ Update::Update(QObject *parent) : QObject(parent) {
 	this->branch = Config::config()->get("updates.branch", "master").toString();
 	if (QSysInfo::kernelType() == "linux") {
 		this->mainFile = LINUX_BIN;
-	} else if (QSysInfo::kernelType() == "windows") {
+		this->platform = "linux";
+	} else if (QSysInfo::kernelType() == "winnt") {
 		this->mainFile = WINDOWS_BIN;
+		this->platform = "windows";
 	}
 }
 
@@ -13,7 +15,7 @@ void Update::checkUpdate() {
 	qDebug() << "Checking update...";
 	APIRequest *req = new APIRequest("launcher.updates");
 
-	req->addQueryItem("os", QSysInfo::kernelType());
+	req->addQueryItem("os", this->platform);
 	req->addQueryItem("branch", this->branch);
 
 	connect(req, &APIRequest::finished, this, &Update::parseBody);
@@ -49,7 +51,7 @@ void Update::parseBody(QJsonObject *body) {
 		QString name, hash, path, uri;
 		name = vFilename.toString();
 		hash = vHash.toString();
-		uri = LAUNCHER_MIRROR + QSysInfo::kernelType() + "/" + this->branch + "/" + name;
+		uri = LAUNCHER_MIRROR + this->platform + "/" + this->branch + "/" + name;
 		path = QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/" + name;
 
 		DownloadFile *file = nullptr;

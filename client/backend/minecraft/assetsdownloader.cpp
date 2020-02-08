@@ -3,8 +3,9 @@
 AssetsDownloader::AssetsDownloader(MinecraftVersion *version) : QObject() {
 	if (QSysInfo::kernelType() == "linux") {
 		this->assets.setPath(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
-	} else if (QSysInfo::kernelType() == "windows") {
-		// assets.setPath("~/.minecraft/assets");
+	} else if (QSysInfo::kernelType() == "winnt") {
+		this->assets.setPath(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+		this->assets.cdUp();
 	}
 
 	if (!this->assets.exists(".minecraft")) {
@@ -138,7 +139,7 @@ void AssetsDownloader::parseAssetIndex(QByteArray &data) {
 		this->files.push_back(file);
 	}
 
-	emit this->updated();
+	emit this->metaUpdated();
 }
 
 void AssetsDownloader::startDownload() {
