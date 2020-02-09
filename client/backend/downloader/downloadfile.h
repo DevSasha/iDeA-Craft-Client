@@ -2,6 +2,7 @@
 #define DOWNLOADFILE_H
 
 #include <QObject>
+#include <QDebug>
 #include <QCryptographicHash>
 #include <QDir>
 #include <QFile>

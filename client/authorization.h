@@ -2,6 +2,7 @@
 #define AUTHORIZATION_H
 
 #include <QMessageBox>
+#include <QDebug>
 #include <backend/config.h>
 #include <backend/apirequest.h>
 #include <QJsonObject>

@@ -2,6 +2,7 @@
 #define APIREQUEST_H
 
 #include <QObject>
+#include <QDebug>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QUrlQuery>
