@@ -1,14 +1,14 @@
 #ifndef APIREQUEST_H
 #define APIREQUEST_H
 
-#include <QObject>
 #include <QDebug>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QUrlQuery>
-#include <QString>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QObject>
+#include <QString>
+#include <QUrlQuery>
 #include <defines.h>
 
 class APIRequest : public QObject {
