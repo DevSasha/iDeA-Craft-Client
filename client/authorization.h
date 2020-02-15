@@ -3,6 +3,7 @@
 
 #include <QMessageBox>
 #include <QDebug>
+#include <QCryptographicHash>
 #include <backend/config.h>
 #include <backend/apirequest.h>
 #include <QJsonObject>
