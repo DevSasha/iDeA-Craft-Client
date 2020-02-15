@@ -9,6 +9,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <backend/minecraft/assetsdownloader.h>
 
 class MinecraftVersion : public QObject {
 	Q_OBJECT
@@ -16,28 +17,33 @@ public:
 	explicit MinecraftVersion(QString version);
 	~MinecraftVersion();
 
-	bool isUpdated() const;
+	void update();
+	void download();
 	QString getVersion() const;
-	QJsonObject getAssetIndex() const;
-	QJsonArray getLibraries() const;
 	QString getMainClass() const;
 	QString getMinecraftArguments() const;
 
 signals:
+	void updated();
+	void downloadProgress(QString, int);
 
 public slots:
 	void replyVersionMeta(QNetworkReply *reply);
+	void progressChanged(int progress);
 
 private:
 	static QJsonArray versions;
-	bool updated = false;
+	bool isUpdated = false;
 	QString version;
 	QNetworkAccessManager mng;
+	QDir dir;
 
 	QJsonObject assetIndex;
 	QJsonArray libraries;
 	QString mainClass;
 	QString minecraftArguments;
+
+	AssetsDownloader *assets;
 };
 
 #endif // MINECRAFTVERSION_H

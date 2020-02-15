@@ -15,28 +15,24 @@ void Instance::replyServerInfo(QJsonObject *body) {
 	this->name = server.value("title").toString();
 	this->description = server.value("description").toString();
 	this->version = new MinecraftVersion(server.value("version").toString());
+
+	connect(this->version, &MinecraftVersion::updated, this, &Instance::versionUpdated);
+
+	this->version->update();
 }
 
 void Instance::run() {
-	if (!this->version->isUpdated()) {
-		qDebug() << "Runing instance before version meta updated";
-		return;
-	}
+	connect(this->version, &MinecraftVersion::downloadProgress, this, &Instance::progressChanged);
 
-	this->assets = new AssetsDownloader(this->version);
-	connect(this->assets, &AssetsDownloader::onProgressUpdate, this, &Instance::assetsProgress);
-	connect(this->assets, &AssetsDownloader::metaUpdated, this->assets, &AssetsDownloader::startDownload);
-	connect(this->assets, &AssetsDownloader::updated, this, &Instance::assetsUpdated);
-
-	emit this->showProgressBar(true);
+	this->version->download();
 }
 
-void Instance::assetsProgress(int progress) {
-	emit this->updateProgress("Downloading assets...", progress);
+void Instance::versionUpdated() {
+	// NOTE Instance may be running before meta was update
 }
 
-void Instance::assetsUpdated() {
-	emit this->showProgressBar(false);
+void Instance::progressChanged(QString text, int progress) {
+	emit this->updateProgress(text, progress);
 }
 
 QString Instance::getDescription() const {

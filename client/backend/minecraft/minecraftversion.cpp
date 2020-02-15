@@ -10,10 +10,28 @@ MinecraftVersion::MinecraftVersion(QString version) : QObject() {
 	if(version != "1.7.10") {
 		qCritical() << "Version " << version << " not supported";
 	}
-
 	this->version = version;
-	connect(&this->mng, &QNetworkAccessManager::finished, this, &MinecraftVersion::replyVersionMeta);
 
+	if (QSysInfo::kernelType() == "linux") {
+		this->dir.setPath(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
+	} else if (QSysInfo::kernelType() == "winnt") {
+		this->dir.setPath(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+		this->dir.cdUp();
+	}
+
+	if (!this->dir.exists(".minecraft")) {
+		qDebug() << "Minecraft dir not exist. Creating...";
+		this->dir.mkdir(".minecraft");
+	}
+	this->dir.cd(".minecraft");
+}
+
+MinecraftVersion::~MinecraftVersion() {
+
+}
+
+void MinecraftVersion::update() {
+	connect(&this->mng, &QNetworkAccessManager::finished, this, &MinecraftVersion::replyVersionMeta);
 	QNetworkRequest req;
 
 	req.setUrl(QUrl("https://launchermeta.mojang.com/v1/packages/2e818dc89e364c7efcfa54bec7e873c5f00b3840/1.7.10.json"));
@@ -21,8 +39,15 @@ MinecraftVersion::MinecraftVersion(QString version) : QObject() {
 	this->mng.get(req);
 }
 
-MinecraftVersion::~MinecraftVersion() {
+void MinecraftVersion::download() {
+	// Libraries
+	this->assets = new AssetsDownloader(this->dir, this->assetIndex);
 
+
+	connect(this->assets, &AssetsDownloader::metaUpdated, this->assets, &AssetsDownloader::startDownload);
+	connect(this->assets, &AssetsDownloader::onProgressUpdate, this, &MinecraftVersion::progressChanged);
+
+	this->assets->update();
 }
 
 void MinecraftVersion::replyVersionMeta(QNetworkReply *reply) {
@@ -30,6 +55,7 @@ void MinecraftVersion::replyVersionMeta(QNetworkReply *reply) {
 		qCritical() << "Can not take version metadate";
 	} else {
 		QJsonObject root = QJsonDocument::fromJson(reply->readAll()).object();
+		reply->deleteLater();
 
 		QJsonValue vId = root.value("id");
 		if (!vId.isString()) {
@@ -63,8 +89,13 @@ void MinecraftVersion::replyVersionMeta(QNetworkReply *reply) {
 		}
 		this->minecraftArguments = vMinecraftArguments.toString();
 
-		this->updated = true;
+		this->isUpdated = true;
+		emit this->updated();
 	}
+}
+
+void MinecraftVersion::progressChanged(int progress) {
+	emit this->downloadProgress("Test", progress);
 }
 
 QString MinecraftVersion::getVersion() const {
@@ -77,16 +108,4 @@ QString MinecraftVersion::getMinecraftArguments() const {
 
 QString MinecraftVersion::getMainClass() const {
 	return mainClass;
-}
-
-QJsonArray MinecraftVersion::getLibraries() const {
-	return libraries;
-}
-
-QJsonObject MinecraftVersion::getAssetIndex() const {
-	return assetIndex;
-}
-
-bool MinecraftVersion::isUpdated() const {
-	return updated;
 }

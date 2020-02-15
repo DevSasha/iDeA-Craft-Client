@@ -4,17 +4,19 @@
 #include <QObject>
 #include <QDir>
 #include <QStandardPaths>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QFile>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QCryptographicHash>
-#include <backend/minecraft/minecraftversion.h>
 #include <backend/downloader/downloadworker.h>
 
 class AssetsDownloader : public QObject {
 	Q_OBJECT
 public:
-	explicit AssetsDownloader(MinecraftVersion *version);
+	explicit AssetsDownloader(QDir mc, QJsonObject assetIndex);
+	void update();
 
 signals:
 	void updated();

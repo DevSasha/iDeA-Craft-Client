@@ -1,32 +1,7 @@
 #include "assetsdownloader.h"
 
-AssetsDownloader::AssetsDownloader(MinecraftVersion *version) : QObject() {
-	if (QSysInfo::kernelType() == "linux") {
-		this->assets.setPath(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
-	} else if (QSysInfo::kernelType() == "winnt") {
-		this->assets.setPath(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
-		this->assets.cdUp();
-	}
-
-	if (!this->assets.exists(".minecraft")) {
-		qDebug() << "Minecraft dir not exist. Creating...";
-		this->assets.mkdir(".minecraft");
-	}
-	this->assets.cd(".minecraft");
-
-	if (!this->assets.exists("assets")) {
-		qDebug() << "Assets dir not exist. Creating...";
-		this->assets.mkdir("assets");
-	}
-	this->assets.cd("assets");
-
-	if (!this->assets.exists("indexes")) {
-		qDebug() << "Indexes dir not exist. Creating...";
-		this->assets.mkdir("indexes");
-	}
-	this->assets.cd("indexes");
-
-	QJsonObject assetIndex = version->getAssetIndex();
+AssetsDownloader::AssetsDownloader(QDir mc, QJsonObject assetIndex) : QObject() {
+	this->assets = mc;
 	this->version = assetIndex.value("id").toString();
 
 	QJsonValue vSha1 = assetIndex.value("sha1");
@@ -42,6 +17,20 @@ AssetsDownloader::AssetsDownloader(MinecraftVersion *version) : QObject() {
 	this->url = vUrl.toString();
 
 	connect(&this->mng, &QNetworkAccessManager::finished, this, &AssetsDownloader::replyAssetMeta);
+}
+
+void AssetsDownloader::update() {
+	if (!this->assets.exists("assets")) {
+		qDebug() << "Assets dir not exist. Creating...";
+		this->assets.mkdir("assets");
+	}
+	this->assets.cd("assets");
+
+	if (!this->assets.exists("indexes")) {
+		qDebug() << "Indexes dir not exist. Creating...";
+		this->assets.mkdir("indexes");
+	}
+	this->assets.cd("indexes");
 
 	index.setFileName(this->assets.filePath(this->version + ".json"));
 	if (!index.exists()) {
