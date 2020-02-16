@@ -10,6 +10,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <backend/minecraft/assetsdownloader.h>
+#include <backend/minecraft/libraries.h>
 
 class MinecraftVersion : public QObject {
 	Q_OBJECT
@@ -43,6 +44,7 @@ private:
 	QString mainClass;
 	QString minecraftArguments;
 
+	Libraries *libs;
 	AssetsDownloader *assets;
 };
 

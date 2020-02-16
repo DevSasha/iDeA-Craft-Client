@@ -67,6 +67,7 @@ SOURCES += \
     backend/minecraft/player.cpp \
     backend/minecraft/instance.cpp \
     backend/minecraft/assetsdownloader.cpp \
+    backend/minecraft/libraries.cpp \
     mainwindow.cpp \
     authorization.cpp \
     ui/instancecard.cpp \
@@ -84,6 +85,7 @@ HEADERS += \
     backend/minecraft/player.h \
     backend/minecraft/instance.h \
     backend/minecraft/assetsdownloader.h \
+    backend/minecraft/libraries.h \
     mainwindow.h \
     authorization.h \
     ui/instancecard.h \

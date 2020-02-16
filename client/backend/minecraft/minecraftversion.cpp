@@ -40,12 +40,14 @@ void MinecraftVersion::update() {
 }
 
 void MinecraftVersion::download() {
-	// Libraries
+	this->libs = new Libraries(this->dir, this->libraries);
 	this->assets = new AssetsDownloader(this->dir, this->assetIndex);
 
 
 	connect(this->assets, &AssetsDownloader::metaUpdated, this->assets, &AssetsDownloader::startDownload);
 	connect(this->assets, &AssetsDownloader::onProgressUpdate, this, &MinecraftVersion::progressChanged);
+	connect(this->assets, &AssetsDownloader::updated, this->libs, &Libraries::download);
+	connect(this->libs, &Libraries::updateProgress, this, &MinecraftVersion::progressChanged);
 
 	this->assets->update();
 }
