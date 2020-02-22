@@ -32,22 +32,11 @@ MinecraftBase::~MinecraftBase() {
 }
 
 void MinecraftBase::update() {
-	HTTPRequest *req = new HTTPRequest("https://launchermeta.mojang.com/v1/packages/2e818dc89e364c7efcfa54bec7e873c5f00b3840/1.7.10.json");
-	connect(req, &HTTPRequest::finished, this, &MinecraftBase::replyVersionMeta);
-	req->send();
+
 }
 
 void MinecraftBase::download() {
-	this->libs = new Libraries(this->dir, this->libraries);
-	this->assets = new AssetsDownloader(this->dir, this->assetIndex);
 
-
-	connect(this->assets, &AssetsDownloader::metaUpdated, this->assets, &AssetsDownloader::startDownload);
-	connect(this->assets, &AssetsDownloader::onProgressUpdate, this, &MinecraftBase::progressChanged);
-	connect(this->assets, &AssetsDownloader::updated, this->libs, &Libraries::download);
-	connect(this->libs, &Libraries::updateProgress, this, &MinecraftBase::progressChanged);
-
-	this->assets->update();
 }
 
 void MinecraftBase::replyVersionMeta(QNetworkReply *reply) {
@@ -89,13 +78,38 @@ void MinecraftBase::replyVersionMeta(QNetworkReply *reply) {
 		}
 		this->minecraftArguments = vMinecraftArguments.toString();
 
-		this->isUpdated = true;
-		emit this->updated();
+		emit this->metaParsed();
 	}
 }
 
+void MinecraftBase::assetDownloadStart() {
+	this->downloadingMessage = "Assets downloading...";
+	connect(this->assets, &AssetsDownloader::onProgressUpdate, this, &MinecraftBase::progressChanged);
+	connect(this->assets, &AssetsDownloader::updated, this, &MinecraftBase::assetDownloadFinish);
+	this->assets->startDownload();
+}
+
+void MinecraftBase::assetDownloadFinish() {
+	this->assets->deleteLater();
+}
+
+void MinecraftBase::librariesDownloadStart() {
+	this->downloadingMessage = "Libraries downloading...";
+	connect(this->libs, &Libraries::updateProgress, this, &MinecraftBase::progressChanged);
+	connect(this->libs, &Libraries::downloaded, this, &MinecraftBase::librariesDownloadFinish);
+	this->libs->download();
+}
+
+void MinecraftBase::librariesDownloadFinish() {
+	this->libs->deleteLater();
+}
+
 void MinecraftBase::progressChanged(int progress) {
-	emit this->downloadProgress("Test", progress);
+	emit this->downloadProgress(this->downloadingMessage, progress);
+}
+
+void MinecraftBase::metaParsed() {
+	// TODO ?
 }
 
 QString MinecraftBase::getVersion() const {

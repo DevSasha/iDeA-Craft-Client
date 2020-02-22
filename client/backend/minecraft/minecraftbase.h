@@ -16,8 +16,8 @@ public:
 	explicit MinecraftBase(QString version);
 	~MinecraftBase();
 
-	void update();
-	void download();
+	virtual void update();
+	virtual void download();
 	QString getVersion() const;
 	QString getMainClass() const;
 	QString getMinecraftArguments() const;
@@ -30,10 +30,19 @@ public slots:
 	void replyVersionMeta(QNetworkReply *reply);
 	void progressChanged(int progress);
 
-private:
+	void assetDownloadStart();
+	virtual void assetDownloadFinish();
+	void librariesDownloadStart();
+	virtual void librariesDownloadFinish();
+
+protected slots:
+	virtual void metaParsed();
+
+protected:
 	static QJsonArray versions;
 	bool isUpdated = false;
 	QString version;
+	QString downloadingMessage = "";
 	QDir dir;
 
 	QJsonObject assetIndex;
