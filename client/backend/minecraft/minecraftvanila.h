@@ -11,6 +11,8 @@ public:
 
 	void update() override;
 	void download() override;
+
+public slots:
 	void assetDownloadFinish() override;
 };
 
