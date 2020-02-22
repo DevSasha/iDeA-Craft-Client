@@ -1,4 +1,4 @@
-﻿#include "libraries.h"
+#include "libraries.h"
 
 Libraries::Libraries(QDir mc, QJsonArray libraries, QObject *parent) {
 	this->libsDir = mc;
@@ -42,7 +42,7 @@ Libraries::Libraries(QDir mc) {
 }
 
 Libraries::~Libraries() {
-	delete this->dw;
+
 }
 
 void Libraries::addLibrary(QJsonObject lib) {

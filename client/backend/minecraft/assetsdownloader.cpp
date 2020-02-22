@@ -17,6 +17,10 @@ AssetsDownloader::AssetsDownloader(QDir mc, QJsonObject assetIndex) : QObject() 
 	this->url = vUrl.toString();
 }
 
+AssetsDownloader::~AssetsDownloader() {
+
+}
+
 void AssetsDownloader::update() {
 	if (!this->assets.exists("assets")) {
 		qDebug() << "Assets dir not exist. Creating...";

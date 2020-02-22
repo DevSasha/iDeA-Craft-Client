@@ -15,6 +15,8 @@ class AssetsDownloader : public QObject {
 	Q_OBJECT
 public:
 	explicit AssetsDownloader(QDir mc, QJsonObject assetIndex);
+	~AssetsDownloader();
+
 	void update();
 
 signals:
