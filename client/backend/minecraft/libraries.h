@@ -17,6 +17,8 @@ public:
 	Libraries(QDir mc);
 	~Libraries();
 	void addLibrary(QJsonObject lib);
+	QString getClassPath();
+	void addClassPath(QString path);
 
 signals:
 	void downloaded();

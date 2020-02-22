@@ -20,6 +20,7 @@ public:
 	virtual void download();
 	QString getVersion() const;
 	QString getMainClass() const;
+	QString getClassPath() const;
 	QString getMinecraftArguments() const;
 
 signals:

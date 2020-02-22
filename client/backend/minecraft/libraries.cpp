@@ -1,4 +1,4 @@
-#include "libraries.h"
+﻿#include "libraries.h"
 
 Libraries::Libraries(QDir mc, QJsonArray libraries, QObject *parent) {
 	this->libsDir = mc;
@@ -84,6 +84,24 @@ void Libraries::addLibrary(QJsonObject lib) {
 	this->libraries.push_back(lib);
 }
 
+QString Libraries::getClassPath() {
+	QString classPath = "", delimer = "";
+	if (QSysInfo::kernelType() == "linux") {
+		delimer = ":";
+	} else if (QSysInfo::kernelType() == "winnt") {
+		delimer = ";";
+	}
+	for (auto i : this->classPaths) {
+		classPath += i + delimer;
+	}
+	classPath.remove(classPath.size() - 1);
+	return classPath;
+}
+
+void Libraries::addClassPath(QString path) {
+	this->classPaths.push_back(path);
+}
+
 void Libraries::download() {
 	if (!this->libsDir.exists("libraries")) {
 		qDebug() << "Libraries dir not exist. Creating...";
@@ -154,6 +172,7 @@ void Libraries::download() {
 		}
 		QString name = value.toString();
 		QString path = this->libsDir.filePath(name);
+		this->classPaths.push_back(path);
 
 		value = artifact.value("sha1");
 		if (!value.isString()) {

@@ -123,3 +123,7 @@ QString MinecraftBase::getMinecraftArguments() const {
 QString MinecraftBase::getMainClass() const {
 	return mainClass;
 }
+
+QString MinecraftBase::getClassPath() const {
+	return this->libs->getClassPath();
+}
