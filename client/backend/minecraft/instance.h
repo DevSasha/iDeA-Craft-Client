@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <backend/apirequest.h>
-#include <backend/minecraft/minecraftversion.h>
+#include <backend/minecraft/minecraftbase.h>
 
 class Instance : public QObject {
 	Q_OBJECT
@@ -29,7 +29,7 @@ private:
 	QString description;
 	QString ip;
 
-	MinecraftVersion *version;
+	MinecraftBase *version;
 };
 
 #endif // INSTANCE_H

@@ -64,7 +64,7 @@ SOURCES += \
     backend/downloader/downloadfile.cpp \
     backend/httprequest.cpp \
     backend/apirequest.cpp \
-    backend/minecraft/minecraftversion.cpp \
+    backend/minecraft/minecraftbase.cpp \
     backend/minecraft/player.cpp \
     backend/minecraft/instance.cpp \
     backend/minecraft/assetsdownloader.cpp \
@@ -83,7 +83,7 @@ HEADERS += \
     backend/downloader/downloadfile.h \
     backend/httprequest.h \
     backend/apirequest.h \
-    backend/minecraft/minecraftversion.h \
+    backend/minecraft/minecraftbase.h \
     backend/minecraft/player.h \
     backend/minecraft/instance.h \
     backend/minecraft/assetsdownloader.h \

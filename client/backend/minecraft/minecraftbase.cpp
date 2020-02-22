@@ -1,6 +1,6 @@
-#include "minecraftversion.h"
+#include "minecraftbase.h"
 
-MinecraftVersion::MinecraftVersion(QString version) : QObject() {
+MinecraftBase::MinecraftBase(QString version) : QObject() {
 	/*
 	 * NOTE Work only with Minecraft 1.7.10.
 	 * For others need parse large json (https://launchermeta.mojang.com/mc/game/version_manifest.json)
@@ -26,12 +26,13 @@ MinecraftVersion::MinecraftVersion(QString version) : QObject() {
 	this->dir.cd(".minecraft");
 }
 
-MinecraftVersion::~MinecraftVersion() {
-
+MinecraftBase::~MinecraftBase() {
+	this->assets->deleteLater();
+	this->libs->deleteLater();
 }
 
-void MinecraftVersion::update() {
-	connect(&this->mng, &QNetworkAccessManager::finished, this, &MinecraftVersion::replyVersionMeta);
+void MinecraftBase::update() {
+	connect(&this->mng, &QNetworkAccessManager::finished, this, &MinecraftBase::replyVersionMeta);
 	QNetworkRequest req;
 
 	req.setUrl(QUrl("https://launchermeta.mojang.com/v1/packages/2e818dc89e364c7efcfa54bec7e873c5f00b3840/1.7.10.json"));
@@ -39,20 +40,20 @@ void MinecraftVersion::update() {
 	this->mng.get(req);
 }
 
-void MinecraftVersion::download() {
+void MinecraftBase::download() {
 	this->libs = new Libraries(this->dir, this->libraries);
 	this->assets = new AssetsDownloader(this->dir, this->assetIndex);
 
 
 	connect(this->assets, &AssetsDownloader::metaUpdated, this->assets, &AssetsDownloader::startDownload);
-	connect(this->assets, &AssetsDownloader::onProgressUpdate, this, &MinecraftVersion::progressChanged);
+	connect(this->assets, &AssetsDownloader::onProgressUpdate, this, &MinecraftBase::progressChanged);
 	connect(this->assets, &AssetsDownloader::updated, this->libs, &Libraries::download);
-	connect(this->libs, &Libraries::updateProgress, this, &MinecraftVersion::progressChanged);
+	connect(this->libs, &Libraries::updateProgress, this, &MinecraftBase::progressChanged);
 
 	this->assets->update();
 }
 
-void MinecraftVersion::replyVersionMeta(QNetworkReply *reply) {
+void MinecraftBase::replyVersionMeta(QNetworkReply *reply) {
 	if (reply->error()) {
 		qCritical() << "Can not take version metadate";
 	} else {
@@ -96,18 +97,18 @@ void MinecraftVersion::replyVersionMeta(QNetworkReply *reply) {
 	}
 }
 
-void MinecraftVersion::progressChanged(int progress) {
+void MinecraftBase::progressChanged(int progress) {
 	emit this->downloadProgress("Test", progress);
 }
 
-QString MinecraftVersion::getVersion() const {
+QString MinecraftBase::getVersion() const {
     return version;
 }
 
-QString MinecraftVersion::getMinecraftArguments() const {
+QString MinecraftBase::getMinecraftArguments() const {
 	return minecraftArguments;
 }
 
-QString MinecraftVersion::getMainClass() const {
+QString MinecraftBase::getMainClass() const {
 	return mainClass;
 }

@@ -14,15 +14,15 @@ void Instance::replyServerInfo(QJsonObject *body) {
 	QJsonObject server = vServer.toObject();
 	this->name = server.value("title").toString();
 	this->description = server.value("description").toString();
-	this->version = new MinecraftVersion(server.value("version").toString());
+	this->version = new MinecraftBase(server.value("version").toString());
 
-	connect(this->version, &MinecraftVersion::updated, this, &Instance::versionUpdated);
+	connect(this->version, &MinecraftBase::updated, this, &Instance::versionUpdated);
 
 	this->version->update();
 }
 
 void Instance::run() {
-	connect(this->version, &MinecraftVersion::downloadProgress, this, &Instance::progressChanged);
+	connect(this->version, &MinecraftBase::downloadProgress, this, &Instance::progressChanged);
 
 	this->version->download();
 }

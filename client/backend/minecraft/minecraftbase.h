@@ -12,11 +12,11 @@
 #include <backend/minecraft/assetsdownloader.h>
 #include <backend/minecraft/libraries.h>
 
-class MinecraftVersion : public QObject {
+class MinecraftBase : public QObject {
 	Q_OBJECT
 public:
-	explicit MinecraftVersion(QString version);
-	~MinecraftVersion();
+	explicit MinecraftBase(QString version);
+	~MinecraftBase();
 
 	void update();
 	void download();
