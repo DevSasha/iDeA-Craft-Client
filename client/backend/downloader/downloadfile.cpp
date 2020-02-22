@@ -29,6 +29,7 @@ DownloadFile::~DownloadFile() {
 	if (this->file != nullptr) {
 		delete this->file;
 	}
+	this->data.clear();
 }
 
 bool DownloadFile::isCorrect() {
@@ -50,6 +51,7 @@ void DownloadFile::take(QNetworkReply *reply) {
 			qCritical() << "Download error: " << reply->errorString();
 	} else {
 		this->data = reply->readAll();
+		reply->deleteLater();
 		this->correct = this->check();
 
 		if (this->correct) {
