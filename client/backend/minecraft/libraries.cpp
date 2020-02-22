@@ -183,8 +183,12 @@ void Libraries::download() {
 	this->dw->setFileList(files);
 
 	connect(this->dw, &DownloadWorker::onFinish, this, &Libraries::downloaded);
-	connect(this->dw, &DownloadWorker::onDownloaded, this, &Libraries::updateProgress);
+	connect(this->dw, &DownloadWorker::onDownloaded, this, &Libraries::onUpdateProgress);
 	//connect(this->dw, &DownloadWorker::onError, this, &AssetsDownloader::error);
 
 	this->dw->start();
+}
+
+void Libraries::onUpdateProgress(int progress) {
+	emit this->updateProgress(progress);
 }

@@ -24,6 +24,7 @@ signals:
 
 public slots:
 	void download();
+	void onUpdateProgress(int progress);
 
 private:
 	QDir libsDir;
