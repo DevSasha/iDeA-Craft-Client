@@ -7,9 +7,8 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QFile>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
 #include <QCryptographicHash>
+#include <backend/httprequest.h>
 #include <backend/downloader/downloadworker.h>
 
 class AssetsDownloader : public QObject {
@@ -31,7 +30,6 @@ public slots:
 private:
 	QDir assets;
 	QFile index;
-	QNetworkAccessManager mng;
 	DownloadWorker *dw;
 
 	QString version;

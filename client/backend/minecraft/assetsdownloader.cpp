@@ -15,8 +15,6 @@ AssetsDownloader::AssetsDownloader(QDir mc, QJsonObject assetIndex) : QObject() 
 		qCritical() << "Asset url is incorrect: " << vUrl.type();
 	}
 	this->url = vUrl.toString();
-
-	connect(&this->mng, &QNetworkAccessManager::finished, this, &AssetsDownloader::replyAssetMeta);
 }
 
 void AssetsDownloader::update() {
@@ -85,8 +83,9 @@ void AssetsDownloader::updateProgress(int progress) {
 }
 
 void AssetsDownloader::downloadAssetIndex() {
-	QNetworkRequest req(this->url);
-	this->mng.get(req);
+	HTTPRequest *req = new HTTPRequest(this->url);
+	connect(req, &HTTPRequest::finished, this, &AssetsDownloader::replyAssetMeta);
+	req->send();
 }
 
 void AssetsDownloader::parseAssetIndex(QByteArray &data) {

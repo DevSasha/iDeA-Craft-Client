@@ -3,12 +3,10 @@
 
 #include <QObject>
 #include <QDebug>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QNetworkRequest>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <backend/httprequest.h>
 #include <backend/minecraft/assetsdownloader.h>
 #include <backend/minecraft/libraries.h>
 
@@ -36,7 +34,6 @@ private:
 	static QJsonArray versions;
 	bool isUpdated = false;
 	QString version;
-	QNetworkAccessManager mng;
 	QDir dir;
 
 	QJsonObject assetIndex;

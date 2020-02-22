@@ -32,12 +32,9 @@ MinecraftBase::~MinecraftBase() {
 }
 
 void MinecraftBase::update() {
-	connect(&this->mng, &QNetworkAccessManager::finished, this, &MinecraftBase::replyVersionMeta);
-	QNetworkRequest req;
-
-	req.setUrl(QUrl("https://launchermeta.mojang.com/v1/packages/2e818dc89e364c7efcfa54bec7e873c5f00b3840/1.7.10.json"));
-
-	this->mng.get(req);
+	HTTPRequest *req = new HTTPRequest("https://launchermeta.mojang.com/v1/packages/2e818dc89e364c7efcfa54bec7e873c5f00b3840/1.7.10.json");
+	connect(req, &HTTPRequest::finished, this, &MinecraftBase::replyVersionMeta);
+	req->send();
 }
 
 void MinecraftBase::download() {
