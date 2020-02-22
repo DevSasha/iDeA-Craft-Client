@@ -43,6 +43,8 @@ void AssetsDownloader::update() {
 		qDebug() << "Using saved asset index";
 
 		QByteArray data = this->index.readAll();
+		this->index.close();
+
 		QString hash = QCryptographicHash::hash(data, QCryptographicHash::Sha1).toHex();
 		if (this->sha1 != hash) {
 			qDebug() << "Asset index file corrupted. Redownloding...";
