@@ -13,7 +13,7 @@
 class HTTPRequest : public QObject {
 	Q_OBJECT
 public:
-	explicit HTTPRequest(QString url);
+	explicit HTTPRequest(QString url, QString method = "GET");
 	~HTTPRequest();
 
 	void addQueryItem(QString key, QString value);
@@ -29,6 +29,7 @@ protected:
 	void setup();
 
 	QString url;
+	QString method;
 	QUrlQuery form;
 	QNetworkRequest request;
 	QByteArray postData;
