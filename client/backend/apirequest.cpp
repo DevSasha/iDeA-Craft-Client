@@ -4,7 +4,7 @@ std::vector<QString>
 	APIRequest::defaultKeys = {},
 	APIRequest::defaultValues = {};
 
-APIRequest::APIRequest(QString method) : HTTPRequest(QString(API_SERVER) + method) {
+APIRequest::APIRequest(QString method) : HTTPRequest(QString(API_SERVER) + method, "POST") {
 	this->setup();
 
 	ulong defaultKeysCount = defaultKeys.size();
